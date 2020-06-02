@@ -27,6 +27,8 @@ export class ProfileDetailsComponent implements OnInit {
   
   getProfileDetails = (profile: Profile) => {
     const aux = {
+      id : true,
+      name : true,
       permissions : true
     }
 
