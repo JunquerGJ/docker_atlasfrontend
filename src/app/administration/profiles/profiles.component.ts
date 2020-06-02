@@ -36,7 +36,7 @@ export class ProfilesComponent extends GridableComponent<Profile>
     super(profileService, alertService);
   }
 
-  public administrationEntities = ["Area","User","Profile","Asset","Audit","Vulnerability","CWE","Contact","Network","IP","Server","Characteristic","Domain"]
+  public administrationEntities = ["Area","User","Profile","Asset","Audit","Vulnerability","CWE","Contact","Network","IP","Server","Characteristic","Domain","Certificate"]
   public permissionList =["CREATE","READ","UPDATE","DELETE"]
 
 
