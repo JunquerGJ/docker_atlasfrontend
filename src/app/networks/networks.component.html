@@ -1,0 +1,63 @@
+<div class="wrap">
+    <button class="btn btn-outline" (click)="isModalVisible=true">Add {{elementName}}</button>
+  
+  
+    <clr-datagrid>
+      <clr-dg-column [clrDgField]="'name'" [clrDgSortOrder]="descSort">Name</clr-dg-column>>
+      <clr-dg-column [clrDgField]="'description'" [clrDgSortOrder]="descSort">Description</clr-dg-column>>
+      <clr-dg-column [clrDgSortBy]="networkComparator">Registered IPs
+        <clr-dg-numeric-filter [clrDgNumericFilter]="networkFilter"></clr-dg-numeric-filter>
+      </clr-dg-column>>
+      <clr-dg-row *clrDgItems="let network of elements" [clrDgItem]="network">
+        <clr-dg-cell>{{network.name}}</clr-dg-cell>
+        <clr-dg-cell>{{network.description}}</clr-dg-cell>
+        <clr-dg-cell>{{network.ips.length}}</clr-dg-cell>
+        <clr-dg-action-overflow>
+          <button class="action-item" (click)="delete(network)">Delete</button>
+        </clr-dg-action-overflow>
+      </clr-dg-row>
+      <clr-dg-detail *clrIfDetail="let detail">
+        <clr-dg-detail-header>Network: {{detail.name}}</clr-dg-detail-header>
+        <clr-dg-detail-body>
+          <clr-input-container>
+            <label>Name</label>
+            <input type="text" name="name" [(ngModel)]="detail.name" clrInput  />
+          </clr-input-container>
+          <clr-input-container>
+            <label>Description</label>
+            <input type="text" name="description" [(ngModel)]="detail.description" clrInput />
+          </clr-input-container>
+          <table class="table table-noborder">
+            <thead>
+              <tr>
+                <th class="left">IP</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ip of detail.ips">
+                {{ip.ip}}
+              </tr>
+            </tbody>
+          </table>
+          <button class="btn btn-outline" (click)="prepareModification(detail)" type="button">Update</button>
+        </clr-dg-detail-body>
+      </clr-dg-detail>
+      <clr-dg-footer>
+        <clr-dg-pagination #pagination [clrDgPageSize]="10">
+          <clr-dg-page-size [clrPageSizeOptions]="[1,2,10,20,50,100]">{{elementNamePlural}} per page</clr-dg-page-size>
+          {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} {{elementNamePlural}}
+        </clr-dg-pagination>
+      </clr-dg-footer>
+    </clr-datagrid>
+  </div>
+  
+  
+  
+  <clr-modal *ngIf="isModalVisible" [(clrModalOpen)]="isModalVisible" [clrModalClosable]="true" [clrModalSize]="'sm'">
+    <h3 class="modal-title">New {{elementName}}</h3>
+    <div class="modal-body">
+      <app-add-network (created)="addNetwork($event)"></app-add-network>
+    </div>
+  </clr-modal>
+  
+  

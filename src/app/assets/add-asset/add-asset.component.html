@@ -1,0 +1,256 @@
+<clr-tabs class="tabs-vertical">
+    <clr-tab>
+      <button clrTabLink>Info</button>
+      <ng-template [(clrIfActive)]="dashboardActive">
+        <clr-tab-content>
+          <div class="clr-row">
+            <div class="clr-col-lg-auto">
+              <clr-input-container>
+                <label>Name</label>
+                <input type="text" name="name" [(ngModel)]="newElement.name" clrInput placeholder="Asset's name" />
+              </clr-input-container>
+            </div>
+            <div class="clr-col-lg-auto">
+              <clr-input-container>
+                <label>Alias</label>
+                <input type="text" name="alias" [(ngModel)]="newElement.alias" clrInput />
+              </clr-input-container>
+            </div>
+          </div>
+          <div class="clr-row">
+            <div class="clr-col-lg-auto">
+              <clr-select-container>
+                <label>Type</label>
+                <select clrSelect name="status" [(ngModel)]="newElement.assetType">
+                  <option *ngFor="let type of _assetTypes" value="{{type}}">{{type}}</option>
+                </select>
+              </clr-select-container>
+            </div>
+          </div>
+          <div class="clr-row"> 
+          <div class="clr-col-lg-auto">
+            <clr-radio-container clrInline>
+              <label>New Area?</label>
+              <clr-radio-wrapper>
+                <input type="radio" clrRadio required value="Y" [(ngModel)]="newArea" />
+                <label>Yes</label>
+              </clr-radio-wrapper>
+              <clr-radio-wrapper>
+                <input type="radio" clrRadio required value="N" [(ngModel)]="newArea" />
+                <label>No</label>
+              </clr-radio-wrapper>
+            </clr-radio-container>            
+            <app-add-area *ngIf="newArea=='Y'" (created)="addArea($event)"></app-add-area>
+            <clr-datalist-container *ngIf="newArea=='N'">
+            <label>Area</label>
+            <input clrDatalistInput name="area" [(ngModel)]="auxArea" (change)="setArea($event.target.value)" />
+            <datalist>
+              <option *ngFor="let area of areas" [value]="area.name"></option>
+            </datalist>
+          </clr-datalist-container>
+          </div>
+        </div>
+          <div class="clr-row">
+            <div class="clr-col-lg-auto">
+              <clr-select-container>
+                <label>Status</label>
+                <select clrSelect name="status" [(ngModel)]="newElement.status">
+                  <option *ngFor="let status of _states" value="{{status.value}}">{{status.name}}</option>
+                </select>
+              </clr-select-container>
+            </div>
+            <div class="clr-col-lg-auto" style="z-index:9999">
+              <clr-date-container style="z-index:9999">
+                <label>Status date</label>
+                <input type="date" style="z-index:9999" clrDate name="statusDate" [(ngModel)]="newElement.statusDate">
+              </clr-date-container>
+            </div>
+          </div>
+          <div class="clr-row">
+            <div class="clr-col-lg-auto">
+              <clr-textarea-container>
+                <label>Description</label>
+                <textarea clrTextarea [(ngModel)]="newElement.description" name="description"></textarea>
+              </clr-textarea-container>
+            </div>
+          </div>
+          <button class="btn btn-primary" (click)="create();">Finish</button>
+        </clr-tab-content>
+      </ng-template>
+    </clr-tab>
+    <clr-tab>
+      <button clrTabLink>GDPR</button>
+      <ng-template [(clrIfActive)]="gdprActive">
+        <clr-tab-content>
+          <h3>Risk analysis</h3>
+          <div class="clr-row">
+            <div class="clr-col-lg-auto">
+              <clr-select-container>
+                <label>Confidentiality</label>
+                <select clrSelect name="confidentiality" [(ngModel)]="newElement.confidentiality">
+                  <option *ngFor="let risk of _grcValues" value="{{risk}}">{{risk}}</option>
+                </select>
+              </clr-select-container>
+            </div>
+            <div class="clr-col-lg-auto">
+              <clr-select-container>
+                <label>Integrity</label>
+                <select clrSelect name="integrity" [(ngModel)]="newElement.integrity">
+                  <option *ngFor="let risk of _grcValues" value="{{risk}}">{{risk}}</option>
+                </select>
+              </clr-select-container>
+            </div>
+            <div class="clr-col-lg-auto">
+              <clr-select-container>
+                <label>Availability</label>
+                <select clrSelect name="availability" [(ngModel)]="newElement.availability">
+                  <option *ngFor="let risk of _grcValues" value="{{risk}}">{{risk}}</option>
+                </select>
+              </clr-select-container>
+            </div>
+            <div class="clr-col-lg-auto">
+              <clr-select-container>
+                <label>Trazability</label>
+                <select clrSelect name="trazability" [(ngModel)]="newElement.trazability">
+                  <option *ngFor="let risk of _grcValues" value="{{risk}}">{{risk}}</option>
+                </select>
+              </clr-select-container>
+            </div>
+          </div>
+          <hr/>
+          <br/>
+          <h3>Logs</h3>
+          <div class="clr-row">
+            <div class="clr-col-lg-auto">
+              <clr-select-container>
+                <label>Access</label>
+                <select clrSelect name="accessLogs" [(ngModel)]="newElement.accessLogs">
+                  <option *ngFor="let status of _logValues" value="{{status}}">{{status}}</option>
+                </select>
+              </clr-select-container>
+            </div>
+            <div class="clr-col-lg-auto">
+              <clr-select-container>
+                <label>Activity</label>
+                <select clrSelect name="activityLogs" [(ngModel)]="newElement.activityLogs">
+                  <option *ngFor="let status of _logValues" value="{{status}}">{{status}}</option>
+                </select>
+              </clr-select-container>
+            </div>
+          </div>
+          <button class="btn btn-primary" (click)="create();">Finish</button>
+        </clr-tab-content>
+      </ng-template>
+    </clr-tab>
+    <clr-tab>
+      <button clrTabLink>Servers</button>
+      <ng-template [(clrIfActive)]="serversActive">
+        <clr-tab-content>
+          <form class="clr-form clr-form-compact">
+            <clr-datalist-container>
+              <input clrDatalistInput name="server" [(ngModel)]="auxServer" (change)="setServer($event.target.value);" placeholder="Search" />
+              <datalist>
+                <option *ngFor="let server of servers" [value]="server.hostname"></option>
+              </datalist>
+            </clr-datalist-container>
+          </form>
+          <table *ngIf="newElement.servers.length>0" class="table table-noborder">
+            <thead>
+              <tr>
+                <th class="left">Hostname</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let server of newElement.servers">
+                <td>{{server.hostname}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <button class="btn btn-primary" (click)="create();">Finish</button>
+        </clr-tab-content>
+      </ng-template>
+    </clr-tab>
+<!--    <clr-tab>
+      <button clrTabLink>Domains</button>
+      <ng-template [(clrIfActive)]="urlsActive">
+        <clr-tab-content>
+          <app-add-domain  (created)="addDomain($event)"></app-add-domain>
+          <table *ngIf="newElement.Domain.length>0" class="table table-noborder">
+            <thead>
+              <tr>
+                <th class="left">Domain</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let domain of newElement.Domain">
+                <td>{{domain.url}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </clr-tab-content>
+      </ng-template>
+    </clr-tab>-->
+    <clr-tab>
+      <button clrTabLink>Characteristics</button>
+      <ng-template [(clrIfActive)]="characteristicsActive">
+        <clr-tab-content>
+          <form class="clr-form clr-form-compact">
+            <clr-datalist-container>
+              <input clrDatalistInput name="characteristic" [(ngModel)]="auxCharacteristic" (change)="setCharacteristic($event.target.value)" placeholder="Search"/>
+              <datalist>
+                <option *ngFor="let characteristic of characteristics" [value]="characteristic.name"></option>
+              </datalist>
+            </clr-datalist-container>
+          </form>
+          <span class="label" *ngFor="let characteristic of newElement.characteristics">{{characteristic.name}}</span>
+          <button class="btn btn-primary" (click)="create();">Finish</button>
+        </clr-tab-content>
+      </ng-template>
+    </clr-tab>
+    <clr-tab>
+      <button clrTabLink>Contacts</button>
+      <ng-template [(clrIfActive)]="contactsActive">
+        <clr-tab-content>
+          <table *ngIf="newElement.contacts.length>0" class="table table-noborder">
+            <thead>
+              <tr>
+                <th>Functionality</th>
+                <th>Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let contact of newElement.contacts">
+                <td>{{contact.functionality}}</td>
+                <td>{{contact.contact.name}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <clr-input-container>
+            <label>Role</label>
+            <input type="text" name="functionality" [(ngModel)]="auxContactTo.functionality" clrInput />
+          </clr-input-container>
+          <clr-radio-container clrInline>
+            <label>New Contact?</label>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio  value="Y" [(ngModel)]="newContact" />
+              <label>Yes</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio  value="N" [(ngModel)]="newContact" />
+              <label>No</label>
+            </clr-radio-wrapper>
+          </clr-radio-container>
+          <app-add-contact *ngIf="newContact=='Y'" (created)="auxContactTo.contact=$event"></app-add-contact>
+          <clr-datalist-container *ngIf="newContact=='N'">
+            <label>Contact</label>
+            <input clrDatalistInput name="contact" (change)="setContact($event.target.value);" />
+            <datalist>
+              <option *ngFor="let contact of contacts" [value]="contact.name"></option>
+            </datalist>
+          </clr-datalist-container>
+          <button *ngIf="auxContactTo.functionality && auxContactTo.contact" class="btn btn-primary" (click)="addContact();">Include</button>
+          <button class="btn btn-primary" (click)="create();">Finish</button>
+        </clr-tab-content>
+      </ng-template>
+    </clr-tab>
+  </clr-tabs>

@@ -1,0 +1,78 @@
+<div class="wrap">
+    <div class="clr-row">
+        <div class="clr-col-lg-3 clr-col-3">
+            <a [routerLink]="['/inventory/vulnerabilities']" routerLinkActive="active" class="card clickable">
+                <div class="card-block">
+                    <p class="card-text">
+                        <clr-icon shape="warning-standard"></clr-icon>
+                        {{nVulnerabilities}} Vulnerabilities
+                    </p>
+                </div>
+            </a>
+        </div>
+        <div class="clr-col-lg-3 clr-col-3">
+            <a [routerLink]="['/inventory/networks']" routerLinkActive="active" class="card clickable">
+                <div class="card-block">
+                    <p class="card-text">
+                        <clr-icon shape="network-switch"></clr-icon>
+                        {{nNetworks}} Networks
+                    </p>
+                </div>
+            </a>
+        </div>
+        <div class="clr-col-lg-3 clr-col-3">
+            <a [routerLink]="['/inventory/ips']" routerLinkActive="active" class="card clickable">
+                <div class="card-block">
+                    <p class="card-text">
+                        <clr-icon shape="network-settings"></clr-icon>
+                        {{nIPS}} IPs
+                    </p>
+                </div>
+            </a>
+        </div>
+        <div class="clr-col-lg-3 clr-col-3">
+            <a [routerLink]="['/inventory/servers']" routerLinkActive="active" class="card clickable">
+                <div class="card-block">
+                    <p class="card-text">
+                        <clr-icon shape="rack-server"></clr-icon>
+                        {{nServers}} Servers
+                    </p>
+                </div>
+            </a>
+        </div>
+
+        <div class="clr-col-lg-3 clr-col-3">
+            <a [routerLink]="['/inventory/assets']" routerLinkActive="active" class="card clickable">
+                <div class="card-block">
+                    <p class="card-text">
+                        <clr-icon shape="network-globe"></clr-icon>
+                        {{nAssets}} Assets
+                    </p>
+                </div>
+            </a>
+        </div>
+
+        <div class="clr-col-lg-3 clr-col-3">
+            <a [routerLink]="['/inventory/certificates']" routerLinkActive="active" class="card clickable">
+                <div class="card-block">
+                    <p class="card-text">
+                        <clr-icon shape="certificate"></clr-icon>
+                        {{nCertificates}} Certificates
+                    </p>
+                </div>
+            </a>
+        </div>
+
+        <div class="clr-col-lg-3 clr-col-3">
+            <a [routerLink]="['/inventory/domains']" routerLinkActive="active" class="card clickable">
+                <div class="card-block">
+                    <p class="card-text">
+                        <clr-icon shape="cloud-network"></clr-icon>
+                        {{nDomains}} Domains
+                    </p>
+                </div>
+            </a>
+        </div>
+
+    </div>
+</div>

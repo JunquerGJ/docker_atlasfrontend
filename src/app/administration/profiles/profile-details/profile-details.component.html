@@ -1,0 +1,22 @@
+<clr-input-container>
+    <label>Name</label>
+    <input type="text" name="name" [(ngModel)]="profile.name" clrInput />
+  </clr-input-container>
+  <clr-stack-view>
+    <clr-stack-header>Permissions</clr-stack-header>
+    <clr-stack-block *ngFor="let entity of administrationEntities; index as i">
+      <clr-stack-label>{{entity}}</clr-stack-label>
+      <clr-stack-block>
+        <clr-stack-label>
+          <div *ngFor="let permission of permissionList; index as j" class="clr-toggle-wrapper">
+            <input type="checkbox" *ngIf="hasPermission(permission+' '+entity);" [id]="i.toString()+j" checked (change)="toggle2($event,permission+' '+entity)"
+              class="clr-toggle">
+              <input type="checkbox" *ngIf="!hasPermission(permission+' '+entity);" [id]="i.toString()+j"  (change)="toggle2($event,permission+' '+entity)"
+              class="clr-toggle">
+            <label [for]="i.toString()+j" class="clr-control-label">{{permission}}</label>
+          </div>
+        </clr-stack-label>
+      </clr-stack-block>
+    </clr-stack-block>
+  </clr-stack-view>
+  <button class="btn btn-outline" (click)="update()" type="button">Update</button>

@@ -1,0 +1,57 @@
+<div class="wrap">
+  <button class="btn btn-outline" (click)="isModalVisible=true">Add {{elementName}}</button>
+
+
+  <clr-datagrid>
+    <clr-dg-column [clrDgField]="'name'" [clrDgSortOrder]="descSort">Name</clr-dg-column>>
+    <clr-dg-column [clrDgField]="'profile.User'" [clrDgSortBy]="profileComparator">Users</clr-dg-column>>
+    <clr-dg-row *clrDgItems="let profile of elements" [clrDgItem]="profile">
+      <clr-dg-cell>{{profile.name}}</clr-dg-cell>
+      <clr-dg-cell>{{profile.User.length}}</clr-dg-cell>
+      <clr-dg-action-overflow>
+        <button class="action-item" (click)="delete(profile)">Delete</button>
+      </clr-dg-action-overflow>
+    </clr-dg-row>
+    <clr-dg-detail *clrIfDetail="let detail">
+      <clr-dg-detail-header>Profile: {{detail.name}}</clr-dg-detail-header>
+      <clr-dg-detail-body>
+        <app-profile-details [input]="detail" (updated)="modify($event)" ngProjectAs="clr-dg-row-detail">
+        </app-profile-details>
+      </clr-dg-detail-body>
+    </clr-dg-detail>
+    <clr-dg-footer>
+      <clr-dg-pagination #pagination [clrDgPageSize]="10">
+        <clr-dg-page-size [clrPageSizeOptions]="[1,2,10,20,50,100]">{{elementNamePlural}} per page</clr-dg-page-size>
+        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} {{elementNamePlural}}
+      </clr-dg-pagination>
+    </clr-dg-footer>
+  </clr-datagrid>
+</div>
+<clr-modal [(clrModalOpen)]="isModalVisible" [clrModalClosable]="false" [clrModalSize]="'lg'">
+  <h3 class="modal-title">New {{elementName}}</h3>
+  <div class="modal-body">
+    <clr-input-container>
+      <label>Name</label>
+      <input type="text" name="name" [(ngModel)]="newElement.name" clrInput placeholder="Profile's name" />
+    </clr-input-container>
+    <clr-stack-view>
+      <clr-stack-header>Permissions</clr-stack-header>
+      <clr-stack-block *ngFor="let entity of administrationEntities; index as i">
+        <clr-stack-label>{{entity}}</clr-stack-label>
+        <clr-stack-block>
+          <clr-stack-label>
+            <div *ngFor="let permission of permissionList; index as j" class="clr-toggle-wrapper">
+              <input type="checkbox" [id]="i.toString()+j" (change)="toggle2($event,permission+' '+entity)"
+                class="clr-toggle">
+              <label [for]="i.toString()+j" class="clr-control-label">{{permission}}</label>
+            </div>
+          </clr-stack-label>
+        </clr-stack-block>
+      </clr-stack-block>
+    </clr-stack-view>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-outline" (click)="add();closeModal()" type="button">Submit</button>
+    <button class="btn btn-primary" (click)="closeModal()" type="button">Cancel</button>
+  </div>
+</clr-modal>

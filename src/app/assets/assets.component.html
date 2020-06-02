@@ -1,0 +1,89 @@
+<div class="wrap">
+  <button class="btn btn-outline" (click)="isModalVisible=true">Add {{elementName}}</button>
+
+  <clr-datagrid>
+    <clr-dg-column [clrDgField]="'name'" [clrDgSortOrder]="descSort">Name</clr-dg-column>
+    <clr-dg-column [clrDgField]="'assetType'" [clrDgSortOrder]="descSort">Type</clr-dg-column>
+    <clr-dg-column [clrDgSortBy]="areaComparator">Area
+      <clr-dg-string-filter [clrDgStringFilter]="areaFilter"></clr-dg-string-filter>
+    </clr-dg-column>
+    <clr-dg-column [clrDgField]="'integrity'">Integrity</clr-dg-column>
+    <clr-dg-column [clrDgField]="'confidentiality'">Confidentiality</clr-dg-column>
+    <clr-dg-column [clrDgField]="'authorization'">Authorization</clr-dg-column>
+    <clr-dg-column [clrDgField]="'availability'">Availability</clr-dg-column>
+    <clr-dg-column [clrDgField]="'trazability'">Trazability</clr-dg-column>
+    <!--<clr-dg-column [clrDgSortOrder]="descSort">Risk</clr-dg-column>-->
+    <clr-dg-column [clrDgSortBy]="vulnComparator">Vulnerabilities</clr-dg-column>
+
+
+
+    <clr-dg-row *clrDgItems="let asset of elements" [clrDgItem]="asset">
+      <clr-dg-cell>{{asset.name}}</clr-dg-cell>
+      <clr-dg-cell *ngIf="asset.assetType=='WEB'">
+        <clr-icon shape="network-globe"></clr-icon>
+      </clr-dg-cell>
+      <clr-dg-cell *ngIf="asset.assetType=='API'">
+        <clr-icon shape="usb"></clr-icon>
+      </clr-dg-cell>
+      <clr-dg-cell *ngIf="asset.assetType=='APP'">
+        <clr-icon shape="mobile"></clr-icon>
+      </clr-dg-cell>
+      <clr-dg-cell *ngIf="asset.assetType=='IOT'">
+        <clr-icon shape="router"></clr-icon>
+      </clr-dg-cell>
+      <clr-dg-cell *ngIf="asset.area; else undefinedArea">{{asset.area.name}}</clr-dg-cell>
+      <ng-template #undefinedArea>
+        <clr-dg-cell></clr-dg-cell>
+      </ng-template>
+      <clr-dg-cell>
+        <span class="label" [style.background-color]="getBC(asset.integrity)"
+          [style.color]="getFC(asset.integrity)">{{asset.integrity}}</span>
+      </clr-dg-cell>
+      <clr-dg-cell>
+        <span class="label" [style.background-color]="getBC(asset.confidentiality)"
+          [style.color]="getFC(asset.confidentiality)">{{asset.confidentiality}}</span>
+      </clr-dg-cell>
+      <clr-dg-cell>
+        <span class="label" [style.background-color]="getBC(asset.trazability)"
+          [style.color]="getFC(asset.trazability)">{{asset.trazability}}</span>
+      </clr-dg-cell>
+      <clr-dg-cell>
+        <span class="label" [style.background-color]="getBC(asset.authorization)"
+          [style.color]="getFC(asset.authorization)">{{asset.authorization}}</span>
+      </clr-dg-cell>
+      <clr-dg-cell><span class="label" [style.background-color]="getBC(asset.availability)"
+          [style.color]="getFC(asset.availability)">{{asset.availability}}</span>
+      </clr-dg-cell>
+
+      <clr-dg-cell><span class="badge badge-2"><b>{{getThing(asset.Vulnerability,'CRITICAL')}}</b></span>
+        <span class="badge badge-danger"><b>{{getThing(asset.Vulnerability,'HIGH')}}</b></span>
+        <span class="badge badge-warning"><b>{{getThing(asset.Vulnerability,'MEDIUM')}}</b></span>
+        <span class="badge badge-success"><b>{{getThing(asset.Vulnerability,'LOW')}}</b></span>
+      </clr-dg-cell>
+
+      <clr-dg-action-overflow>
+        <button class="action-item" (click)="delete(asset)">Delete</button>
+      </clr-dg-action-overflow>
+    </clr-dg-row>
+    <clr-dg-detail *clrIfDetail="let detail">
+      <clr-dg-detail-header>Asset: {{detail.name}}</clr-dg-detail-header>
+      <app-asset-details [input]="detail" (updated)="modify($event)" ngProjectAs="clr-dg-row-detail">
+      </app-asset-details>
+    </clr-dg-detail>
+    <clr-dg-footer>
+      <clr-dg-pagination #pagination [clrDgPageSize]="10">
+        <clr-dg-page-size [clrPageSizeOptions]="[1,2,10,20,50,100]">{{elementNamePlural}} per page</clr-dg-page-size>
+        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} {{elementNamePlural}}
+      </clr-dg-pagination>
+    </clr-dg-footer>
+  </clr-datagrid>
+</div>
+
+
+
+<clr-modal *ngIf="isModalVisible" [(clrModalOpen)]="isModalVisible" [clrModalClosable]="true" [clrModalSize]="'xl'">
+  <h3 class="modal-title">New {{elementName}}</h3>
+  <div class="modal-body">
+    <app-add-asset (created)="addAsset($event)"></app-add-asset>
+  </div>
+</clr-modal>

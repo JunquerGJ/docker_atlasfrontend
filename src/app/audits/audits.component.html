@@ -1,0 +1,52 @@
+<div class="wrap">
+  <button class="btn btn-outline" (click)="isModalVisible=true">Add {{elementName}}</button>
+
+  <clr-datagrid>
+    <clr-dg-column [clrDgField]="'name'" [clrDgSortOrder]="descSort">Name</clr-dg-column>
+    <clr-dg-column [clrDgField]="'asset.name'" [clrDgSortOrder]="descSort">Asset</clr-dg-column>
+    <clr-dg-column [clrDgField]="'auditDate'" [clrDgSortOrder]="descSort">Date</clr-dg-column>
+    <clr-dg-column [clrDgField]="'methodology'" [clrDgSortOrder]="descSort">Methodology</clr-dg-column>
+    <clr-dg-column [clrDgField]="'tool'" [clrDgSortOrder]="descSort">Tool</clr-dg-column>
+    <clr-dg-column [clrDgField]="'auditor.name'" [clrDgSortOrder]="descSort">Auditor</clr-dg-column>
+    <clr-dg-column [clrDgSortOrder]="descSort">Vulnerabilities</clr-dg-column>
+
+
+    <clr-dg-row *clrDgItems="let audit of elements" [clrDgItem]="audit">
+      <clr-dg-cell>{{audit.name}}</clr-dg-cell>
+      <clr-dg-cell>{{audit.asset.name}}</clr-dg-cell>
+      <clr-dg-cell>{{audit.auditDate | date }}</clr-dg-cell>
+      <clr-dg-cell>{{audit.methodology}}</clr-dg-cell>
+      <clr-dg-cell>{{audit.tool}}</clr-dg-cell>
+      <clr-dg-cell *ngIf="audit.auditor; else undefinedArea">{{audit.auditor.name}}</clr-dg-cell>
+      <ng-template #undefinedArea>
+        <clr-dg-cell></clr-dg-cell>
+      </ng-template>
+      <clr-dg-cell>Critical:<span class="badge badge-2">{{getThing(audit.Vulnerability,'CRITICAL')}}</span>
+        High:<span class="badge badge-danger">{{getThing(audit.Vulnerability,'HIGH')}}</span>
+        Medium:<span class="badge badge-warning">{{getThing(audit.Vulnerability,'MEDIUM')}}</span>
+        Low:<span class="badge badge-success">{{getThing(audit.Vulnerability,'LOW')}}</span>
+      </clr-dg-cell>
+      <clr-dg-action-overflow>
+        <button class="action-item" (click)="delete(audit)">Delete</button>
+      </clr-dg-action-overflow>
+    </clr-dg-row>
+    <clr-dg-detail *clrIfDetail="let detail">
+      <clr-dg-detail-header>Audit: {{detail.name}}</clr-dg-detail-header>
+         <app-audit-details [input]="detail" (updated)="modify($event)" ngProjectAs="clr-dg-row-detail"></app-audit-details>
+    </clr-dg-detail>
+    <clr-dg-footer>
+      <clr-dg-pagination #pagination [clrDgPageSize]="10">
+        <clr-dg-page-size [clrPageSizeOptions]="[1,2,10,20,50,100]">{{elementNamePlural}} per page</clr-dg-page-size>
+        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} {{elementNamePlural}}
+      </clr-dg-pagination>
+    </clr-dg-footer>
+  </clr-datagrid>
+</div>
+
+
+<clr-modal *ngIf="isModalVisible" [(clrModalOpen)]="isModalVisible" [clrModalClosable]="true" [clrModalSize]="'xl'">
+  <h3 class="modal-title">New {{elementName}}</h3>
+  <div class="modal-body">
+    <app-add-audit (created)="addAudit($event)"></app-add-audit>
+  </div>
+</clr-modal>

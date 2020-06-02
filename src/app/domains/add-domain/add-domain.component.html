@@ -1,0 +1,52 @@
+<clr-input-container>
+    <label>FQDN</label>
+    <input type="text" name="name" [(ngModel)]="newElement.url" clrInput placeholder="Domain's name" />
+</clr-input-container>
+<clr-datalist-container>
+  <label>Asset</label>
+  <input clrDatalistInput name="asset" #assetName (change)="setAsset($event.target.value)" />
+  <datalist>
+    <option *ngFor="let asset of assets" [value]="asset.name"></option>
+  </datalist>
+</clr-datalist-container>
+<clr-select-container>
+    <label>Enviroment</label>
+    <select clrSelect name="enviroment" [(ngModel)]="newElement.enviroment">
+        <option *ngFor="let enviroment of _enviroments" value="{{enviroment}}">{{enviroment}}</option>
+    </select>
+</clr-select-container>
+<clr-checkbox-container>
+    <clr-checkbox-wrapper>
+        <input type="checkbox" [(ngModel)]="newElement.waf" clrCheckbox value="" name="waf" />
+        <label>WAF</label>
+    </clr-checkbox-wrapper>
+    <clr-checkbox-wrapper>
+        <input type="checkbox" [(ngModel)]="newElement.privateDomain" clrCheckbox value="" name="privateDomain" />
+        <label>Private</label>
+    </clr-checkbox-wrapper>
+    <clr-checkbox-wrapper>
+      <input type="checkbox" [(ngModel)]="ssl" clrCheckbox value="" name="options" />
+      <label>Certificate</label>
+  </clr-checkbox-wrapper>
+</clr-checkbox-container>
+<clr-radio-container *ngIf="ssl" clrInline>
+    <label>New certificate?</label>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio required value="Y" [(ngModel)]="newCert" />
+      <label>Yes</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio required value="N" [(ngModel)]="newCert" />
+      <label>No</label>
+    </clr-radio-wrapper>
+  </clr-radio-container>
+<app-add-certificate *ngIf="ssl && newCert=='Y'" (created)="addCertificate($event)" ></app-add-certificate>
+<clr-datalist-container *ngIf="ssl && newCert=='N'">
+    <input clrDatalistInput  (change)="setCertificate($event.target.value)" placeholder="Search" />
+    <datalist>
+      <option *ngFor="let certificate of certificates" [value]="certificate.domainName"></option>
+    </datalist>
+  </clr-datalist-container>
+<hr/>   
+<br/>
+<button (click)="create();" class="btn btn-outline">Add Domain</button>

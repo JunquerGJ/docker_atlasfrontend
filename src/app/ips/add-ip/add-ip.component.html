@@ -1,0 +1,24 @@
+<clr-input-container>
+    <label>IP address</label>
+    <input type="text" name="name" [(ngModel)]="newElement.ip" clrInput  />
+  </clr-input-container>
+  <clr-radio-container clrInline>
+    <label>New network?</label>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio required value="Y" [(ngModel)]="newNetwork" />
+      <label>Yes</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio required value="N" [(ngModel)]="newNetwork" />
+      <label>No</label>
+    </clr-radio-wrapper>
+  </clr-radio-container>
+  <app-add-network *ngIf="newNetwork=='Y'" (created)="addNetwork($event)"></app-add-network>
+  <clr-datalist-container *ngIf="newNetwork=='N'">
+    <label>Network</label>
+    <input clrDatalistInput name="network"  (change)="setNetwork($event.target.value)" />
+    <datalist>
+      <option *ngFor="let network of networks" [value]="network.name"></option>
+    </datalist>
+  </clr-datalist-container>
+  <button (click)="create();" class="btn btn-outline">Add IP</button>

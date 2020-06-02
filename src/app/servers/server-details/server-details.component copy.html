@@ -1,0 +1,69 @@
+<clr-input-container>
+    <label>Name</label>
+    <input type="text" name="name" [(ngModel)]="server.hostname" clrInput />
+  </clr-input-container>
+<clr-accordion>
+    <clr-accordion-panel>
+        <clr-accordion-title>Assets</clr-accordion-title>
+    <clr-accordion-content *clrIfExpanded>
+        <clr-datagrid *ngIf="server.assets.length>0" >
+            <clr-dg-column>Name</clr-dg-column>
+            <clr-dg-column>Description</clr-dg-column>
+            <clr-dg-row *ngFor="let asset of server.assets">
+                <clr-dg-action-overflow>
+                    <button class="action-item" (click)="toggleAsset(asset)" >Remove</button> 
+                </clr-dg-action-overflow>
+                <clr-dg-cell>{{asset.name}}</clr-dg-cell>
+                <clr-dg-cell>{{asset.description}}</clr-dg-cell>
+            </clr-dg-row>
+            <clr-dg-footer>
+                <clr-dg-pagination #pagination [clrDgPageSize]="10">
+                  <clr-dg-page-size [clrPageSizeOptions]="[1,2,10,20,50,100]">Assets per page</clr-dg-page-size>
+                  {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} Assets
+                </clr-dg-pagination>
+              </clr-dg-footer>
+        </clr-datagrid>
+    </clr-accordion-content>
+    </clr-accordion-panel>
+    <clr-accordion-panel>
+        <clr-accordion-title>Characteristics</clr-accordion-title>
+    <clr-accordion-content *clrIfExpanded>
+        <span class="label clickable" (click)="toggleCharacteristic(characteristic)" *ngFor="let characteristic of server.characteristics">{{characteristic.name}}</span>
+        <clr-datalist-container>
+            <input clrDatalistInput name="characteristic" (change)="setCharacteristic($event.target.value)" />
+            <datalist>
+              <option *ngFor="let characteristic of characteristics" [value]="characteristic.name"></option>
+            </datalist>
+          </clr-datalist-container>
+    </clr-accordion-content>
+    </clr-accordion-panel>
+    <clr-accordion-panel>
+        <clr-accordion-title>Contacts</clr-accordion-title>
+    <clr-accordion-content *clrIfExpanded>
+        <clr-datagrid *ngIf="server.contacts.length>0">
+            <clr-dg-column>Function</clr-dg-column>
+            <clr-dg-column>Name</clr-dg-column>
+            <clr-dg-column>Email</clr-dg-column>
+            <clr-dg-column>Phone</clr-dg-column>
+            <clr-dg-row *ngFor="let contact of server.contacts">
+                <clr-dg-action-overflow>
+                    <button (click)="toggleContact(contact.contact.name)" class="action-item">Remove</button> 
+                </clr-dg-action-overflow>
+                <clr-dg-cell>{{contact.functionality}}</clr-dg-cell>
+                <clr-dg-cell>{{contact.contact.name}}</clr-dg-cell>
+                <clr-dg-cell>{{contact.contact.email}}</clr-dg-cell>
+                <clr-dg-cell>{{contact.contact.tlf}}</clr-dg-cell>
+            </clr-dg-row>
+            <clr-dg-footer>
+                <clr-dg-pagination #pagination [clrDgPageSize]="10">
+                  <clr-dg-page-size [clrPageSizeOptions]="[1,2,10,20,50,100]">Contacts per page</clr-dg-page-size>
+                  {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} Contacts
+                </clr-dg-pagination>
+              </clr-dg-footer>
+        </clr-datagrid>
+        <button class="btn btn-primary" (click)="contactVisible=true">Add contact</button>
+        
+    </clr-accordion-content>
+    </clr-accordion-panel>
+</clr-accordion>
+<button class="btn btn-outline" (click)="update()" type="button">Update</button>

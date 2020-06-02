@@ -1,0 +1,124 @@
+<clr-tabs class="tabs-vertical">
+    <clr-tab>
+      <button clrTabLink>Info</button>
+      <ng-template [(clrIfActive)]="dashboardActive">
+        <clr-tab-content>
+          <clr-input-container>
+            <label>Name</label>
+            <input type="text" name="name" [(ngModel)]="newElement.hostname" clrInput placeholder="Server's name" />
+          </clr-input-container>
+          <clr-radio-container clrInline>
+            <label>New IP?</label>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio required value="Y" [(ngModel)]="newIP" />
+              <label>Yes</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio required value="N" [(ngModel)]="newIP" />
+              <label>No</label>
+            </clr-radio-wrapper>
+          </clr-radio-container>
+          <app-add-ip *ngIf="newIP=='Y'" (created)="addIP($event)"></app-add-ip>
+          <clr-datalist-container *ngIf="newIP=='N'">
+            <label>IP</label>
+            <input clrDatalistInput name="ip" [(ngModel)]="auxIP" (change)="setIP($event.target.value)" />
+            <datalist>
+              <option *ngFor="let ip of ips" [value]="ip.ip"></option>
+            </datalist>
+          </clr-datalist-container>
+          <button class="btn btn-primary" (click)="create();">Finish</button>
+        </clr-tab-content>
+      </ng-template>
+    </clr-tab>
+    <clr-tab>
+      <button clrTabLink>Software</button>
+      <ng-template [(clrIfActive)]="softwareActive">
+        <clr-tab-content>
+          <form  class="clr-form clr-form-compact">
+            <clr-datalist-container>
+              <input clrDatalistInput name="asset" [(ngModel)]="auxAsset" (change)="setAsset($event.target.value);" placeholder="Search" />
+              <datalist>
+                <option *ngFor="let asset of assets" [value]="asset.name"></option>
+              </datalist>
+            </clr-datalist-container>
+          </form>
+          <table *ngIf="newElement.assets.length>0" class="table table-noborder">
+            <thead>
+              <tr>
+                <th class="left">Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let asset of newElement.assets">
+                <td>{{asset.name}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <button class="btn btn-primary" (click)="create();">Finish</button>
+        </clr-tab-content>
+      </ng-template>
+    </clr-tab>
+    <clr-tab>
+      <button clrTabLink>Characteristics</button>
+      <ng-template [(clrIfActive)]="characteristicsActive">
+        <clr-tab-content>
+          <form class="clr-form clr-form-compact">
+               <clr-datalist-container>
+              <input clrDatalistInput name="characteristic" [(ngModel)]="auxCharacteristic" (change)="setCharacteristic($event.target.value)" placeholder="Search"  />
+              <datalist>
+                <option *ngFor="let characteristic of characteristics" [value]="characteristic.name"></option>
+              </datalist>
+            </clr-datalist-container>
+          </form>
+          <span class="label" *ngFor="let characteristic of newElement.characteristics">{{characteristic.name}}</span>
+          <button class="btn btn-primary" (click)="create();">Finish</button>
+        </clr-tab-content>
+      </ng-template>
+    </clr-tab>
+    <clr-tab>
+      <button clrTabLink>Contacts</button>
+      <ng-template [(clrIfActive)]="contactsActive">
+        <clr-tab-content>
+          <table *ngIf="newElement.contacts.length>0" class="table table-noborder">
+            <thead>
+              <tr>
+                <th>Functionality</th>
+                <th>Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let contact of newElement.contacts">
+                <td>{{contact.functionality}}</td>
+                <td>{{contact.contact.name}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <clr-input-container>
+            <label>Role</label>
+            <input type="text" name="functionality" [(ngModel)]="auxContactTo.functionality" clrInput />
+          </clr-input-container>
+          <clr-radio-container clrInline>
+            <label>New Contact?</label>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio  value="Y" [(ngModel)]="newContact" />
+              <label>Yes</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio  value="N" [(ngModel)]="newContact" />
+              <label>No</label>
+            </clr-radio-wrapper>
+          </clr-radio-container>
+          <app-add-contact *ngIf="newContact=='Y'" (created)="auxContactTo.contact=$event"></app-add-contact>
+          <clr-datalist-container *ngIf="newContact=='N'">
+            <label>Contact</label>
+            <input clrDatalistInput name="contact" (change)="setContact($event.target.value);" />
+            <datalist>
+              <option *ngFor="let contact of contacts" [value]="contact.name"></option>
+            </datalist>
+          </clr-datalist-container>
+          <button *ngIf="auxContactTo.functionality && auxContactTo.contact" class="btn btn-primary" (click)="addContact();">Include</button>
+          <button class="btn btn-primary" (click)="create();">Finish</button>
+        </clr-tab-content>
+      </ng-template>
+    </clr-tab>
+  </clr-tabs>

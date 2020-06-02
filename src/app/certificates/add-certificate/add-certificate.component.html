@@ -1,0 +1,20 @@
+<clr-input-container>
+    <label>Common Name</label>
+    <input type="text" name="domainName" [(ngModel)]="newElement.domainName" clrInput />
+</clr-input-container>
+<clr-checkbox-container>
+    <clr-checkbox-wrapper>
+      <input type="checkbox" [(ngModel)]="newElement.wildcard" clrCheckbox value="" name="wildcard" />
+      <label>Wildcard</label>
+    </clr-checkbox-wrapper>
+  </clr-checkbox-container>
+<clr-input-container>
+    <label>Issuer</label>
+    <input type="text" name="issuer" [(ngModel)]="newElement.issuer" clrInput />
+</clr-input-container>
+<clr-date-container style="z-index:9999">
+    <label>Expiration date</label>
+    <input type="date" style="z-index:9999"   [(clrDate)]="newElement.expirationDate">
+</clr-date-container>
+<br/>
+<button (click)="create()" class="btn btn-outline">Add Certificate</button>

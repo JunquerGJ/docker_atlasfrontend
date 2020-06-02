@@ -1,0 +1,13 @@
+<clr-input-container>
+    <label>Name</label>
+    <input type="text" name="name" [(ngModel)]="newElement.name" clrInput placeholder="Network's name" />
+</clr-input-container>
+<label for="vertical-textarea-basic" class="clr-control-label">Description</label>
+<div class="clr-control-container">
+    <div class="clr-textarea-wrapper">
+        <textarea id="vertical-textarea-basic" [(ngModel)]="newElement.description" name="description"
+            class="clr-textarea"></textarea>
+    </div>
+</div>
+<br/>
+<button (click)="create()" class="btn btn-outline">Add Network</button>

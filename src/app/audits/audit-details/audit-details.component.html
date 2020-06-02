@@ -1,0 +1,67 @@
+<div class="wrap">
+  <div class="clr-row">
+    <div class="clr-col-lg-auto">
+      <clr-input-container>
+        <label>Name</label>
+        <input type="text" name="name" [(ngModel)]="audit.name" clrInput />
+      </clr-input-container>
+    </div>
+    <div class="clr-col-lg-auto">
+      <clr-date-container style="z-index:9999">
+        <label>Audit date</label>
+        <input type="date" style="z-index:9999" clrDate name="auditDate" [(ngModel)]="audit.auditDate"
+          placeholder="{{ audit.auditDate | date}}">
+      </clr-date-container>
+    </div>
+  </div>
+  <div class="clr-row">
+    <div class="clr-col-lg-auto">
+      <clr-datalist-container>
+        <label>Asset</label>
+        <input clrDatalistInput name="asset" [(ngModel)]="auxAsset" (change)="setAsset($event.target.value)" />
+        <datalist>
+          <option *ngFor="let asset of assets" [value]="asset.name"></option>
+        </datalist>
+      </clr-datalist-container>
+    </div>
+  </div>
+  <div class="clr-row">
+    <div class="clr-col-lg-auto">
+      <clr-select-container>
+        <label>Methodology</label>
+        <select clrSelect name="methodology" [(ngModel)]="audit.methodology">
+          <option *ngFor="let methodology of _methodologies" value="{{methodology.value}}">{{methodology.name}}</option>
+        </select>
+      </clr-select-container>
+    </div>
+    <div class="clr-col-lg-auto">
+      <clr-select-container>
+        <label>Tool</label>
+        <select clrSelect name="tool" [(ngModel)]="audit.tool">
+          <option *ngFor="let tool of _auditTools" value="{{tool}}">{{tool}}</option>
+        </select>
+      </clr-select-container>
+    </div>
+  </div>
+  <div class="clr-row">
+    <div class="clr-col-lg-auto">
+      <clr-datalist-container>
+        <label>Auditor</label>
+        <input clrDatalistInput name="auditor" [(ngModel)]="auxAuditor" (change)="setAuditor($event.target.value)" />
+        <datalist>
+          <option *ngFor="let user of users" [value]="user.name"></option>
+        </datalist>
+      </clr-datalist-container>
+    </div>
+    <div class="clr-row">
+      <div class="clr-col-lg-auto">
+        <clr-textarea-container>
+          <label>Scope</label>
+          <textarea rows="2" cols="60" clrTextarea [(ngModel)]="audit.scope"
+            name="scope"></textarea>
+        </clr-textarea-container>
+      </div>
+    </div>
+  </div>
+  <button (click)="update()" class="btn btn-outline">Add Audit</button>
+</div>

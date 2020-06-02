@@ -1,0 +1,14 @@
+<clr-input-container>
+    <label>Name</label>
+    <input type="text" name="name" [(ngModel)]="newElement.name" clrInput placeholder="Contact's name" />
+</clr-input-container>
+<clr-input-container>
+    <label>Email</label>
+    <input type="text" name="email" [(ngModel)]="newElement.email" clrInput placeholder="Contact's email" />
+</clr-input-container>
+<clr-input-container>
+    <label>Tlf</label>
+    <input type="text" name="tlf" [(ngModel)]="newElement.tlf" clrInput placeholder="Contact's phone" />
+</clr-input-container>
+<br/>
+<button (click)="create()" class="btn btn-outline">Add Contact</button>

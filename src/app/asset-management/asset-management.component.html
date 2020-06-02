@@ -1,0 +1,46 @@
+<div class="main-container">  
+  <div class="content-container">
+    <clr-vertical-nav [clrVerticalNavCollapsible]="true">
+      <a clrVerticalNavLink routerLink="./areas" routerLinkActive="active">
+        <clr-icon clrVerticalNavIcon shape="blocks-group"></clr-icon>
+        Areas
+      </a>
+      <a clrVerticalNavLink routerLink="./assets" routerLinkActive="active">Assets
+        <clr-icon clrVerticalNavIcon shape="network-globe"></clr-icon>
+      </a>
+      <a clrVerticalNavLink routerLink="./audits" routerLinkActive="active">Audits
+        <clr-icon clrVerticalNavIcon shape="file-group"></clr-icon>
+      </a>
+      <a clrVerticalNavLink routerLink="./certificates" routerLinkActive="active">Certificates
+        <clr-icon clrVerticalNavIcon shape="certificate"></clr-icon>
+      </a>
+      <a clrVerticalNavLink routerLink="./contacts" routerLinkActive="active">Contacts
+        <clr-icon clrVerticalNavIcon shape="user"></clr-icon>
+      </a>
+      <a clrVerticalNavLink routerLink="./domains" routerLinkActive="active">Domains
+        <clr-icon clrVerticalNavIcon shape="cloud-network"></clr-icon>
+      </a>
+      <a clrVerticalNavLink routerLink="./ips" routerLinkActive="active">
+        <clr-icon clrVerticalNavIcon shape="network-settings"></clr-icon>
+        IPs
+      </a>
+      <a clrVerticalNavLink routerLink="./networks" routerLinkActive="active">
+        <clr-icon clrVerticalNavIcon shape="network-switch"></clr-icon>
+        Networks
+      </a>
+      <a clrVerticalNavLink routerLink="./servers" routerLinkActive="active">
+        <clr-icon clrVerticalNavIcon shape="rack-server"></clr-icon>
+        Servers
+      </a>
+      <a clrVerticalNavLink routerLink="./vulnerabilities" routerLinkActive="active">
+        <clr-icon clrVerticalNavIcon shape="warning-standard"></clr-icon>
+        Vulnerabilities
+      </a>
+    </clr-vertical-nav>
+    <div class="content-area">
+      <div class="wrap">
+        <router-outlet></router-outlet>
+      </div>      
+    </div>
+  </div>
+</div>
