@@ -18,9 +18,10 @@ export class UserService implements ElementService<User>{
     this._baseUrl = AppConstants.baseURL;
   }
   
-  get(id: number): Observable<User> {
+  get(id: number,params): Observable<User> {
     return this.http.get<User>(`${this._baseUrl}/users/${id}`,
     {
+      params : params,
       headers: {
         XToken: sessionStorage.getItem('token'),
       }
@@ -52,12 +53,24 @@ export class UserService implements ElementService<User>{
   }
   modify(modUser : User): Observable<User> {
     var id = modUser.id;
-    delete modUser.id;
-    return this.http.patch<User>(`${this._baseUrl}/users/${id}`, modUser,
+    let aux = JSON.parse(JSON.stringify(modUser))
+    delete aux.id
+    return this.http.patch<User>(`${this._baseUrl}/users/${id}`, aux,
       {
         headers: {
           XToken: sessionStorage.getItem('token'),
         }
       });
   }
+
+  changePassword(password) : Observable<any>{
+    console.log("AHAM",password)
+    return this.http.post<any>(`${this._baseUrl}/users/password`, password,
+      {
+        headers: {
+          XToken: sessionStorage.getItem('token'),
+        }
+      });
+  }
+
 }
