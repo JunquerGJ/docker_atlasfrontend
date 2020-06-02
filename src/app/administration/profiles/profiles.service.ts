@@ -53,7 +53,9 @@ export class ProfileService implements ElementService<Profile>{
   }
   modify(modProfile : Profile): Observable<Profile> {
     var id = modProfile.id;
-    return this.http.patch<Profile>(`${this._baseUrl}/profiles/${id}`, modProfile,
+    let aux = JSON.parse(JSON.stringify(modProfile))
+    delete aux.id
+    return this.http.patch<Profile>(`${this._baseUrl}/profiles/${id}`, aux,
       {
         headers: {
           XToken: sessionStorage.getItem('token'),
