@@ -10,8 +10,8 @@
     <a class="nav-link nav-text" routerLink="/inventory" routerLinkActive="active">Inventory</a>
   </div>
   <div class="header-actions" *ngIf="isLoggedIn()">
-    <a href="javascript://" class="nav-link nav-icon" aria-label="settings">
-      <clr-icon shape="cog"></clr-icon>
+    <a href="javascript://" class="nav-link nav-icon" (click)="isPVisible=true" aria-label="settings">
+      <clr-icon shape="lock"></clr-icon>
     </a>
   </div>
   <div class="header-nav" *ngIf="isLoggedIn()">
@@ -20,3 +20,18 @@
 </header>
 <app-alerts></app-alerts>
 <router-outlet></router-outlet>
+
+<clr-modal *ngIf="isPVisible" [(clrModalOpen)]="isPVisible" [clrModalClosable]="true" [clrModalSize]="'lg'">
+  <h3 class="modal-title">Change Password</h3>
+  <div class="modal-body">
+    <form #credentials="ngForm" class="login" (ngSubmit)="changePassword(credentials)" >
+      <div class="login-group">
+        <clr-password-container>
+          <label class="clr-sr-only">Password</label>
+          <input type="password" name="password" ngModel clrPassword placeholder="Password"/>
+        </clr-password-container>
+        <button type="submit" class="btn btn-primary login-button">Change</button>
+      </div>
+    </form>
+  </div>
+</clr-modal>

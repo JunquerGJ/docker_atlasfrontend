@@ -44,7 +44,7 @@
 
 
 
-<clr-modal [(clrModalOpen)]="isModalVisible" [clrModalClosable]="false" [clrModalSize]="'lg'">
+<clr-modal *ngIf="isModalVisible" [(clrModalOpen)]="isModalVisible" [clrModalClosable]="true" [clrModalSize]="'lg'">
   <h3 class="modal-title">New {{elementName}}</h3>
   <div class="modal-body">
     <clr-input-container>
