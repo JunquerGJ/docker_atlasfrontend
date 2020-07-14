@@ -54,6 +54,5 @@ public dateComparator = new DateComparator()
   public addCertificate(certificate){
     this.newElement = certificate
     this.add()
-    this.isModalVisible=false
   }
 }

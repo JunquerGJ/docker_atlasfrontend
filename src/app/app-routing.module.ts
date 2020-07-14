@@ -16,6 +16,7 @@ import { AssetManagementComponent } from './asset-management/asset-management.co
 import { CertificatesComponent } from './certificates/certificates.component';
 import { DomainsComponent } from './domains/domains.component';
 import { DashboardComponent} from './dashboard/dashboard.component'
+import { ListsComponent } from './lists/lists.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -33,6 +34,7 @@ const routes: Routes = [
       { path: 'servers', component: ServersComponent },
       { path: 'assets', component: AssetsComponent },
       { path: 'ips', component: IpsComponent },
+      { path: 'lists', component : ListsComponent},
       { path: 'networks', component: NetworksComponent },
       { path: 'contacts', component: ContactsComponent },
       { path: 'audits', component: AuditsComponent },

@@ -5,9 +5,11 @@ import Audit from 'src/app/shared/models/audit';
 import Asset from 'src/app/shared/models/asset';
 import User from 'src/app/shared/models/user';
 import { HttpParams } from '@angular/common/http';
+import * as moment from 'moment'
 import { AuditService } from '../audits.service';
 import { AlertsService } from 'src/app/alerts.service';
 import { AppConstants } from 'src/app/shared/constants/constants';
+import { validAudit } from 'src/app/shared/functions/utils';
 
 @Component({
   selector: 'app-audit-details',
@@ -66,11 +68,14 @@ export class AuditDetailsComponent implements OnInit, OnDestroy {
   setAsset(assetName) {
     var i = 0;
     for(i=0;i<this.assets.length;i++){
-      if(this.assets[i].name == assetName)
-      this.audit.asset = this.assets[i]
-      return;
+      if(this.assets[i].name == assetName){
+        this.audit.asset = this.assets[i]
+        this.auxAsset = this.assets[i].name
+        return;
+      }
     }
     this.audit.asset = null
+    this.auxAsset = null
 
   }
 
@@ -80,9 +85,12 @@ export class AuditDetailsComponent implements OnInit, OnDestroy {
     for(i=0;i<this.users.length;i++){
       if( auditorName == this.users[i].name){
         this.audit.auditor = this.users[i]
+        this.auxAuditor = this.users[i].name
+        return
       }
     }
     this.audit.auditor = null
+    this.auxAuditor = null
   }
 
   getAuditDetails = (audit: Audit) => {
@@ -123,15 +131,18 @@ export class AuditDetailsComponent implements OnInit, OnDestroy {
 
 
   
-  transformDate() {
-    if (this.audit.auditDate) { 
-      this.audit.auditDate = new Date(this.audit.auditDate) 
-    }
-  }
+
 
   update() {
-    this.transformDate()
-    this.updated.emit(this.audit)
+    let result = validAudit(this.audit)
+    if(!result){
+      var pre = this.audit.auditDate
+      this.audit.auditDate = moment(this.audit.auditDate, "DD/MM/YYYY").toDate()
+      this.updated.emit(this.audit)
+      this.audit.auditDate = pre
+    }else{
+      this.alertService.error(result)
+    }
   }
 
 }

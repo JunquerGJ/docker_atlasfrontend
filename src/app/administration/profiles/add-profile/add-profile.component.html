@@ -1,0 +1,22 @@
+<app-alerts></app-alerts>
+<clr-input-container>
+  <label>Name<span style="color:red">*</span></label>
+  <input autocomplete="off" type="text" name="name" [(ngModel)]="newElement.name" clrInput placeholder="Profile's name" required />
+  <clr-control-error>This field is required!</clr-control-error>
+</clr-input-container>
+<button (click)="create()" class="btn btn-outline">Add Profile</button>
+<clr-stack-view>
+  <clr-stack-header>Permissions</clr-stack-header>
+  <clr-stack-block *ngFor="let entity of administrationEntities; index as i">
+    <clr-stack-label>{{entity}}</clr-stack-label>
+    <clr-stack-block>
+      <clr-stack-label>
+        <div *ngFor="let permission of permissionList; index as j" class="clr-toggle-wrapper">
+          <input type="checkbox" [id]="i.toString()+j" (change)="toggle2($event,permission+' '+entity)"
+            class="clr-toggle">
+          <label [for]="i.toString()+j" class="clr-control-label">{{permission}}</label>
+        </div>
+      </clr-stack-label>
+    </clr-stack-block>
+  </clr-stack-block>
+</clr-stack-view>

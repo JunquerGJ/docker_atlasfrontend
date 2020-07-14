@@ -1,52 +1,140 @@
+<app-alerts></app-alerts>
+<clr-select-container>
+  <label>Client<span style="color:red">*</span></label>
+  <select clrSelect name="client" [(ngModel)]="newElement.client" required>
+    <option *ngFor="let client of _clients" value="{{client}}">{{client}}</option>
+  </select>
+  <clr-control-error>This field is required!</clr-control-error>
+</clr-select-container>
 <clr-input-container>
-    <label>FQDN</label>
-    <input type="text" name="name" [(ngModel)]="newElement.url" clrInput placeholder="Domain's name" />
+  <label>FQDN<span style="color:red">*</span></label>
+  <input autocomplete="off" type="text" name="url" [(ngModel)]="newElement.url" clrInput placeholder="Domain's name"
+    required />
+  <clr-control-error>This field is required!</clr-control-error>
 </clr-input-container>
-<clr-datalist-container>
+<clr-datalist-container *ngIf="!fromAsset">
   <label>Asset</label>
-  <input clrDatalistInput name="asset" #assetName (change)="setAsset($event.target.value)" />
+  <input clrDatalistInput name="asset" [(ngModel)]="auxAsset" #assetName (change)="setAsset($event.target.value)" />
   <datalist>
     <option *ngFor="let asset of assets" [value]="asset.name"></option>
   </datalist>
+  <clr-control-error>This field is required!</clr-control-error>
 </clr-datalist-container>
+
+
+<clr-radio-container clrInline>
+  <label>New List?</label>
+  <clr-radio-wrapper>
+    <input type="radio" clrRadio required value="Y" [(ngModel)]="newList" />
+    <label>Yes</label>
+  </clr-radio-wrapper>
+  <clr-radio-wrapper>
+    <input type="radio" clrRadio required value="N" [(ngModel)]="newList" />
+    <label>No</label>
+  </clr-radio-wrapper>
+</clr-radio-container>
+<app-add-list *ngIf="newList=='Y'" [fromDomain]="true" (created)="addList($event)"></app-add-list>
+<clr-datalist-container *ngIf="newList=='N'">
+  <label>List</label>
+  <input clrDatalistInput name="list" [(ngModel)]="auxList" (change)="setList($event.target.value)" />
+  <datalist>
+    <option *ngFor="let list of lists" [value]="list.name"></option>
+  </datalist>
+</clr-datalist-container>
+
+
+
+
+<!--
+<clr-datalist-container>
+  <label>Lists</label>
+  <input clrDatalistInput name="list" [(ngModel)]="auxList" (change)="setList($event.target.value)"
+    placeholder="Add list..." />
+  <datalist>
+    <option *ngFor="let list of lists" [value]="list.name"></option>
+  </datalist>
+</clr-datalist-container>-->
+
+<clr-datagrid *ngIf="newElement.lists.length>0">
+  <clr-dg-column>New List?</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-row *ngFor="let list of newElement.lists">
+      <clr-dg-action-overflow>
+          <button (click)="toggleList(list)"
+              class="action-item">Remove</button>
+      </clr-dg-action-overflow>
+      <clr-dg-cell *ngIf="list.description; else old"><clr-icon shape="check-circle" class="is-solid"></clr-icon></clr-dg-cell>
+        <ng-template #old>
+          <clr-dg-cell>
+            <clr-icon shape="times"></clr-icon>
+          </clr-dg-cell>
+        </ng-template>
+      <clr-dg-cell>{{list.name}}</clr-dg-cell>
+  </clr-dg-row>
+  <clr-dg-footer>
+      <clr-dg-pagination #pagination [clrDgPageSize]="10">
+          <clr-dg-page-size [clrPageSizeOptions]="[1,2,10,20,50,100]">Lists per page
+          </clr-dg-page-size>
+          {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}}
+          Lists
+      </clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
+
+
+
+
+
+
 <clr-select-container>
-    <label>Enviroment</label>
-    <select clrSelect name="enviroment" [(ngModel)]="newElement.enviroment">
-        <option *ngFor="let enviroment of _enviroments" value="{{enviroment}}">{{enviroment}}</option>
-    </select>
+  <label>Enviroment<span style="color:red">*</span></label>
+  <select clrSelect name="enviroment" [(ngModel)]="newElement.enviroment" required>
+    <option *ngFor="let enviroment of _enviroments" value="{{enviroment}}">{{enviroment}}</option>
+  </select>
+  <clr-control-error>This field is required!</clr-control-error>
 </clr-select-container>
 <clr-checkbox-container>
-    <clr-checkbox-wrapper>
-        <input type="checkbox" [(ngModel)]="newElement.waf" clrCheckbox value="" name="waf" />
-        <label>WAF</label>
-    </clr-checkbox-wrapper>
-    <clr-checkbox-wrapper>
-        <input type="checkbox" [(ngModel)]="newElement.privateDomain" clrCheckbox value="" name="privateDomain" />
-        <label>Private</label>
-    </clr-checkbox-wrapper>
-    <clr-checkbox-wrapper>
-      <input type="checkbox" [(ngModel)]="ssl" clrCheckbox value="" name="options" />
-      <label>Certificate</label>
+  <clr-checkbox-wrapper>
+    <input type="checkbox" [(ngModel)]="newElement.privateDomain" clrCheckbox value="" name="privateDomain" />
+    <label>Private</label>
+  </clr-checkbox-wrapper>
+  <clr-checkbox-wrapper>
+    <input type="checkbox" [(ngModel)]="ssl" clrCheckbox value="" name="options" />
+    <label>SSL/TLS Certificate?</label>
   </clr-checkbox-wrapper>
 </clr-checkbox-container>
 <clr-radio-container *ngIf="ssl" clrInline>
-    <label>New certificate?</label>
-    <clr-radio-wrapper>
-      <input type="radio" clrRadio required value="Y" [(ngModel)]="newCert" />
-      <label>Yes</label>
-    </clr-radio-wrapper>
-    <clr-radio-wrapper>
-      <input type="radio" clrRadio required value="N" [(ngModel)]="newCert" />
-      <label>No</label>
-    </clr-radio-wrapper>
-  </clr-radio-container>
-<app-add-certificate *ngIf="ssl && newCert=='Y'" (created)="addCertificate($event)" ></app-add-certificate>
+  <label>New certificate?</label>
+  <clr-radio-wrapper>
+    <input type="radio" clrRadio required value="Y" [(ngModel)]="newCert" />
+    <label>Yes</label>
+  </clr-radio-wrapper>
+  <clr-radio-wrapper>
+    <input type="radio" clrRadio required value="N" [(ngModel)]="newCert" />
+    <label>No</label>
+  </clr-radio-wrapper>
+</clr-radio-container>
+<app-add-certificate *ngIf="ssl && newCert=='Y'" (created)="addCertificate($event)"></app-add-certificate>
 <clr-datalist-container *ngIf="ssl && newCert=='N'">
-    <input clrDatalistInput  (change)="setCertificate($event.target.value)" placeholder="Search" />
-    <datalist>
-      <option *ngFor="let certificate of certificates" [value]="certificate.domainName"></option>
-    </datalist>
-  </clr-datalist-container>
-<hr/>   
-<br/>
+  <input clrDatalistInput [(ngModel)]="auxCertificate" (change)="setCertificate($event.target.value)"
+    placeholder="Search" />
+  <datalist>
+    <option *ngFor="let certificate of certificates" [value]="certificate.domainName"></option>
+  </datalist>
+</clr-datalist-container>
+<div *ngIf="ssl && newCert=='CertCreated'" class="clr-row">
+  <div class="card">
+    <div class="card-block">
+      <div class="card-text">
+        A new certificate will be created:
+        <br>
+        <i>CN: </i><b>{{newElement.certificate.domainName}}</b>
+        <br>
+        <i>Issuer: </i> <b>{{newElement.certificate.issuer}}</b>
+        <br>
+        <i>Expiration Date: </i><b>{{newElement.certificate.issuer}}</b>
+      </div>
+    </div>
+  </div>
+</div>
 <button (click)="create();" class="btn btn-outline">Add Domain</button>

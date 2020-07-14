@@ -221,7 +221,5 @@ export class ServersComponent extends GridableComponent<Server>
   addServer(server){
     this.newElement = server
     this.add()
-    this.isModalVisible=false
-    this.newElement = getFreshServer()
   }
 }

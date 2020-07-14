@@ -36,7 +36,7 @@ export class ProfilesComponent extends GridableComponent<Profile>
     super(profileService, alertService);
   }
 
-  public administrationEntities = ["Area","User","Profile","Asset","Audit","Vulnerability","CWE","Contact","Network","IP","Server","Characteristic","Domain","Certificate"]
+  public administrationEntities = ["Area","User","Profile","Asset","Audit","Vulnerability","CWE","Contact","Network","IP","Server","Characteristic","Domain","Certificate","List"]
   public permissionList =["CREATE","READ","UPDATE","DELETE"]
 
 
@@ -67,4 +67,10 @@ export class ProfilesComponent extends GridableComponent<Profile>
     this.columns = ["Name","Users"]
     this.getSome([],this.defaultFields);  
   }
+
+  addProfile(profile){
+    this.newElement=profile;
+    this.add();
+  }
+
 }

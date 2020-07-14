@@ -3,6 +3,7 @@ import Profile from 'src/app/shared/models/profile';
 import { ProfileService } from '../profiles.service';
 import { AlertsService } from 'src/app/alerts.service';
 import { HttpParams } from '@angular/common/http';
+import { validProfile } from 'src/app/shared/functions/utils';
 
 @Component({
   selector: 'app-profile-details',
@@ -14,7 +15,7 @@ export class ProfileDetailsComponent implements OnInit {
   @Input() input : Profile;
   profile : Profile;
   @Output() updated = new EventEmitter<Profile>();
-  public administrationEntities = ["Area","User","Profile","Asset","Audit","Vulnerability","CWE","Contact","Network","IP","Server","Characteristic","Domain", "Certificate"]
+  public administrationEntities = ["Area","User","Profile","Asset","Audit","Vulnerability","CWE","Contact","Network","IP","Server","Characteristic","Domain", "Certificate","List"]
   public permissionList =["CREATE","READ","UPDATE","DELETE"]
 
   constructor(private profileService : ProfileService,private alertService : AlertsService) { }
@@ -72,8 +73,15 @@ export class ProfileDetailsComponent implements OnInit {
     this.profile.permissions=filtered
   }
 
+  
+
   update(){
-    this.updated.emit(this.profile)
+    var result = validProfile(this.profile)
+    if(!result){
+      this.updated.emit(this.profile)
+    }else{
+      this.alertService.error(result)
+    }
   }
 
 }

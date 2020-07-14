@@ -100,11 +100,7 @@ getThing(vulnerabilities: Vulnerability[], risk: String) {
 
 
 
-transformDate() {
-  if (this.newElement.statusDate) {
-    this.newElement.statusDate = new Date(this.newElement.statusDate)
-  }
-}
+
 
 
 
@@ -199,6 +195,6 @@ getFC(risk) {
 addAsset(asset){
   this.newElement = asset
   this.add()
-  this.isModalVisible = false
+
 }
 }

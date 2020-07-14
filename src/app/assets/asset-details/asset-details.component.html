@@ -1,3 +1,4 @@
+<app-alerts></app-alerts>
 <div class="wrap">
     <clr-tabs class="tabs-vertical">
         <clr-tab>
@@ -9,7 +10,8 @@
                             <clr-input-container>
                                 <label>Name</label>
                                 <input type="text" name="name" [(ngModel)]="asset.name" clrInput
-                                    placeholder="Asset's name" />
+                                    placeholder="Asset's name" required/>
+                            <clr-control-error>This field is required!</clr-control-error>
                             </clr-input-container>
                         </div>
                         <div class="clr-col-lg-auto">
@@ -23,9 +25,10 @@
                         <div class="clr-col-lg-auto">
                             <clr-select-container>
                                 <label>Type</label>
-                                <select clrSelect name="status" [(ngModel)]="asset.assetType">
+                                <select clrSelect name="status" [(ngModel)]="asset.assetType" required>
                                     <option *ngFor="let type of _assetTypes" value="{{type}}">{{type}}</option>
                                 </select>
+                                <clr-control-error>This field is required!</clr-control-error>
                             </clr-select-container>
                         </div>
                     </div>
@@ -53,8 +56,8 @@
                         <div class="clr-col-lg-auto" style="z-index:9999">
                             <clr-date-container style="z-index:9999">
                                 <label>Status date</label>
-                                <input type="date" style="z-index:9999" clrDate name="statusDate"
-                                    [(ngModel)]="asset.statusDate" placeholder="{{ asset.statusDate | date}}">
+                                <input type="date" clrDate style="z-index:9999"  name="statusDate"
+                                    [(ngModel)]="asset.statusDate" placeholder="{{ asset.statusDate | date: 'dd/MM/yy'}}" >
                             </clr-date-container>
                         </div>
                     </div>
@@ -166,11 +169,49 @@
                             </clr-dg-pagination>
                         </clr-dg-footer>
                     </clr-datagrid>
-
                     <button class="btn btn-primary" (click)="update();">Finish</button>
                 </clr-tab-content>
             </ng-template>
         </clr-tab>
+        
+        
+        <clr-tab>
+            <button clrTabLink>Domains</button>
+            <ng-template [(clrIfActive)]="domainsActive">
+                <clr-tab-content>
+                    <form class="clr-form clr-form-compact">
+                        <clr-datalist-container>
+                            <input clrDatalistInput name="server" [(ngModel)]="auxDomain"
+                                (change)="setDomain($event.target.value);" placeholder="Add domain" />
+                            <datalist>
+                                <option *ngFor="let domain of domains" [value]="domain.url"></option>
+                            </datalist>
+                        </clr-datalist-container>
+                    </form>
+                    <clr-datagrid *ngIf="asset.Domain.length>0">
+                        <clr-dg-column>Private</clr-dg-column>
+                        <clr-dg-column>Url</clr-dg-column>
+                        <clr-dg-row *ngFor="let domain of asset.Domain">
+                            <clr-dg-action-overflow>
+                                <button class="action-item" (click)="toggleDomain(domain)">Remove</button>
+                            </clr-dg-action-overflow>
+                            <clr-dg-cell>{{domain.privateDomain}}</clr-dg-cell>
+                            <clr-dg-cell>{{domain.url}}</clr-dg-cell>
+                        </clr-dg-row>
+                        <clr-dg-footer>
+                            <clr-dg-pagination #pagination [clrDgPageSize]="10">
+                                <clr-dg-page-size [clrPageSizeOptions]="[1,2,10,20,50,100]">Domains per page
+                                </clr-dg-page-size>
+                                {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}}
+                                Domains
+                            </clr-dg-pagination>
+                        </clr-dg-footer>
+                    </clr-datagrid>
+                    <button class="btn btn-primary" (click)="update();">Finish</button>
+                </clr-tab-content>
+            </ng-template>
+        </clr-tab>
+        
         <clr-tab>
             <button clrTabLink>Characteristics</button>
             <ng-template [(clrIfActive)]="characteristicsActive">

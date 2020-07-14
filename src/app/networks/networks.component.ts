@@ -81,6 +81,5 @@ public prepareModification(detail){
   public addNetwork(network){
     this.newElement = network
     this.add()
-    this.isModalVisible=false
   }
 }

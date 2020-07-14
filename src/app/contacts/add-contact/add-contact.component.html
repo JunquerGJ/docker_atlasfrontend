@@ -1,14 +1,18 @@
+<app-alerts></app-alerts>
 <clr-input-container>
-    <label>Name</label>
-    <input type="text" name="name" [(ngModel)]="newElement.name" clrInput placeholder="Contact's name" />
+    <label>Name<span style="color:red">*</span></label>
+    <input type="text" name="name" [(ngModel)]="newElement.name" clrInput placeholder="Contact's name" required/>
+    <clr-control-error>This field is required!</clr-control-error>
 </clr-input-container>
 <clr-input-container>
-    <label>Email</label>
-    <input type="text" name="email" [(ngModel)]="newElement.email" clrInput placeholder="Contact's email" />
+    <label>Email<span style="color:red">*</span></label>
+    <input type="text" name="email" [(ngModel)]="newElement.email" clrInput placeholder="Contact's email" required/>
+    <clr-control-error>This field is required!</clr-control-error>
 </clr-input-container>
 <clr-input-container>
-    <label>Tlf</label>
-    <input type="text" name="tlf" [(ngModel)]="newElement.tlf" clrInput placeholder="Contact's phone" />
+    <label>Tlf<span style="color:red">*</span></label>
+    <input type="text" name="tlf" [(ngModel)]="newElement.tlf" clrInput placeholder="Contact's phone" required/>
+    <clr-control-error>This field is required!</clr-control-error>
 </clr-input-container>
 <br/>
 <button (click)="create()" class="btn btn-outline">Add Contact</button>

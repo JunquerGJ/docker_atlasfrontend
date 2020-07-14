@@ -1,7 +1,9 @@
+<app-alerts></app-alerts>
 <clr-input-container>
-    <label>Common Name</label>
-    <input type="text" name="domainName" [(ngModel)]="newElement.domainName" clrInput />
-</clr-input-container>
+    <label>Common Name<span style="color:red">*</span></label>
+    <input  autocomplete="off" type="text" name="domainName" [(ngModel)]="newElement.domainName" clrInput required />
+    <clr-control-error>This field is required!</clr-control-error>
+  </clr-input-container>
 <clr-checkbox-container>
     <clr-checkbox-wrapper>
       <input type="checkbox" [(ngModel)]="newElement.wildcard" clrCheckbox value="" name="wildcard" />
@@ -9,12 +11,13 @@
     </clr-checkbox-wrapper>
   </clr-checkbox-container>
 <clr-input-container>
-    <label>Issuer</label>
-    <input type="text" name="issuer" [(ngModel)]="newElement.issuer" clrInput />
+    <label>Issuer<span style="color:red">*</span></label>
+    <input autocomplete="off" type="text" name="issuer" [(ngModel)]="newElement.issuer" clrInput required />
+    <clr-control-error>This field is required!</clr-control-error>
 </clr-input-container>
 <clr-date-container style="z-index:9999">
-    <label>Expiration date</label>
-    <input type="date" style="z-index:9999"   [(clrDate)]="newElement.expirationDate">
+    <label>Expiration date<span style="color:red">*</span></label>
+    <input type="date" style="z-index:9999"  name="expirationDate" [(clrDate)]="newElement.expirationDate">
 </clr-date-container>
 <br/>
 <button (click)="create()" class="btn btn-outline">Add Certificate</button>

@@ -53,8 +53,9 @@ export class AssetService implements ElementService<Asset>{
   }
   modify(modAsset : Asset): Observable<Asset> {
     var id = modAsset.id;
-    delete modAsset.id;
-    return this.http.patch<Asset>(`${this._baseUrl}/assets/${id}`, modAsset,
+    var aux = JSON.parse(JSON.stringify(modAsset))
+    delete aux.id;
+    return this.http.patch<Asset>(`${this._baseUrl}/assets/${id}`, aux,
       {
         headers: {
           XToken: sessionStorage.getItem('token'),

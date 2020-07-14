@@ -52,8 +52,9 @@ export class NetworkService implements ElementService<Network>{
   }
   modify(modNetwork : Network): Observable<Network> {
     var id = modNetwork.id;
-    delete modNetwork.id;
-    return this.http.patch<Network>(`${this._baseUrl}/networks/${id}`, modNetwork,
+    var aux = JSON.parse(JSON.stringify(modNetwork))
+    delete aux.id;
+    return this.http.patch<Network>(`${this._baseUrl}/networks/${id}`, aux,
       {
         headers: {
           XToken: sessionStorage.getItem('token'),

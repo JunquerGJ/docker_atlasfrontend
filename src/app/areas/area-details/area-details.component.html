@@ -1,0 +1,15 @@
+<app-alerts></app-alerts>
+<clr-input-container>
+  <label>Name</label>
+  <input type="text" autocomplete="false" name="name" [(ngModel)]="area.name" clrInput placeholder="{{area.name}}" required/>
+  <clr-control-error>This field is required!</clr-control-error>
+</clr-input-container>
+<label for="vertical-textarea-basic" class="clr-control-label">Description</label>
+<div class="clr-control-container">
+  <div class="clr-textarea-wrapper">
+    <textarea id="vertical-textarea-basic" [(ngModel)]="area.description" name="description"
+      class="clr-textarea"></textarea>
+  </div>
+</div>
+<br/>
+<button class="btn btn-outline" (click)="update()" type="button">Update</button>

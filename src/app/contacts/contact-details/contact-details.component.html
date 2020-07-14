@@ -1,0 +1,17 @@
+<app-alerts></app-alerts>
+<clr-input-container>
+    <label>Name</label>
+    <input type="text" name="name" [(ngModel)]="contact.name" clrInput required/>
+    <clr-control-error>This field is required!</clr-control-error>
+  </clr-input-container>
+  <clr-input-container>
+    <label>Email</label>
+    <input type="text" name="email" [(ngModel)]="contact.email" clrInput required/>
+    <clr-control-error>This field is required!</clr-control-error>
+  </clr-input-container>
+  <clr-input-container>
+    <label>Phone</label>
+    <input type="text" name="tlf" [(ngModel)]="contact.tlf" clrInput required />
+    <clr-control-error>This field is required!</clr-control-error>
+  </clr-input-container>
+  <button class="btn btn-outline" (click)="update()" type="button">Update</button>

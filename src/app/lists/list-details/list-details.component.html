@@ -1,0 +1,65 @@
+<app-alerts></app-alerts>
+<div class="wrap">
+    <div class="clr-row">
+      <div class="clr-col-lg-auto">
+        <clr-input-container>
+          <label>Name</label>
+          <input type="text" name="name" [(ngModel)]="list.name" clrInput />
+        </clr-input-container>
+      </div>
+    </div>
+    <div class="clr-row">
+        <div class="clr-col-lg-auto">
+          <clr-textarea-container>
+            <label>Description</label>
+            <textarea rows="2" cols="60" clrTextarea [(ngModel)]="list.description"
+              name="description"></textarea>
+          </clr-textarea-container>
+        </div>
+      </div>
+      <div class="clr-row">
+        <div class="clr-col-lg-auto">
+          <clr-checkbox-container>
+            <clr-checkbox-wrapper>
+                <input type="checkbox" [(ngModel)]="list.denyList" clrCheckbox value="" name="denyList" />
+                <label>Deny</label>
+            </clr-checkbox-wrapper>
+            </clr-checkbox-container>
+        </div>
+      </div>
+    <div class="clr-row">
+      <div class="clr-col-lg-auto">
+        <clr-datalist-container>
+            <input clrDatalistInput name="domain " [(ngModel)]="auxDomain"
+                placeholder="Add domain" (change)="setDomain($event.target.value)" />
+            <datalist>
+                <option *ngFor="let domain of domains" [value]="domain.url">
+                </option>
+            </datalist>
+        </clr-datalist-container>
+      </div>
+    </div>
+    <div class="clr-row">
+      <div class="clr-col-lg-auto">
+        <clr-datagrid *ngIf="list.domains.length>0">
+          <clr-dg-column>Domain</clr-dg-column>
+          <clr-dg-row *ngFor="let domain of list.domains">
+              <clr-dg-action-overflow>
+                  <button (click)="toggleDomain(domain.url)"
+                      class="action-item">Remove from list</button>
+              </clr-dg-action-overflow>
+              <clr-dg-cell>{{domain.url}}</clr-dg-cell>
+          </clr-dg-row>
+          <clr-dg-footer>
+              <clr-dg-pagination #pagination [clrDgPageSize]="10">
+                  <clr-dg-page-size [clrPageSizeOptions]="[1,2,10,20,50,100]">Domains per page
+                  </clr-dg-page-size>
+                  {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}}
+                  Domains
+              </clr-dg-pagination>
+          </clr-dg-footer>
+      </clr-datagrid>
+      </div>
+    </div>
+    <button (click)="update()" class="btn btn-outline">Update List</button>
+  </div>

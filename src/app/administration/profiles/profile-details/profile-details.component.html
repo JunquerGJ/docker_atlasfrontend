@@ -1,7 +1,10 @@
+<app-alerts></app-alerts>
 <clr-input-container>
-    <label>Name</label>
-    <input type="text" name="name" [(ngModel)]="profile.name" clrInput />
+    <label>Name<span style="color:red">*</span></label>
+    <input type="text" autocomplete="false" name="name" [(ngModel)]="profile.name" clrInput required/>
+    <clr-control-error>This field is required!</clr-control-error>
   </clr-input-container>
+  <button class="btn btn-outline" (click)="update()" type="button">Update</button>
   <clr-stack-view>
     <clr-stack-header>Permissions</clr-stack-header>
     <clr-stack-block *ngFor="let entity of administrationEntities; index as i">
@@ -19,4 +22,4 @@
       </clr-stack-block>
     </clr-stack-block>
   </clr-stack-view>
-  <button class="btn btn-outline" (click)="update()" type="button">Update</button>
+  

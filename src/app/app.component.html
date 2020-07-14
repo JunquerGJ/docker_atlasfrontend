@@ -9,6 +9,7 @@
     <a class="nav-link nav-text" routerLink="/administration" routerLinkActive="active">Administration</a>
     <a class="nav-link nav-text" routerLink="/inventory" routerLinkActive="active">Inventory</a>
   </div>
+  <app-alerts></app-alerts>
   <div class="header-actions" *ngIf="isLoggedIn()">
     <a href="javascript://" class="nav-link nav-icon" (click)="isPVisible=true" aria-label="settings">
       <clr-icon shape="lock"></clr-icon>
@@ -18,7 +19,6 @@
     <a class="nav-link nav-text" routerLink="/login" (click)="logout()" routerLinkActive="active">Logout</a>
   </div>
 </header>
-<app-alerts></app-alerts>
 <router-outlet></router-outlet>
 
 <clr-modal *ngIf="isPVisible" [(clrModalOpen)]="isPVisible" [clrModalClosable]="true" [clrModalSize]="'lg'">

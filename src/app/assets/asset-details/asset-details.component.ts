@@ -14,6 +14,7 @@ import { ServerService } from 'src/app/servers/servers.service';
 import ContactToEntity from 'src/app/shared/models/contacttoentity';
 import { AreaService } from 'src/app/areas/areas.service';
 import Area from 'src/app/shared/models/area';
+import * as moment from 'moment'
 import { getFreshContactTo } from 'src/app/shared/functions/utils';
 import { AppConstants } from 'src/app/shared/constants/constants';
 @Component({
@@ -23,30 +24,31 @@ import { AppConstants } from 'src/app/shared/constants/constants';
 })
 export class AssetDetailsComponent implements OnInit {
 
-  @Input() input : Asset;
+  @Input() input: Asset;
   @Output() updated = new EventEmitter<Asset>()
-  asset : Asset;
+  asset: Asset;
   public characteristics: Characteristic[]
   public servers: Server[]
-  public contacts : Contact[]
+  public contacts: Contact[]
   public domains: Domain[]
   public areas: Area[]
 
   public serverActive: Boolean
   public gdprActive: Boolean
   public dashboardActive: Boolean
+  public domainsActive: Boolean
   public softwareActive: Boolean
   public contactsActive: Boolean
   public characteristicsActive: Boolean
 
-  public addServer : Boolean
+  public addServer: Boolean
 
   public auxDomain: String = ""
   public auxCharacteristic: String = ""
   public auxServer: String = ""
   public auxArea: String = ""
   public auxContactTo: ContactToEntity
-  public newContact : String = null
+  public newContact: String = null
 
   public readonly _assetTypes;
   public readonly _states;
@@ -56,7 +58,7 @@ export class AssetDetailsComponent implements OnInit {
   public readonly _logValues;
 
 
-  constructor(private assetService : AssetService, private serverService : ServerService,private characteristicService : CharacteristicService, private contactService : ContactService, private domainService : DomainService, private areaService : AreaService, private alertService: AlertsService) { 
+  constructor(private assetService: AssetService, private serverService: ServerService, private characteristicService: CharacteristicService, private contactService: ContactService, private domainService: DomainService, private areaService: AreaService, private alertService: AlertsService) {
     this._states = AppConstants.statusTypes
     this._assetTypes = AppConstants.assetTypes
     this._enviroments = AppConstants.enviroments
@@ -69,7 +71,7 @@ export class AssetDetailsComponent implements OnInit {
     this.asset = this.input;
 
     this.auxContactTo = getFreshContactTo();
-    this.serverService.getSome([], {id : true, hostname : true, ip : true})
+    this.serverService.getSome([], { id: true, hostname: true, ip: true })
       .subscribe(
         (elements) => {
           this.servers = elements;
@@ -81,19 +83,19 @@ export class AssetDetailsComponent implements OnInit {
           this.domains = elements;
         }
       );
-      this.contactService.getSome([], {})
+    this.contactService.getSome([], {})
       .subscribe(
         (elements) => {
           this.contacts = elements;
         }
       );
-      this.areaService.getSome([], {})
+    this.areaService.getSome([], {})
       .subscribe(
         (elements) => {
           this.areas = elements;
         }
       );
-      this.characteristicService.getSome([],{})
+    this.characteristicService.getSome([], {})
       .subscribe(
         (elements) => {
           this.characteristics = elements;
@@ -105,52 +107,51 @@ export class AssetDetailsComponent implements OnInit {
     this.getAssetDetails(this.input)
   }
 
-  getAssetDetails = (asset : Asset) => {
+  getAssetDetails = (asset: Asset) => {
     const aux = {
-      characteristics : true,
-      contacts : {
-        select : {
-          functionality : true,
-          contact : true
+      characteristics: true,
+      contacts: {
+        select: {
+          functionality: true,
+          contact: true
         }
       },
-      servers : {
-        select : {
-          id : true,
-          hostname : true,
-          ip : true
+      servers: {
+        select: {
+          id: true,
+          hostname: true,
+          ip: true
         }
       },
-      id : true,
-      area : true,
-      Vulnerability : true,
-      Domain : true,
-      name : true,
-      alias : true,
-      assetType : true,
-      status : true,
-      statusDate : true,
-      description : true,
-      confidentiality : true,
-      integrity : true,
-      availability : true,
-      trazability : true,
-      accessLogs : true,
-      activityLogs : true,
+      id: true,
+      area: true,
+      Domain: true,
+      name: true,
+      alias: true,
+      assetType: true,
+      status: true,
+      statusDate: true,
+      description: true,
+      confidentiality: true,
+      integrity: true,
+      availability: true,
+      trazability: true,
+      accessLogs: true,
+      activityLogs: true,
 
 
     }
     const params = new HttpParams()
-      .set('params',JSON.stringify(aux))
+      .set('params', JSON.stringify(aux))
 
 
-      this.assetService.get(asset.id,params)
-        .subscribe((asset) => {
-          this.asset = asset
-          if(this.asset.area){
-            this.auxArea = this.asset.area.name
-          }
-        },
+    this.assetService.get(asset.id, params)
+      .subscribe((asset) => {
+        this.asset = asset
+        if (this.asset.area) {
+          this.auxArea = this.asset.area.name
+        }
+      },
         error => {
           this.alertService.error(error.error.message)
         })
@@ -172,7 +173,16 @@ export class AssetDetailsComponent implements OnInit {
     this.servers.forEach((server) => {
       if (server.hostname == name) {
         this.asset.servers.push(server)
-        this.auxServer=""
+        this.auxServer = ""
+      }
+    })
+  }
+
+  setDomain(url) {
+    this.domains.forEach((domain) => {
+      if (domain.url == url) {
+        this.asset.Domain.push(domain)
+        this.auxDomain = ""
       }
     })
   }
@@ -180,6 +190,11 @@ export class AssetDetailsComponent implements OnInit {
   toggleServer(server) {
     var aux = this.asset.servers.filter(elem => elem.hostname != server.hostname)
     this.asset.servers = aux
+  }
+
+  toggleDomain(domain) {
+    var aux = this.asset.Domain.filter(elem => elem.url != domain.url)
+    this.asset.Domain = aux
   }
 
   toggleCharacteristic(characteristic) {
@@ -201,14 +216,14 @@ export class AssetDetailsComponent implements OnInit {
     this.auxCharacteristic = ""
   }
 
-  isAuxContactComplete(){
+  isAuxContactComplete() {
     return this.auxContactTo.contact && this.auxContactTo.functionality
   }
   setContact(name) {
     this.contacts.forEach((contact) => {
       if (contact.name == name) {
         this.auxContactTo.contact = contact
-        if(this.isAuxContactComplete()){
+        if (this.isAuxContactComplete()) {
           this.addContact()
         }
         return
@@ -228,13 +243,20 @@ export class AssetDetailsComponent implements OnInit {
     this.newContact = null
   }
   transformDate() {
-    if (this.asset.statusDate) { 
-      this.asset.statusDate = new Date(this.asset.statusDate) 
+    if (this.asset.statusDate) {
+      this.asset.statusDate = moment(this.asset.statusDate, "DD/MM/YYYY").toDate()
     }
+    console.log("AFTERS", this.asset.statusDate)
   }
   update() {
-    this.transformDate()
+    if (this.asset.statusDate) {
+      var pre = this.asset.statusDate
+      this.asset.statusDate = moment(this.asset.statusDate, "DD/MM/YYYY").toDate()
+    }
     this.updated.emit(this.asset)
+    if (this.asset.statusDate) {
+      this.asset.statusDate = pre
+    }
   }
 
 }

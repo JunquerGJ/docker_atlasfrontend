@@ -1,3 +1,4 @@
+<app-alerts></app-alerts>
 <div class="wrap">
   <div class="clr-row">
     <div class="clr-col-lg-auto">
@@ -10,7 +11,7 @@
       <clr-date-container style="z-index:9999">
         <label>Audit date</label>
         <input type="date" style="z-index:9999" clrDate name="auditDate" [(ngModel)]="audit.auditDate"
-          placeholder="{{ audit.auditDate | date}}">
+          placeholder="{{ audit.auditDate | date: 'dd/MM/yy'}}">
       </clr-date-container>
     </div>
   </div>
@@ -53,15 +54,14 @@
         </datalist>
       </clr-datalist-container>
     </div>
-    <div class="clr-row">
-      <div class="clr-col-lg-auto">
-        <clr-textarea-container>
-          <label>Scope</label>
-          <textarea rows="2" cols="60" clrTextarea [(ngModel)]="audit.scope"
-            name="scope"></textarea>
-        </clr-textarea-container>
-      </div>
+  </div>
+  <div class="clr-row">
+    <div class="clr-col-lg-auto">
+      <clr-textarea-container>
+        <label>Scope</label>
+        <textarea rows="2" cols="60" clrTextarea [(ngModel)]="audit.scope" name="scope"></textarea>
+      </clr-textarea-container>
     </div>
   </div>
-  <button (click)="update()" class="btn btn-outline">Add Audit</button>
+  <button (click)="update()" class="btn btn-outline">Update</button>
 </div>

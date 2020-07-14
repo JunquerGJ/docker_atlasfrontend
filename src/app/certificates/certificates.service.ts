@@ -52,8 +52,9 @@ export class CertificateService implements ElementService<Certificate>{
   }
   modify(modCertificate : Certificate): Observable<Certificate> {
     var id = modCertificate.id;
-    delete modCertificate.id;
-    return this.http.patch<Certificate>(`${this._baseUrl}/certificates/${id}`, modCertificate,
+    var aux = JSON.parse(JSON.stringify(modCertificate))
+    delete aux.id;
+    return this.http.patch<Certificate>(`${this._baseUrl}/certificates/${id}`, aux,
       {
         headers: {
           XToken: sessionStorage.getItem('token'),

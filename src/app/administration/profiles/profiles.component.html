@@ -27,31 +27,11 @@
     </clr-dg-footer>
   </clr-datagrid>
 </div>
-<clr-modal [(clrModalOpen)]="isModalVisible" [clrModalClosable]="false" [clrModalSize]="'lg'">
+
+
+<clr-modal *ngIf="isModalVisible" [(clrModalOpen)]="isModalVisible" [clrModalClosable]="true" [clrModalSize]="'xl'">
   <h3 class="modal-title">New {{elementName}}</h3>
   <div class="modal-body">
-    <clr-input-container>
-      <label>Name</label>
-      <input type="text" name="name" [(ngModel)]="newElement.name" clrInput placeholder="Profile's name" />
-    </clr-input-container>
-    <clr-stack-view>
-      <clr-stack-header>Permissions</clr-stack-header>
-      <clr-stack-block *ngFor="let entity of administrationEntities; index as i">
-        <clr-stack-label>{{entity}}</clr-stack-label>
-        <clr-stack-block>
-          <clr-stack-label>
-            <div *ngFor="let permission of permissionList; index as j" class="clr-toggle-wrapper">
-              <input type="checkbox" [id]="i.toString()+j" (change)="toggle2($event,permission+' '+entity)"
-                class="clr-toggle">
-              <label [for]="i.toString()+j" class="clr-control-label">{{permission}}</label>
-            </div>
-          </clr-stack-label>
-        </clr-stack-block>
-      </clr-stack-block>
-    </clr-stack-view>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-outline" (click)="add();closeModal()" type="button">Submit</button>
-    <button class="btn btn-primary" (click)="closeModal()" type="button">Cancel</button>
+    <app-add-profile (created)="addProfile($event)"></app-add-profile>
   </div>
 </clr-modal>

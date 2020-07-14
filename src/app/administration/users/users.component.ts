@@ -29,23 +29,14 @@ export class UsersComponent extends GridableComponent<User>
   }
 
 
-  setProfile(name){
-    this.profiles.forEach((profile)=>{
-      if(profile.name == name){
-        this.newElement.profile=profile
-      }
-    })
+
+
+  
+
+  addUser(user){
+    this.newElement=user;
+    this.add();
   }
-
-  updateUser(user,name){
-    this.profiles.forEach((profile)=>{
-      if(profile.name == name){
-        user.profile=profile
-      }
-    })
-  }
-
-
 
 
   ngOnInit() {

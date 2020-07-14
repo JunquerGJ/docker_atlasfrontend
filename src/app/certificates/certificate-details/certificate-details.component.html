@@ -1,0 +1,43 @@
+<app-alerts></app-alerts>
+<div class="wrap">
+  <div class="clr-row">
+    <div class="clr-col-lg-auto">
+      <clr-input-container>
+        <label>FQDN</label>
+        <input type="text" name="name" [(ngModel)]="certificate.domainName" clrInput
+          placeholder="{{certificate.domainName}}" />
+      </clr-input-container>
+    </div>
+  </div>
+  <div class="clr-row">
+    <div class="clr-col-lg-auto">
+      <clr-checkbox-container>
+        <clr-checkbox-wrapper>
+          <input type="checkbox" clrCheckbox [(ngModel)]="certificate.wildcard" name="wildcard" />
+          <label>Wildcard</label>
+        </clr-checkbox-wrapper>
+      </clr-checkbox-container>
+    </div>
+  </div>
+  <div class="clr-row">
+    <div class="clr-col-lg-auto">
+      <clr-input-container>
+        <label>Issuer</label>
+        <input type="text" name="name" [(ngModel)]="certificate.issuer" clrInput placeholder="{{certificate.issuer}}" />
+      </clr-input-container>
+    </div>
+  </div>
+  <div class="clr-row">
+    <div class="clr-col-lg-auto">
+      <clr-date-container style="z-index:9999">
+        <label>Expiration date</label>
+        <input type="date" style="z-index:9999" clrDate name="expirationDate" [(ngModel)]="certificate.expirationDate"
+          placeholder="{{ certificate.expirationDate | date: 'dd/MM/yy'}}">
+      </clr-date-container>
+    </div>
+  </div>
+
+
+
+  <button class="btn btn-outline" (click)="update()" type="button">Update</button>
+</div>

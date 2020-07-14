@@ -86,18 +86,15 @@ implements OnInit {
 
   ngOnInit() {
     this.elementName = "Domain";
-    this.defaultFields = { id : true, enviroment : true, url : true ,asset : true, certificate : true, privateDomain : true, waf : true}
+    this.defaultFields = { id : true, enviroment : true, url : true ,asset : true, lists: true, certificate : true, privateDomain : true, client : true ,errorCode : true}
     this.elementNamePlural = "Domains";
     this.newElement = this.getFreshElement()
-    this.columns = ["Name"]
     this.getSome(null,this.defaultFields);  
   }
 
   addDomain(domain){
     this.newElement = domain;
     this.add()
-    this.isModalVisible=false
-    this.newElement = getFreshDomain()
   }
 
   public modifyDomain(domain){
@@ -108,6 +105,8 @@ implements OnInit {
     this.modify(aux)
 
   }
+
+
 
 
 

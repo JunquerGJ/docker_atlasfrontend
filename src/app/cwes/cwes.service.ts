@@ -56,8 +56,9 @@ export class CWEService implements ElementService<CWE>{
   }
   modify(modAudit : CWE): Observable<CWE> {
     var id = modAudit.id;
-    delete modAudit.id;
-    return this.http.patch<CWE>(`${this._baseUrl}/cwes/${id}`, modAudit,
+    var aux = JSON.parse(JSON.stringify(modAudit))
+    delete aux.id;
+    return this.http.patch<CWE>(`${this._baseUrl}/cwes/${id}`, aux,
       {
         headers: {
           XToken: sessionStorage.getItem('token'),

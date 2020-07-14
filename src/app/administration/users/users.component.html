@@ -15,22 +15,7 @@
     <clr-dg-detail *clrIfDetail="let detail">
       <clr-dg-detail-header>User: {{detail.name}}</clr-dg-detail-header>
       <clr-dg-detail-body>
-        <clr-input-container>
-          <label>Name</label>
-          <input type="text" name="name" [(ngModel)]="detail.name" clrInput placeholder="{{detail.name}}" />
-        </clr-input-container>
-        <clr-input-container>
-          <label>Password</label>
-          <input type="passwprd" name="password"   [(ngModel)]="detail.password" clrInput />
-        </clr-input-container>
-        <clr-datalist-container>
-          <label>Profile</label>
-          <input clrDatalistInput name="profile" [value]="detail.profile.name" (change)="updateUser(detail,$event.target.value)" />
-          <datalist>
-            <option *ngFor="let profile of profiles" [value]="profile.name"></option>
-          </datalist>
-        </clr-datalist-container>
-        <button class="btn btn-outline" (click)="modify(detail)" type="button">Update</button>
+        <app-user-details [input]="detail" (updated)="modify($event)" ngProjectAs="clr-dg-row-detail" ></app-user-details>
       </clr-dg-detail-body>
     </clr-dg-detail>
     <clr-dg-footer>
@@ -44,27 +29,9 @@
 
 
 
-<clr-modal *ngIf="isModalVisible" [(clrModalOpen)]="isModalVisible" [clrModalClosable]="true" [clrModalSize]="'lg'">
+<clr-modal *ngIf="isModalVisible" [(clrModalOpen)]="isModalVisible" [clrModalClosable]="true" [clrModalSize]="'s'">
   <h3 class="modal-title">New {{elementName}}</h3>
   <div class="modal-body">
-    <clr-input-container>
-      <label>Name</label>
-      <input type="text" name="name" [(ngModel)]="newElement.name" clrInput placeholder="User's name" />
-    </clr-input-container>
-    <clr-input-container>
-      <label>Password</label>
-      <input type="password" name="hash" [(ngModel)]="newElement.hash" clrInput placeholder="User's password" />
-    </clr-input-container>
-    <clr-datalist-container>
-      <label>Profile</label>
-      <input clrDatalistInput name="profile"  (change)="setProfile($event.target.value)" />
-      <datalist>
-        <option *ngFor="let profile of profiles" [value]="profile.name"></option>
-      </datalist>
-    </clr-datalist-container>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-outline" (click)="add();closeModal()" type="button">Submit</button>
-    <button class="btn btn-primary" (click)="closeModal()" type="button">Cancel</button>
+    <app-add-user (created)="addUser($event)"></app-add-user>
   </div>
 </clr-modal>

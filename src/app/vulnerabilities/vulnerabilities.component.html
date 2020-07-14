@@ -3,18 +3,23 @@
 
 
   <clr-datagrid>
-    <clr-dg-column [clrDgField]="'risk'" [clrDgSortOrder]="descSort">Risk</clr-dg-column>
     <clr-dg-column [clrDgField]="'name'" [clrDgSortOrder]="descSort">Name</clr-dg-column>
+    <clr-dg-column [clrDgField]="'id'" [clrDgSortOrder]="descSort">Id</clr-dg-column>
+    <clr-dg-column [clrDgField]="'risk'" [clrDgSortOrder]="descSort">Risk</clr-dg-column>
     <clr-dg-column [clrDgField]="'status'" [clrDgSortOrder]="descSort">Status</clr-dg-column>
     <clr-dg-column [clrDgField]="'asset.name'" [clrDgSortOrder]="descSort">Asset</clr-dg-column>
     <clr-dg-column [clrDgField]="'discoveryDate'" [clrDgSortOrder]="descSort">Found on</clr-dg-column>
     <clr-dg-column [clrDgField]="'mitigationDate'" [clrDgSortOrder]="descSort">Mitigated on</clr-dg-column>
     <clr-dg-column [clrDgField]="'resolutionDate'" [clrDgSortOrder]="descSort">Closed on</clr-dg-column>
-    <clr-dg-column [clrDgSortOrder]="descSort">Days to resolution</clr-dg-column>
+    <clr-dg-column [clrDgSortBy]="daysComparator">Days to resolution
+      <clr-dg-numeric-filter [clrDgNumericFilter]="daysFilter"></clr-dg-numeric-filter>
+    </clr-dg-column>
     <clr-dg-row *clrDgItems="let vulnerability of elements" [clrDgItem]="vulnerability">
-      <clr-dg-cell><span class="label" [style.background-color]="getBC(vulnerability.risk)"
-          [style.color]="getFC(vulnerability.risk)"><b>{{vulnerability.risk}}</b></span></clr-dg-cell>
       <clr-dg-cell>{{vulnerability.name}}</clr-dg-cell>
+      <clr-dg-cell>{{vulnerability.id}}</clr-dg-cell>
+      <clr-dg-cell><span class="label" [style.background-color]="getBC(vulnerability.risk)"
+          [style.color]="getFC(vulnerability.risk)"><b>{{vulnerability.risk}}</b></span>
+      </clr-dg-cell>
       <clr-dg-cell><b>{{vulnerability.status}}</b></clr-dg-cell>
       <clr-dg-cell>{{vulnerability.asset.name}}</clr-dg-cell>
       <clr-dg-cell>{{vulnerability.discoveryDate | date}}</clr-dg-cell>
@@ -23,12 +28,14 @@
       <clr-dg-cell>{{getDays(vulnerability.discoveryDate,vulnerability.resolutionDate)}}</clr-dg-cell>
       <clr-dg-action-overflow>
         <button class="action-item" (click)="delete(vulnerability)">Delete</button>
+        <button class="action-item" (click)="openEvidenceModal()">Add evidence</button>
       </clr-dg-action-overflow>
     </clr-dg-row>
     <clr-dg-detail *clrIfDetail="let detail">
       <clr-dg-detail-header>Vulnerability: {{detail.name}}</clr-dg-detail-header>
       <clr-dg-detail-body>
-        <app-vulnerability-details [input]="detail"  (updated)="modify($event)" ngProjectAs="clr-dg-row-detail"></app-vulnerability-details>
+        <app-vulnerability-details [input]="detail" (updated)="modify($event)" ngProjectAs="clr-dg-row-detail">
+        </app-vulnerability-details>
       </clr-dg-detail-body>
     </clr-dg-detail>
     <clr-dg-footer>
@@ -45,5 +52,25 @@
   <h3 class="modal-title">New {{elementName}}</h3>
   <div class="modal-body">
     <app-add-vulnerability (created)="addVulnerability($event)"></app-add-vulnerability>
+  </div>
+</clr-modal>
+
+
+<clr-modal *ngIf="isEvidenceModalVisible" [(clrModalOpen)]="isEvidenceModalVisible" [clrModalClosable]="true"
+  [clrModalSize]="'m'">
+  <h3 class="modal-title">Add Evidence</h3>
+  <div class="modal-body">
+    <div class="clr-row">
+      <div class="clr-col-lg-auto">
+        <clr-textarea-container>
+          <label>Description</label>
+          <textarea rows="2" cols="50" clrTextarea [(ngModel)]="newEvidence.description" name="description"></textarea>
+        </clr-textarea-container>
+      </div>
+    </div>
+    <div class="clr-row">
+      <input type="file" name="content" [(ngModel)]="newEvidence.content" />
+    </div>
+    <button (click)="addEvidence()" class="btn btn-outline">Add Evidence</button>
   </div>
 </clr-modal>

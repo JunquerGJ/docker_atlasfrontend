@@ -1,0 +1,20 @@
+<app-alerts></app-alerts>
+<clr-input-container>
+    <label>Name<span style="color:red">*</span></label>
+    <input autocomplete="off" type="text" name="name" [(ngModel)]="newElement.name" clrInput placeholder="User's name" required/>
+    <clr-control-error>This field is required!</clr-control-error>
+  </clr-input-container>
+  <clr-input-container>
+    <label>Password<span style="color:red">*</span></label>
+    <input type="password" name="hash" [(ngModel)]="newElement.hash" clrInput placeholder="User's password" required />
+    <clr-control-error>This field is required!</clr-control-error>
+  </clr-input-container>
+  <clr-datalist-container>
+    <label>Profile<span style="color:red">*</span></label>
+    <input autocomplete="off" clrDatalistInput name="profile" [(ngModel)]="auxProfile" (change)="setProfile($event.target.value)" required/>
+    <datalist>
+      <option *ngFor="let profile of profiles" [value]="profile.name"></option>
+    </datalist>
+    <clr-control-error>This field is required!</clr-control-error>
+  </clr-datalist-container>
+  <button (click)="create()" class="btn btn-outline">Add User</button>

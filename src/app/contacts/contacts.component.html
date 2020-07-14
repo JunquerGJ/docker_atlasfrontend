@@ -1,7 +1,5 @@
 <div class="wrap">
     <button class="btn btn-outline" (click)="isModalVisible=true">Add {{elementName}}</button>
-
-
     <clr-datagrid>
         <clr-dg-column  [clrDgField]="'name'"  [clrDgSortOrder]="descSort">Name</clr-dg-column>
         <clr-dg-column  [clrDgField]="'email'"  [clrDgSortOrder]="descSort">Email</clr-dg-column>
@@ -17,19 +15,7 @@
         <clr-dg-detail *clrIfDetail="let detail">
           <clr-dg-detail-header>Contact: {{detail.name}}</clr-dg-detail-header>
           <clr-dg-detail-body>
-            <clr-input-container>
-              <label>Name</label>
-              <input type="text" name="name" [(ngModel)]="detail.name" clrInput/>
-            </clr-input-container>
-            <clr-input-container>
-              <label>Email</label>
-              <input type="text" name="email" [(ngModel)]="detail.email" clrInput />
-            </clr-input-container>
-            <clr-input-container>
-              <label>Phone</label>
-              <input type="text" name="tlf" [(ngModel)]="detail.tlf" clrInput  />
-            </clr-input-container>
-            <button class="btn btn-outline" (click)="modify(detail)" type="button">Update</button>
+            <app-contact-details [input]="detail" (updated)="modify($event)" ngProjectAs="clr-dg-row-detail"></app-contact-details>
           </clr-dg-detail-body>
         </clr-dg-detail>
         <clr-dg-footer>

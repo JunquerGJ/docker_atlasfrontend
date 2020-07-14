@@ -5,11 +5,34 @@ import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { AlertsService } from '../../alerts.service';
 import { Subject } from 'rxjs';
 import { ElementService } from '../interfaces/interfaces';
+import { Output, EventEmitter } from '@angular/core';
 
 class DatabaseElement {
     id : number
 }
 
+abstract class AddElementComponent< T extends DatabaseElement > {
+    
+    abstract validateElement(T) : string
+    abstract getFreshElement() : T
+     
+    
+    @Output() created = new EventEmitter<T>()
+    public newElement : T
+    
+    create(){
+        var result = this.validateElement(this.newElement)
+        if(!result){
+            this.created.emit(this.newElement)
+          }else{
+            this.alertService.error(result)
+          }
+    }
+
+    constructor(private alertService : AlertsService){
+
+    }
+}
 
 abstract class GridableComponent<T extends DatabaseElement > {
     public descSort: number = ClrDatagridSortOrder.DESC
@@ -53,18 +76,21 @@ abstract class GridableComponent<T extends DatabaseElement > {
     findElements(e){
         return e.id = this[0]
     }
-    add(){
+    add() {
         delete this.newElement.id;
         this.elementService.add(this.newElement)
             .subscribe(
                 res => {
                     this.alertService.success(`${this.elementName} has been added`)
                     this.getSome([],this.defaultFields)
+                    this.isModalVisible = false
+                    this.newElement = this.getFreshElement()
                 },
                 error => {
                     this.alertService.error(error.error.message)
                   }
             )
+
     }
     modify(element : T){
         this.elementService.modify(element)
@@ -94,6 +120,7 @@ abstract class GridableComponent<T extends DatabaseElement > {
       }
 
     abstract getFreshElement() : T 
+    
 
 
 }
@@ -103,5 +130,6 @@ abstract class GridableComponent<T extends DatabaseElement > {
 export {
     GridableComponent,
     DatabaseElement,
+    AddElementComponent
 }
  

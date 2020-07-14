@@ -115,7 +115,5 @@ export class IpsComponent extends GridableComponent<Ip>
   addIP(ip){
     this.newElement = ip
     this.add()
-    this.isModalVisible=false
-    this.newElement = getFreshIP()
   }
 }

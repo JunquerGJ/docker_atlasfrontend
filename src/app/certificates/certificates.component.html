@@ -3,11 +3,10 @@
   
   
     <clr-datagrid>
-      <clr-dg-column [clrDgField]="'domainName'" [clrDgSortOrder]="descSort">Name</clr-dg-column>
+      <clr-dg-column [clrDgField]="'domainName'" [clrDgSortOrder]="descSort">DNS Name</clr-dg-column>
       <clr-dg-column [clrDgField]="'wildcard'" [clrDgSortOrder]="descSort">Wildcard</clr-dg-column>
       <clr-dg-column [clrDgField]="'issuer'" [clrDgSortOrder]="descSort">Issuer</clr-dg-column>
       <clr-dg-column  [clrDgSortBy]="dateComparator">Expiration Date</clr-dg-column>
-
       <clr-dg-row *clrDgItems="let certificate of elements" [clrDgItem]="certificate">
         <clr-dg-cell>{{certificate.domainName}}</clr-dg-cell>
         <clr-dg-cell *ngIf="certificate.wildcard; else noWildcard"><clr-icon shape="check-circle" class="is-solid"></clr-icon></clr-dg-cell>
@@ -23,27 +22,9 @@
         </clr-dg-action-overflow>
       </clr-dg-row>
       <clr-dg-detail *clrIfDetail="let detail">
-        <clr-dg-detail-header>Certificate: {{detail.name}}</clr-dg-detail-header>
+        <clr-dg-detail-header>Certificate: {{detail.domainName}}</clr-dg-detail-header>
         <clr-dg-detail-body>
-          <clr-input-container>
-            <label>FQDN</label>
-            <input type="text" name="name" [(ngModel)]="detail.domainName" clrInput placeholder="{{detail.name}}" />
-          </clr-input-container>
-          <clr-checkbox-container>
-            <clr-checkbox-wrapper>
-              <input type="checkbox" clrCheckbox [(ngModel)]="detail.wildcard" name="wildcard" />
-              <label>Wildcard</label>
-            </clr-checkbox-wrapper>
-          </clr-checkbox-container>
-          <clr-input-container>
-            <label>Issuer</label>
-            <input type="text" name="name" [(ngModel)]="detail.issuer" clrInput placeholder="{{detail.issuer}}" />
-          </clr-input-container>
-          <clr-date-container style="z-index:9999">
-            <label>Expiration date</label>
-            <input type="date" style="z-index:9999"  [(clrDate)]="detail.expirationDate" placeholder="{{detail.expirationDate | date }}">
-        </clr-date-container>
-          <button class="btn btn-outline" (click)="modify(detail)" type="button">Update</button>
+          <app-certificate-details [input]="detail" (updated)="modify($event)" ngProjectAs="clr-dg-row-detail"></app-certificate-details>
         </clr-dg-detail-body>
       </clr-dg-detail>
       <clr-dg-footer>

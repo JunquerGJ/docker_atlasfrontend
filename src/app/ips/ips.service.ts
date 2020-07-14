@@ -53,7 +53,7 @@ export class IPService implements ElementService<IP>{
   modify(modIP : IP): Observable<IP> {
     var id = modIP.id;
     var aux = JSON.parse(JSON.stringify(modIP))
-
+    delete aux.id
     return this.http.patch<IP>(`${this._baseUrl}/ips/${id}`, aux,
       {
         headers: {

@@ -1,12 +1,14 @@
+<app-alerts></app-alerts>
 <clr-input-container>
-  <label>Name</label>
-  <input type="text" name="name" [(ngModel)]="newElement.name" clrInput placeholder="Area's name" />
+  <label>Name<span style="color:red">*</span></label>
+  <input autocomplete="false" type="text" name="name" [(ngModel)]="newElement.name" clrInput placeholder="Area's name" required/>
+  <clr-control-error>This field is required!</clr-control-error>
 </clr-input-container>
 <label for="vertical-textarea-basic" class="clr-control-label">Description</label>
 <div class="clr-control-container">
   <div class="clr-textarea-wrapper">
     <textarea id="vertical-textarea-basic" [(ngModel)]="newElement.description" name="description"
-      class="clr-textarea"></textarea>
+      class="clr-textarea" ></textarea>
   </div>
 </div>
 <br />

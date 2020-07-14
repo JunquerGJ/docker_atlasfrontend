@@ -1,9 +1,11 @@
+<app-alerts></app-alerts>
 <clr-input-container>
-    <label>IP address</label>
-    <input type="text" name="name" [(ngModel)]="newElement.ip" clrInput  />
+    <label>IP address<span style="color:red">*</span></label>
+    <input autocomplete="off" type="text" name="name" [(ngModel)]="newElement.ip" clrInput required />
+    <clr-control-error>This field is required!</clr-control-error>
   </clr-input-container>
   <clr-radio-container clrInline>
-    <label>New network?</label>
+    <label>New network?<span style="color:red">*</span></label>
     <clr-radio-wrapper>
       <input type="radio" clrRadio required value="Y" [(ngModel)]="newNetwork" />
       <label>Yes</label>
@@ -14,11 +16,25 @@
     </clr-radio-wrapper>
   </clr-radio-container>
   <app-add-network *ngIf="newNetwork=='Y'" (created)="addNetwork($event)"></app-add-network>
+  <div *ngIf="newNetwork=='NetworkCreated'">
+    <div class="card">
+      <div class="card-block">
+        <div class="card-text">
+          A new network will be created:
+          <br>
+          <i>Name: </i><b>{{newElement.network.name}}</b>
+          <br>
+          <i>Description: </i> <b>{{newElement.network.description}}</b>
+        </div>
+      </div>
+    </div>
+  </div>
   <clr-datalist-container *ngIf="newNetwork=='N'">
-    <label>Network</label>
-    <input clrDatalistInput name="network"  (change)="setNetwork($event.target.value)" />
+    <label>Network<span style="color:red">*</span></label>
+    <input clrDatalistInput name="network"  [(ngModel)]="auxNetwork" (change)="setNetwork($event.target.value)" required/>
     <datalist>
       <option *ngFor="let network of networks" [value]="network.name"></option>
     </datalist>
+    <clr-control-error>This field is required!</clr-control-error>
   </clr-datalist-container>
   <button (click)="create();" class="btn btn-outline">Add IP</button>

@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {NgModule, LOCALE_ID} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -41,6 +41,19 @@ import { AddVulnerabilityComponent } from './vulnerabilities/add-vulnerability/a
 import { AddAreaComponent } from './areas/add-area/add-area.component';
 import { VulnerabilityDetailsComponent } from './vulnerabilities/vulnerability-details/vulnerability-details.component';
 import { AuditDetailsComponent } from './audits/audit-details/audit-details.component';
+import { ListsComponent } from './lists/lists.component';
+import { AddListComponent } from './lists/add-list/add-list.component';
+import { ListDetailsComponent } from './lists/list-details/list-details.component';
+import { DomainDetailsComponent } from './domains/domain-details/domain-details.component';
+import { AddProfileComponent } from './administration/profiles/add-profile/add-profile.component';
+import { AddUserComponent } from './administration/users/add-user/add-user.component';
+import { UserDetailsComponent } from './administration/users/user-details/user-details.component';
+import { AreaDetailsComponent } from './areas/area-details/area-details.component';
+import { CertificateDetailsComponent } from './certificates/certificate-details/certificate-details.component';
+import { ContactDetailsComponent } from './contacts/contact-details/contact-details.component';
+import { IpDetailsComponent } from './ips/ip-details/ip-details.component';
+import { NetworkDetailsComponent } from './networks/network-details/network-details.component';
+import { registerLocaleData } from '@angular/common';
 /*
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {CompaniesComponent} from './administration/companies/companies.component';
@@ -63,6 +76,9 @@ import { CredentialsComponent } from './administration/credentials/credentials.c
 import { BarGraficComponent } from './bar-grafic/bar-grafic.component';
 import { MethodologyDetailComponent } from './methodologies/methodology-detail/methodology-detail.component';
 import { NotFoundComponent } from './not-found/not-found.component';*/
+
+import es from '@angular/common/locales/es';
+registerLocaleData(es)
 
 @NgModule({
   declarations: [
@@ -100,6 +116,18 @@ import { NotFoundComponent } from './not-found/not-found.component';*/
     AddAreaComponent,
     VulnerabilityDetailsComponent,
     AuditDetailsComponent,
+    ListsComponent,
+    AddListComponent,
+    ListDetailsComponent,
+    DomainDetailsComponent,
+    AddProfileComponent,
+    AddUserComponent,
+    UserDetailsComponent,
+    AreaDetailsComponent,
+    CertificateDetailsComponent,
+    ContactDetailsComponent,
+    IpDetailsComponent,
+    NetworkDetailsComponent,
     /*
     DashboardComponent,
     CompaniesComponent,
@@ -135,7 +163,9 @@ import { NotFoundComponent } from './not-found/not-found.component';*/
     NgSelectModule,
 //    ChartsModule
   ],
-  providers: [VulnerabilityService],
+  providers: [{
+    provide : LOCALE_ID, useValue : "es-*"
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule {

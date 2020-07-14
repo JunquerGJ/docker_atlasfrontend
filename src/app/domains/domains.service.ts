@@ -52,7 +52,9 @@ export class DomainService implements ElementService<Domain>{
   }
   modify(modDomain : Domain): Observable<Domain> {
     var id = modDomain.id;
-    return this.http.patch<Domain>(`${this._baseUrl}/domains/${id}`, modDomain,
+    let aux = JSON.parse(JSON.stringify(modDomain))
+    delete aux.id
+    return this.http.patch<Domain>(`${this._baseUrl}/domains/${id}`, aux,
       {
         headers: {
           XToken: sessionStorage.getItem('token'),

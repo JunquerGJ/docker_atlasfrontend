@@ -101,9 +101,10 @@ export class AuditsComponent extends GridableComponent<Audit>
     })
   }
 
+  
   addAudit(audit){
     this.newElement = audit;
+    this.transformDate()
     this.add()
-    this.isModalVisible=false
   }
 }

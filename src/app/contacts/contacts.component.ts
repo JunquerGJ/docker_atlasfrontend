@@ -32,6 +32,5 @@ export class ContactsComponent extends GridableComponent<Contact>
   public addContact(contact){
     this.newElement = contact
     this.add()
-    this.isModalVisible=false
   }
 }

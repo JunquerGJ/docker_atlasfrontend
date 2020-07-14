@@ -1,0 +1,19 @@
+<app-alerts></app-alerts>
+<clr-input-container>
+    <label>Name</label>
+    <input autocomplete="off" type="text" name="name" [(ngModel)]="user.name" clrInput placeholder="{{user.name}}" required />
+    <clr-control-error>This field is required!</clr-control-error>
+  </clr-input-container>
+  <clr-input-container>
+    <label>Password</label>
+    <input type="password" name="password"   [(ngModel)]="user.hash" clrInput/>
+  </clr-input-container>
+  <clr-datalist-container>
+    <label>Profile</label>
+    <input clrDatalistInput name="profile" [(ngModel)]="auxProfile" (change)="setProfile($event.target.value)" required/>
+    <datalist>
+      <option *ngFor="let profile of profiles" [value]="profile.name"></option>
+    </datalist>
+    <clr-control-error>This field is required!</clr-control-error>
+  </clr-datalist-container>
+  <button class="btn btn-outline" (click)="update()" type="button">Update</button>

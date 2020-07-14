@@ -1,13 +1,15 @@
 <div class="wrap">
   <button class="btn btn-outline" (click)="isModalVisible=true">Add {{elementName}}</button>
-
-
   <clr-datagrid>
     <clr-dg-column [clrDgField]="'name'" [clrDgSortOrder]="descSort">Name</clr-dg-column>
     <clr-dg-column [clrDgField]="'description'" [clrDgSortOrder]="descSort">Description</clr-dg-column>
+    <clr-dg-column [clrDgSortBy]="assetComparator">Assets
+      <clr-dg-numeric-filter [clrDgNumericFilter]="assetFilter"></clr-dg-numeric-filter>
+    </clr-dg-column>
     <clr-dg-row *clrDgItems="let area of elements" [clrDgItem]="area">
       <clr-dg-cell>{{area.name}}</clr-dg-cell>
       <clr-dg-cell>{{area.description}}</clr-dg-cell>
+      <clr-dg-cell>{{area.Asset.length}}</clr-dg-cell>
       <clr-dg-action-overflow>
         <button class="action-item" (click)="delete(area)">Delete</button>
       </clr-dg-action-overflow>
@@ -15,15 +17,7 @@
     <clr-dg-detail *clrIfDetail="let detail">
       <clr-dg-detail-header>Area: {{detail.name}}</clr-dg-detail-header>
       <clr-dg-detail-body>
-        <clr-input-container>
-          <label>Name</label>
-          <input type="text" name="name" [(ngModel)]="detail.name" clrInput placeholder="{{detail.name}}" />
-        </clr-input-container>
-        <clr-input-container>
-          <label>Description</label>
-          <input type="text" name="description" [(ngModel)]="detail.description" clrInput />
-        </clr-input-container>
-        <button class="btn btn-outline" (click)="modify(detail)" type="button">Update</button>
+        <app-area-details [input]="detail" (updated)="modify($event)" ngProjectAs="clr-dg-row-detail"></app-area-details>
       </clr-dg-detail-body>
     </clr-dg-detail>
     <clr-dg-footer>

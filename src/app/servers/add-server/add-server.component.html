@@ -1,11 +1,13 @@
+<app-alerts></app-alerts>
 <clr-tabs class="tabs-vertical">
     <clr-tab>
       <button clrTabLink>Info</button>
       <ng-template [(clrIfActive)]="dashboardActive">
         <clr-tab-content>
           <clr-input-container>
-            <label>Name</label>
-            <input type="text" name="name" [(ngModel)]="newElement.hostname" clrInput placeholder="Server's name" />
+            <label>Name<span style="color:red">*</span></label>
+            <input autocomplete="off" type="text" name="name" [(ngModel)]="newElement.hostname" clrInput placeholder="Server's name" required />
+            <clr-control-error>This field is required!</clr-control-error>
           </clr-input-container>
           <clr-radio-container clrInline>
             <label>New IP?</label>
@@ -19,6 +21,19 @@
             </clr-radio-wrapper>
           </clr-radio-container>
           <app-add-ip *ngIf="newIP=='Y'" (created)="addIP($event)"></app-add-ip>
+          <div *ngIf="newIP=='IPCreated'">
+            <div class="card">
+              <div class="card-block">
+                <div class="card-text">
+                  A new IP will be created:
+                  <br>
+                  <i>IP: </i><b>{{newElement.ip.ip}}</b>
+                  <br>
+                  <i>Network: </i> <b>{{newElement.ip.network.name}}</b>
+                </div>
+              </div>
+            </div>
+          </div>
           <clr-datalist-container *ngIf="newIP=='N'">
             <label>IP</label>
             <input clrDatalistInput name="ip" [(ngModel)]="auxIP" (change)="setIP($event.target.value)" />
@@ -26,11 +41,12 @@
               <option *ngFor="let ip of ips" [value]="ip.ip"></option>
             </datalist>
           </clr-datalist-container>
-          <button class="btn btn-primary" (click)="create();">Finish</button>
+
+          <button class="btn btn-primary" (click)="create();">Add Server</button>
         </clr-tab-content>
       </ng-template>
     </clr-tab>
-    <clr-tab>
+    <clr-tab *ngIf="!fromAsset">
       <button clrTabLink>Software</button>
       <ng-template [(clrIfActive)]="softwareActive">
         <clr-tab-content>
@@ -54,7 +70,7 @@
               </tr>
             </tbody>
           </table>
-          <button class="btn btn-primary" (click)="create();">Finish</button>
+          <button class="btn btn-primary" (click)="create();">Add Server</button>
         </clr-tab-content>
       </ng-template>
     </clr-tab>
@@ -71,7 +87,7 @@
             </clr-datalist-container>
           </form>
           <span class="label" *ngFor="let characteristic of newElement.characteristics">{{characteristic.name}}</span>
-          <button class="btn btn-primary" (click)="create();">Finish</button>
+          <button class="btn btn-primary" (click)="create();">Add Server</button>
         </clr-tab-content>
       </ng-template>
     </clr-tab>
@@ -79,7 +95,46 @@
       <button clrTabLink>Contacts</button>
       <ng-template [(clrIfActive)]="contactsActive">
         <clr-tab-content>
-          <table *ngIf="newElement.contacts.length>0" class="table table-noborder">
+          <clr-radio-container clrInline>
+            <label>New Contact?</label>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio value="Y" [(ngModel)]="newContact" />
+              <label>Yes</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio value="N" [(ngModel)]="newContact" />
+              <label>No</label>
+            </clr-radio-wrapper>
+          </clr-radio-container>
+          <app-add-contact *ngIf="newContact=='Y'" (created)="auxContactTo.contact=$event;newContact='ContactCreated'"></app-add-contact>
+          <clr-datalist-container *ngIf="newContact=='N'">
+            <label>Contact</label>
+            <input clrDatalistInput name="contact" (change)="setContact($event.target.value);" />
+            <datalist>
+              <option *ngFor="let contact of contacts" [value]="contact.name"></option>
+            </datalist>
+          </clr-datalist-container>
+          <div *ngIf="newContact=='ContactCreated'" class="clr-row">
+            <div class="card">
+              <div class="card-block">
+                <div class="card-text">
+                  A new contact will be created:
+                  <br>
+                  <i>Name: </i><b>{{auxContactTo.contact.name}}</b>
+                  <br>
+                  <i>Email: </i><b>{{auxContactTo.contact.email}}</b>
+                  <br>
+                  <i>Tlf: </i><b>{{auxContactTo.contact.tlf}}</b>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+          <clr-input-container *ngIf="newContact">
+            <label>Role</label>
+            <input type="text" name="functionality" [(ngModel)]="auxContactTo.functionality" clrInput />
+          </clr-input-container>
+          <!--<table *ngIf="newElement.contacts.length>0" class="table table-noborder">
             <thead>
               <tr>
                 <th>Functionality</th>
@@ -92,32 +147,38 @@
                 <td>{{contact.contact.name}}</td>
               </tr>
             </tbody>
-          </table>
-          <clr-input-container>
-            <label>Role</label>
-            <input type="text" name="functionality" [(ngModel)]="auxContactTo.functionality" clrInput />
-          </clr-input-container>
-          <clr-radio-container clrInline>
-            <label>New Contact?</label>
-            <clr-radio-wrapper>
-              <input type="radio" clrRadio  value="Y" [(ngModel)]="newContact" />
-              <label>Yes</label>
-            </clr-radio-wrapper>
-            <clr-radio-wrapper>
-              <input type="radio" clrRadio  value="N" [(ngModel)]="newContact" />
-              <label>No</label>
-            </clr-radio-wrapper>
-          </clr-radio-container>
-          <app-add-contact *ngIf="newContact=='Y'" (created)="auxContactTo.contact=$event"></app-add-contact>
-          <clr-datalist-container *ngIf="newContact=='N'">
-            <label>Contact</label>
-            <input clrDatalistInput name="contact" (change)="setContact($event.target.value);" />
-            <datalist>
-              <option *ngFor="let contact of contacts" [value]="contact.name"></option>
-            </datalist>
-          </clr-datalist-container>
-          <button *ngIf="auxContactTo.functionality && auxContactTo.contact" class="btn btn-primary" (click)="addContact();">Include</button>
-          <button class="btn btn-primary" (click)="create();">Finish</button>
+          </table>-->
+          <button *ngIf="auxContactTo.functionality && auxContactTo.contact" class="btn btn-primary"
+          (click)="addContact();">Add contact</button>
+          <clr-datagrid *ngIf="newElement.contacts.length>0">
+            <clr-dg-column>New Contact?</clr-dg-column>
+            <clr-dg-column>Name</clr-dg-column>
+            <clr-dg-column>Role</clr-dg-column>
+            <clr-dg-row *ngFor="let contact of newElement.contacts">
+              <clr-dg-action-overflow>
+                <button (click)="toggleContact(contact)" class="action-item">Remove</button>
+              </clr-dg-action-overflow>
+              <clr-dg-cell *ngIf="contact.contact.email; else old">
+                <clr-icon shape="check-circle" class="is-solid"></clr-icon>
+              </clr-dg-cell>
+              <ng-template #old>
+                <clr-dg-cell>
+                  <clr-icon shape="times"></clr-icon>
+                </clr-dg-cell>
+              </ng-template>
+              <clr-dg-cell>{{contact.contact.name}}</clr-dg-cell>
+              <clr-dg-cell>{{contact.functionality}}</clr-dg-cell>
+            </clr-dg-row>
+            <clr-dg-footer>
+              <clr-dg-pagination #pagination [clrDgPageSize]="10">
+                <clr-dg-page-size [clrPageSizeOptions]="[1,2,10,20,50,100]">Contacts per page
+                </clr-dg-page-size>
+                {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}}
+                Contacts
+              </clr-dg-pagination>
+            </clr-dg-footer>
+          </clr-datagrid>
+          <button class="btn btn-primary" (click)="create();">Add Asset</button>
         </clr-tab-content>
       </ng-template>
     </clr-tab>

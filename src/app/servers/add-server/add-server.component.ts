@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, Output, Input } from '@angular/core';
 import Server from 'src/app/shared/models/server';
-import { getFreshServer, getFreshContactTo } from 'src/app/shared/functions/utils';
+import { getFreshServer, getFreshContactTo, validServer } from 'src/app/shared/functions/utils';
 import { IPService } from 'src/app/ips/ips.service';
 import IP from 'src/app/shared/models/ip';
 import { AssetService } from 'src/app/assets/assets.service';
@@ -10,18 +10,21 @@ import { CharacteristicService } from 'src/app/characteristics/characteristics.s
 import Contact from 'src/app/shared/models/contact';
 import { ContactService } from 'src/app/contacts/contacts.service';
 import ContactToEntity from 'src/app/shared/models/contacttoentity';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { AlertsService } from 'src/app/alerts.service';
+import { AddElementComponent } from 'src/app/shared/classes/class';
 
 @Component({
   selector: 'app-add-server',
   templateUrl: './add-server.component.html',
   styleUrls: ['./add-server.component.scss']
 })
-export class AddServerComponent implements OnInit,OnDestroy {
+export class AddServerComponent extends AddElementComponent<Server> implements OnInit,OnDestroy {
 
+  getFreshElement = getFreshServer
+  validateElement = validServer
 
-  @Output() created = new EventEmitter<Server>()
-  public newElement : Server
+  @Input() fromAsset : boolean = false
+
   public newIP : String = null
   public newContact : String = null
   public auxIP: String = ""
@@ -38,13 +41,16 @@ export class AddServerComponent implements OnInit,OnDestroy {
   public contactsActive: Boolean
   public assetVisible: Boolean
 
-  constructor(private contactService : ContactService ,private ipService : IPService,private assetService : AssetService, private characteristicService : CharacteristicService) { }
+  constructor(private contactService : ContactService ,private ipService : IPService,private assetService : AssetService, private characteristicService : CharacteristicService, alertService : AlertsService) {
+    super(alertService)
+   }
+
   ngOnDestroy(): void {
 
   }
 
   ngOnInit(): void {
-    this.newElement = getFreshServer()
+    this.newElement = this.getFreshElement()
     this.auxContactTo = getFreshContactTo();
     this.ipService.getSome([],{ ip : true})
     .subscribe(
@@ -75,14 +81,21 @@ export class AddServerComponent implements OnInit,OnDestroy {
 
   addIP(ip){
     this.newElement.ip = ip
+    this.newIP='IPCreated'
   }
+
   setIP(ipAddress) {
-    this.ips.forEach((ip) => {
-      if (ip.ip == ipAddress) {
-        this.newElement.ip = ip
+    var i = 0;
+    for(i<0;i<this.ips.length;i++){
+      if(this.ips[i].ip == ipAddress){
+        this.newElement.ip = this.ips[i]
+        return
       }
-    })
+    }
+    this.auxIP = ''
   }
+
+
 
   setAsset(name) {
     this.assets.forEach((asset) => {
@@ -91,6 +104,7 @@ export class AddServerComponent implements OnInit,OnDestroy {
         this.auxAsset=''
       }
     })
+    this.auxAsset=''
   }
 
   setCharacteristic(charName) {
@@ -116,16 +130,16 @@ export class AddServerComponent implements OnInit,OnDestroy {
     })
   }
 
+  toggleContact(contact) {
+    var aux = this.newElement.contacts.filter(elem => elem.contact.name != contact.contact.name)
+    this.newElement.contacts = aux
+  }
+
 
   addContact() {
     this.newElement.contacts.push(this.auxContactTo)
     this.auxContactTo = getFreshContactTo()
     this.newContact = null
-  }
-
-  create(){
-    this.created.emit(this.newElement)
-    this.newElement = getFreshServer()
   }
 
 }

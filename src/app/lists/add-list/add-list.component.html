@@ -1,0 +1,55 @@
+<app-alerts></app-alerts>
+<div class="clr-row">
+    <div class="clr-col-lg-auto">
+        <clr-input-container>
+            <label>Name<span style="color:red">*</span></label>
+            <input autocomplete="off" type="text" name="name" [(ngModel)]="newElement.name" clrInput placeholder="List's name" required/>
+            <clr-control-error>This field is required!</clr-control-error>
+        </clr-input-container>
+    </div>
+</div>
+<div class="clr-row">
+    <div class="clr-col-lg-auto">
+        <clr-textarea-container>
+            <label>Description<span style="color:red">*</span></label>
+            <textarea clrTextarea [(ngModel)]="newElement.description" name="description" required placeholder="List's description"></textarea>
+            <clr-control-error>This field is required!</clr-control-error>
+        </clr-textarea-container>
+    </div>
+</div>
+<div class="clr-row">
+    <div class="clr-col-lg-auto">
+        <clr-checkbox-container>
+            <clr-checkbox-wrapper>
+                <input type="checkbox" [(ngModel)]="newElement.denyList" clrCheckbox value="" name="denyList" />
+                <label>Deny</label>
+            </clr-checkbox-wrapper>
+        </clr-checkbox-container>
+    </div>
+</div>
+<div class="clr-row" *ngIf="!fromDomain">
+    <div class="clr-col-lg-auto">
+        <form class="clr-form clr-form-compact">
+            <clr-datalist-container>
+                <input clrDatalistInput name="domain" [(ngModel)]="auxDomain" (change)="setDomain($event.target.value)"
+                    placeholder="Add domain..." />
+                <datalist>
+                    <option *ngFor="let domain of domains" [value]="domain.url"></option>
+                </datalist>
+            </clr-datalist-container>
+        </form>
+        <table *ngIf="newElement.domains.length>0" class="table table-noborder">
+            <thead>
+              <tr>
+                <th class="left">Domain</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let domain of newElement.domains">
+                <td>{{domain.url}}</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+</div>
+<button class="btn btn-primary" (click)="create();">Add List</button>

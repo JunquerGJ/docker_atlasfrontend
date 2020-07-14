@@ -1,9 +1,17 @@
 export class AppConstants {
-  public static get baseURL(): string { return "https://10.213.0.128:5000" }
+  public static get baseURL(): string { return "https://10.213.0.133/api" }
   public static get enviroments(): Object[] {
     return [
       "PRO",
       "PRE"
+    ]
+  }
+
+  public static get clients(): Object[] {
+    return [
+      "ORANGE",
+      "JAZZTEL",
+      "NA"
     ]
   }
   
