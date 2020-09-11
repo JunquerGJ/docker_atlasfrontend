@@ -5,6 +5,7 @@ import { GridableComponent } from '../shared/classes/class'
 import { getFreshArea } from '../shared/functions/utils'
 import Area from '../shared/models/area'
 import { ClrDatagridComparatorInterface, ClrDatagridNumericFilterInterface } from '@clr/angular';
+import { Router } from '@angular/router';
 
 
 
@@ -47,9 +48,10 @@ export class AreasComponent extends GridableComponent<Area>
   getFreshElement = getFreshArea
   constructor(
     areaService: AreaService,
-    alertService: AlertsService
+    alertService: AlertsService,
+    router: Router
   ) {
-    super(areaService, alertService);
+    super(areaService, alertService, router);
   }
 
   public assetComparator = new AssetComparator()

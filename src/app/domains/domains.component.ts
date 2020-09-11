@@ -6,6 +6,7 @@ import Domain from '../shared/models/domain'
 import { AppConstants } from '../shared/constants/constants';
 import { getFreshDomain, getFreshCertificate } from '../shared/functions/utils'
 import { ClrDatagridStringFilterInterface, ClrDatagridComparatorInterface } from '@clr/angular';
+import { Router } from '@angular/router';
 
 
 class AssetFilter implements ClrDatagridStringFilterInterface<Domain>{
@@ -78,9 +79,10 @@ implements OnInit {
 
   constructor(
     domainService: DomainService,
-    alertService: AlertsService
+    alertService: AlertsService,
+    router: Router
   ) {
-    super(domainService, alertService);
+    super(domainService, alertService,router);
     this._enviroments = AppConstants.enviroments
   }
 
@@ -89,7 +91,7 @@ implements OnInit {
     this.defaultFields = { id : true, enviroment : true, url : true ,asset : true, lists: true, certificate : true, privateDomain : true, client : true ,errorCode : true}
     this.elementNamePlural = "Domains";
     this.newElement = this.getFreshElement()
-    this.getSome(null,this.defaultFields);  
+    this.getSome([],this.defaultFields);  
   }
 
   addDomain(domain){

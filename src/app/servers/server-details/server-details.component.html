@@ -5,7 +5,7 @@
     <ng-template [(clrIfActive)]="dashboardActive">
       <clr-tab-content>
         <clr-input-container>
-          <label>Name</label>
+          <label>Name<span style="color:red"></span></label>
           <input type="text" name="name" [(ngModel)]="server.hostname" clrInput placeholder="Server's name" />
         </clr-input-container>
         <clr-datalist-container>

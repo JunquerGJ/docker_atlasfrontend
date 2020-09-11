@@ -79,7 +79,7 @@
           <div class="clr-col-lg-auto" style="z-index:9999">
             <clr-date-container style="z-index:9999">
               <label>Status date</label>
-              <input type="date" style="z-index:9999" [(clrDate)]="newElement.statusDate" name="statusDate" >
+              <input type="date" style="z-index:9999" [(clrDate)]="newElement.statusDate" name="statusDate">
             </clr-date-container>
           </div>
         </div>
@@ -233,6 +233,7 @@
             </table>-->
             <clr-datagrid *ngIf="newElement.Domain.length>0">
               <clr-dg-column>New Domain?</clr-dg-column>
+              <clr-dg-column>Private</clr-dg-column>
               <clr-dg-column>Domain</clr-dg-column>
               <clr-dg-row *ngFor="let domain of newElement.Domain">
                 <clr-dg-action-overflow>
@@ -242,6 +243,15 @@
                   <clr-icon shape="check-circle" class="is-solid"></clr-icon>
                 </clr-dg-cell>
                 <ng-template #old>
+                  <clr-dg-cell>
+                    <clr-icon shape="times"></clr-icon>
+                  </clr-dg-cell>
+                </ng-template>
+
+                <clr-dg-cell *ngIf="domain.private; else publicDom">
+                  <clr-icon shape="check-circle" class="is-solid"></clr-icon>
+                </clr-dg-cell>
+                <ng-template #publicDom>
                   <clr-dg-cell>
                     <clr-icon shape="times"></clr-icon>
                   </clr-dg-cell>
@@ -296,7 +306,8 @@
             <label>No</label>
           </clr-radio-wrapper>
         </clr-radio-container>
-        <app-add-contact *ngIf="newContact=='Y'" (created)="auxContactTo.contact=$event;newContact='ContactCreated'"></app-add-contact>
+        <app-add-contact *ngIf="newContact=='Y'" (created)="auxContactTo.contact=$event;newContact='ContactCreated'">
+        </app-add-contact>
         <clr-datalist-container *ngIf="newContact=='N'">
           <label>Contact</label>
           <input clrDatalistInput name="contact" (change)="setContact($event.target.value);" />
@@ -339,11 +350,13 @@
           </tbody>
         </table>-->
         <button *ngIf="auxContactTo.functionality && auxContactTo.contact" class="btn btn-primary"
-        (click)="addContact();">Add contact</button>
+          (click)="addContact();">Add contact</button>
         <clr-datagrid *ngIf="newElement.contacts.length>0">
           <clr-dg-column>New Contact?</clr-dg-column>
-          <clr-dg-column>Name</clr-dg-column>
           <clr-dg-column>Role</clr-dg-column>
+          <clr-dg-column>Name</clr-dg-column>
+          <clr-dg-column>Email</clr-dg-column>
+          <clr-dg-column>Tlf</clr-dg-column>
           <clr-dg-row *ngFor="let contact of newElement.contacts">
             <clr-dg-action-overflow>
               <button (click)="toggleContact(contact)" class="action-item">Remove</button>
@@ -356,8 +369,10 @@
                 <clr-icon shape="times"></clr-icon>
               </clr-dg-cell>
             </ng-template>
-            <clr-dg-cell>{{contact.contact.name}}</clr-dg-cell>
             <clr-dg-cell>{{contact.functionality}}</clr-dg-cell>
+            <clr-dg-cell>{{contact.contact.name}}</clr-dg-cell>
+            <clr-dg-cell>{{contact.contact.email}}</clr-dg-cell>
+            <clr-dg-cell>{{contact.contact.tlf}}</clr-dg-cell>
           </clr-dg-row>
           <clr-dg-footer>
             <clr-dg-pagination #pagination [clrDgPageSize]="10">
@@ -372,7 +387,7 @@
       </clr-tab-content>
     </ng-template>
   </clr-tab>
-  <clr-tab>
+  <clr-tab *nfIf="!fromServer">
     <button clrTabLink>Servers</button>
     <ng-template [(clrIfActive)]="serversActive">
       <clr-tab-content>
@@ -397,23 +412,24 @@
                 <option *ngFor="let server of servers" [value]="server.hostname"></option>
               </datalist>
             </clr-datalist-container>
-    
+
             <clr-datagrid *ngIf="newElement.servers.length>0">
-              <clr-dg-column>New Server?</clr-dg-column>
               <clr-dg-column>Hostname</clr-dg-column>
+              <clr-dg-column>IP</clr-dg-column>
               <clr-dg-row *ngFor="let server of newElement.servers">
                 <clr-dg-action-overflow>
                   <button (click)="toggleServer(server)" class="action-item">Remove</button>
                 </clr-dg-action-overflow>
-                <clr-dg-cell *ngIf="server.hasOwnProperty('id'); else old">
-                  <clr-icon shape="check-circle" class="is-solid"></clr-icon>
+                <clr-dg-cell>{{server.hostname}}</clr-dg-cell>
+                <clr-dg-cell *ngIf="server.ip else noIP">
+                  <clr-dg-cell>{{server.ip.ip}}</clr-dg-cell>
                 </clr-dg-cell>
-                <ng-template #old>
+                <ng-template #noIP>
                   <clr-dg-cell>
-                    <clr-icon shape="times"></clr-icon>
                   </clr-dg-cell>
                 </ng-template>
-                <clr-dg-cell>{{server.hostname}}</clr-dg-cell>
+
+
               </clr-dg-row>
               <clr-dg-footer>
                 <clr-dg-pagination #pagination [clrDgPageSize]="10">

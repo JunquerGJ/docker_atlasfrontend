@@ -9,6 +9,7 @@ import { getFreshIP } from '../shared/functions/utils'
 import IP from '../shared/models/ip';
 import { ClrDatagridStringFilterInterface, ClrDatagridComparatorInterface } from '@clr/angular';
 import { of } from 'rxjs';
+import { Router } from '@angular/router';
 
 
 class ServerFilter implements ClrDatagridStringFilterInterface<IP>{
@@ -74,9 +75,10 @@ export class IpsComponent extends GridableComponent<Ip>
   constructor(
     private networkService : NetworkService,
     ipService: IPService,
-    alertService: AlertsService
+    alertService: AlertsService,
+    router: Router
   ) {
-    super(ipService, alertService);
+    super(ipService, alertService, router);
   }
 
   setNetwork(name){

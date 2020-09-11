@@ -16,6 +16,7 @@ import { AuditService } from '../audits/audits.service';
 import { AssetService } from '../assets/assets.service';
 import Evidence from '../shared/models/evidence';
 import { ClrDatagridComparatorInterface, ClrDatagridNumericFilterInterface } from '@clr/angular';
+import { Router } from '@angular/router';
 
 
 function getDays(discoveryDate, resolutionDate) {
@@ -83,8 +84,9 @@ export class VulnerabilitiesComponent extends GridableComponent<Vulnerability>
   constructor(
     vulnerabilityService: VulnerabilityService,
     alertService: AlertsService,
+    router : Router
   ) {
-    super(vulnerabilityService, alertService);
+    super(vulnerabilityService, alertService,router);
   }
 
 
@@ -140,6 +142,8 @@ export class VulnerabilitiesComponent extends GridableComponent<Vulnerability>
 
   transformDate() {
     if (this.newElement.discoveryDate) {
+      console.log("creation date")
+      console.log(this.newElement.discoveryDate)
       this.newElement.discoveryDate = new Date(this.newElement.discoveryDate)
     }
     if (this.newElement.mitigationDate) {

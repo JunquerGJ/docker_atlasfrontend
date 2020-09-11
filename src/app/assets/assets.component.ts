@@ -17,6 +17,7 @@ import Vulnerability from '../shared/models/vulnerability';
 import { AreaService } from '../areas/areas.service';
 import { ServerService } from '../servers/servers.service';
 import { ClrDatagridComparatorInterface, ClrDatagridStringFilterInterface } from '@clr/angular';
+import { Router } from '@angular/router';
 
 
 
@@ -35,6 +36,18 @@ class AreaComparator implements ClrDatagridComparatorInterface<Asset>{
 class AreaFilter implements ClrDatagridStringFilterInterface<Area>{
   accepts(item: any, search: string): boolean {
      return (item.area.name.toUpperCase().indexOf(search.toUpperCase())>-1)
+  }
+}
+
+class CharacteristicFilter implements ClrDatagridStringFilterInterface<Characteristic>{
+  accepts(item: any, search: string): boolean {
+    var i =0;
+    for(i=0;i<item.characteristics.length;i++){
+      if(item.characteristics[i].name.toUpperCase().includes(search.toUpperCase())){
+        return true
+      }
+    }
+    return false
   }
 }
 
@@ -66,6 +79,7 @@ export class AssetsComponent extends GridableComponent<Asset>
   getFreshElement = getFreshAsset
 
 
+  public characteristicFilter = new CharacteristicFilter()
   public areaFilter = new AreaFilter()
   public areaComparator = new AreaComparator()
   public vulnComparator = new VulnerabilityComparator()
@@ -121,14 +135,15 @@ constructor(
   private characteristicService: CharacteristicService,
   assetService: AssetService,
   alertService: AlertsService,
+  router: Router
 ) {
-  super(assetService, alertService);
+  super(assetService, alertService,router);
 
 }
 
 ngOnInit() {
   this.elementName = "Asset";
-  this.defaultFields = { id: true, name: true, area: true, status: true, assetType: true, risk: true, Vulnerability: true, confidentiality: true, authorization: true, integrity: true, availability: true, trazability: true }
+  this.defaultFields = { id: true, name: true, accessLogs : true, activityLogs : true, area: true, status: true, assetType: true, risk: true, Vulnerability: true, confidentiality: true, authorization: true, alias : true,  statusDate : true, integrity: true, availability: true, trazability: true }
   this.elementNamePlural = "Assets";
   this.newElement = getFreshAsset()
   this.auxContactTo = getFreshContactTo()

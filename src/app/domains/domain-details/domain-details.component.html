@@ -8,7 +8,7 @@
                     <div class="clr-row">
                         <div class="clr-col-lg-auto">
                             <clr-select-container>
-                                <label>Client</label>
+                                <label>Client<span style="color:red"></span></label>
                                 <select clrSelect name="client" [(ngModel)]="domain.client">
                                     <option *ngFor="let client of _clients" value="{{client}}">{{client}}</option>
                                 </select>
@@ -18,17 +18,19 @@
                     <div class="clr-row">
                         <div class="clr-col-lg-auto">
                             <clr-input-container>
-                                <label>Domain</label>
-                                <input type="text" name="url" [(ngModel)]="domain.url" clrInput placeholder="{{domain.url}}" />
+                                <label>Domain<span style="color:red"></span></label>
+                                <input type="text" name="url" [(ngModel)]="domain.url" clrInput
+                                    placeholder="{{domain.url}}" />
                             </clr-input-container>
                         </div>
                     </div>
                     <div class="clr-row">
                         <div class="clr-col-lg-auto">
                             <clr-select-container>
-                                <label>Enviroment</label>
+                                <label>Enviroment<span style="color:red"></span></label>
                                 <select clrSelect name="enviroment" [(ngModel)]="domain.enviroment">
-                                    <option *ngFor="let enviroment of _enviroments" value="{{enviroment}}">{{enviroment}}</option>
+                                    <option *ngFor="let enviroment of _enviroments" value="{{enviroment}}">
+                                        {{enviroment}}</option>
                                 </select>
                             </clr-select-container>
                         </div>
@@ -43,7 +45,7 @@
                                 </clr-checkbox-wrapper>
                             </clr-checkbox-container>
                         </div>
-                    </div> 
+                    </div>
                 </clr-tab-content>
             </ng-template>
         </clr-tab>
@@ -57,7 +59,8 @@
                                 <clr-dg-column>Domain</clr-dg-column>
                                 <clr-dg-row *ngFor="let list of domain.lists">
                                     <clr-dg-action-overflow>
-                                        <button (click)="toggleList(list.name)" class="action-item">Remove from list</button>
+                                        <button (click)="toggleList(list.name)" class="action-item">Remove from
+                                            list</button>
                                     </clr-dg-action-overflow>
                                     <clr-dg-cell>{{list.name}}</clr-dg-cell>
                                 </clr-dg-row>
@@ -65,13 +68,14 @@
                                     <clr-dg-pagination #pagination [clrDgPageSize]="10">
                                         <clr-dg-page-size [clrPageSizeOptions]="[1,2,10,20,50,100]">Lists per page
                                         </clr-dg-page-size>
-                                        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}}
+                                        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of
+                                        {{pagination.totalItems}}
                                         Lists
                                     </clr-dg-pagination>
                                 </clr-dg-footer>
                             </clr-datagrid>
                         </div>
-                    </div>     
+                    </div>
                 </clr-tab-content>
             </ng-template>
         </clr-tab>
@@ -79,17 +83,29 @@
             <button clrTabLink>Certificate</button>
             <ng-template [(clrIfActive)]="certificateActive">
                 <clr-tab-content>
-                    <div class="card">
+                    <div *ngIf="domain.certificate;" class="card">
                         <div class="card-block">
-                          <div class="card-text">
-                            <i>CN: </i><b>{{domain.certificate.domainName}}</b>
-                            <br>
-                            <i>Issuer: </i> <b>{{domain.certificate.issuer}}</b>
-                            <br>
-                            <i>Expiration Date: </i><b>{{domain.certificate.expirationDate}}</b>
-                          </div>
+                            <div class="card-text">
+                                <i>CN: </i><b>{{domain.certificate.domainName}}</b>
+                                <br *ngIf="domain.certificate.issuer">
+                                <i *ngIf="domain.certificate.issuer">Issuer: </i> <b *ngIf="domain.certificate.issuer">{{domain.certificate.issuer}}</b>
+                                <br *ngIf="domain.certificate.issuer">
+                                <i *ngIf="domain.certificate.issuer">Expiration Date: </i><b *ngIf="domain.certificate.issuer">{{domain.certificate.expirationDate | date}}</b>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-sm btn-link" (click)="removeCertificate()">Remove certificate</button>
+                            </div>
                         </div>
-                      </div>
+                    </div>
+                    <div class="clr-col-lg-auto">
+                        <clr-datalist-container>
+                            <label>Change certificate</label>
+                            <input clrDatalistInput name="certificate" [(ngModel)]="auxCertificate" (change)="setCertificate($event.target.value)" />
+                            <datalist>
+                                <option *ngFor="let certificate of certificates" [value]="certificate.domainName"></option>
+                            </datalist>
+                        </clr-datalist-container>
+                    </div>
                 </clr-tab-content>
             </ng-template>
         </clr-tab>

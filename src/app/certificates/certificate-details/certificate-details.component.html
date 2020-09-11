@@ -3,9 +3,10 @@
   <div class="clr-row">
     <div class="clr-col-lg-auto">
       <clr-input-container>
-        <label>FQDN</label>
+        <label>FQDN<span style="color:red">*</span></label>
         <input type="text" name="name" [(ngModel)]="certificate.domainName" clrInput
-          placeholder="{{certificate.domainName}}" />
+          placeholder="{{certificate.domainName}}" required/>
+          <clr-control-error>This field is required!</clr-control-error>
       </clr-input-container>
     </div>
   </div>
@@ -22,17 +23,17 @@
   <div class="clr-row">
     <div class="clr-col-lg-auto">
       <clr-input-container>
-        <label>Issuer</label>
-        <input type="text" name="name" [(ngModel)]="certificate.issuer" clrInput placeholder="{{certificate.issuer}}" />
+        <label>Issuer<span style="color:red">*</span></label>
+        <input type="text" name="name" [(ngModel)]="certificate.issuer" clrInput placeholder="{{certificate.issuer}}" required />
+        <clr-control-error>This field is required!</clr-control-error>
       </clr-input-container>
     </div>
   </div>
   <div class="clr-row">
     <div class="clr-col-lg-auto">
-      <clr-date-container style="z-index:9999">
-        <label>Expiration date</label>
-        <input type="date" style="z-index:9999" clrDate name="expirationDate" [(ngModel)]="certificate.expirationDate"
-          placeholder="{{ certificate.expirationDate | date: 'dd/MM/yy'}}">
+      <clr-date-container>
+        <label>Expiration date<span style="color:red">*</span></label>
+        <input type="date" [(clrDate)]="certificate.expirationDate" name="expirationDate" required>
       </clr-date-container>
     </div>
   </div>

@@ -49,7 +49,7 @@ export class AddDomainComponent extends AddElementComponent<Domain> implements O
 
   ngOnInit(): void {
     this.newElement = this.getFreshElement()
-    this.certificateService.getSome([],{ domainName : true})
+    this.certificateService.getSome([],{ domainName : true,wildcard : true,issuer : true, expirationDate : true})
       .subscribe(
         (elements) => {
           this.certificates = elements

@@ -19,7 +19,7 @@ import Evidence from '../models/evidence';
 import { IPService } from 'src/app/ips/ips.service';
 
 function getFreshServer(): Server {
-  return { id: 0, hostname: "", ip: null, assets: [], contacts: [], characteristics: [] }
+  return { id: 0, hostname: "", ip: undefined, assets: [], contacts: [], characteristics: [] }
 }
 
 function getFreshContact(): Contact {
@@ -31,7 +31,7 @@ function getFreshArea(): Area {
 }
 
 function getFreshContactTo(): ContactToEntity {
-  return { contact: null, functionality: "" }
+  return { contact: undefined, functionality: "" }
 }
 
 function getFreshProfile(): Profile {
@@ -39,11 +39,11 @@ function getFreshProfile(): Profile {
 }
 
 function getFreshUser(): User {
-  return { id: 0, name: "", hash: "", profile: null }
+  return { id: 0, name: "", hash: "", profile: undefined }
 }
 
 function getFreshAsset(): Asset {
-  return { id: 0, name: "", risk: 0, assetType: "", area: null, Domain: [], contacts: [], characteristics: [], servers: [] }
+  return { id: 0, name: "", risk: 0, assetType: "", area: undefined, Domain: [], contacts: [], characteristics: [], servers: [] }
 }
 
 function getFreshList(): List {
@@ -59,11 +59,11 @@ function getFreshCharacteristic(): Characteristic {
 }
 
 function getFreshAudit(): Audit {
-  return { id: 0, name: "", asset: null, auditor: null, domain: null, tool: "", methodology: "", finished: false, scope: "", auditDate: null }
+  return { id: 0, name: "", asset: undefined, auditor: undefined, domain: undefined, tool: "", methodology: "", finished: false, scope: "", auditDate: undefined }
 }
 
 function getFreshCertificate(): Certificate {
-  return { id: 0, domainName: "", wildcard: false, issuer: "", expirationDate: null }
+  return { id: 0, domainName: "", wildcard: false, issuer: "", expirationDate: undefined }
 }
 
 function getFreshCWE(): CWE {
@@ -71,7 +71,7 @@ function getFreshCWE(): CWE {
 }
 
 function getFreshIP(): IP {
-  return { id: 0, ip: "", network: null }
+  return { id: 0, ip: "", network: undefined }
 }
 
 function getFreshNetwork(): Network {
@@ -79,11 +79,11 @@ function getFreshNetwork(): Network {
 }
 
 function getFreshEvidence(): Evidence {
-  return { id: 0, path: "", description: "", vulnerability: null, evidenceType: "", content: "" }
+  return { id: 0, path: "", description: "", vulnerability: undefined, evidenceType: "", content: "" }
 }
 
 function getFreshVulnerability(): Vulnerability {
-  return { id: 0, name: "", discoveryDate: null, description: "", executedTest: "", recommendation: "", risk: "", status: "", audit: null, asset: null, auditor: null, cwe: null, ticket: "", source: "", responsable: null }
+  return { id: 0, name: "", discoveryDate: undefined, description: "", executedTest: "", recommendation: "", risk: "", status: "", audit: undefined, asset: undefined, auditor: undefined, cwe: undefined, ticket: "", source: "", responsable: undefined }
 }
 
 function getVulnsRisk(vulnerabilities: Vulnerability[]) {

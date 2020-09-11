@@ -5,6 +5,7 @@ import Network from "../shared/models/network"
 import { getFreshNetwork } from '../shared/functions/utils'
 import { GridableComponent } from '../shared/classes/class';
 import { ClrDatagridNumericFilterInterface, ClrDatagridComparatorInterface } from '@clr/angular';
+import { Router } from '@angular/router';
 
 
 
@@ -59,9 +60,10 @@ export class NetworksComponent extends GridableComponent<Network>
 
   constructor(
     networkService: NetworkService,
-    alertService: AlertsService
+    alertService: AlertsService,
+    router: Router
   ) {
-    super(networkService, alertService);
+    super(networkService, alertService, router);
   }
 
 public prepareModification(detail){

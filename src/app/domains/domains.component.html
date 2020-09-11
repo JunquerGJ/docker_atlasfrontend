@@ -1,7 +1,5 @@
 <div class="wrap">
   <button class="btn btn-outline" (click)="isModalVisible=true">Add {{elementName}}</button>
-
-
   <clr-datagrid>
     <clr-dg-column [clrDgField]="'client'" [clrDgSortOrder]="descSort">Client</clr-dg-column>
     <clr-dg-column [clrDgField]="'url'" [clrDgSortOrder]="descSort">Domain</clr-dg-column>
@@ -10,6 +8,21 @@
     <clr-dg-column [clrDgField]="'enviroment'" [clrDgSortOrder]="descSort">Enviroment</clr-dg-column>
     <clr-dg-column [clrDgSortBy]="sslComparator">SSL
       <clr-dg-string-filter [clrDgStringFilter]="sslFilter"></clr-dg-string-filter>
+    </clr-dg-column>
+    <clr-dg-column>
+      <ng-container *clrDgHideableColumn="{ hidden : true}">
+        FQDN
+      </ng-container>
+    </clr-dg-column>
+    <clr-dg-column>
+      <ng-container *clrDgHideableColumn="{ hidden : true}">
+        Issuer
+      </ng-container>
+    </clr-dg-column>
+    <clr-dg-column>
+      <ng-container *clrDgHideableColumn="{ hidden : true}">
+        Expiration date
+      </ng-container>
     </clr-dg-column>
     <clr-dg-column [clrDgSortBy]="assetComparator">Asset
       <clr-dg-string-filter [clrDgStringFilter]="assetFilter"></clr-dg-string-filter>
@@ -39,6 +52,15 @@
         </clr-dg-cell>
       </ng-template>
 
+
+
+      <clr-dg-cell *ngIf="domain.certificate; else undefinedCertificate">{{domain.certificate.domainName}}</clr-dg-cell>
+      <ng-template #undefinedCertificate>
+        <clr-dg-cell></clr-dg-cell>
+      </ng-template>
+      <clr-dg-cell *ngIf="domain.certificate; else undefinedCertificate">{{domain.certificate.issuer}}</clr-dg-cell>
+      <clr-dg-cell *ngIf="domain.certificate; else undefinedCertificate">{{domain.certificate.expirationDate | date}}</clr-dg-cell>
+
       <clr-dg-cell *ngIf="domain.asset; else noAsset">
         {{domain.asset.name}}
       </clr-dg-cell>
@@ -54,40 +76,6 @@
     </clr-dg-row>
     <clr-dg-detail *clrIfDetail="let detail">
       <clr-dg-detail-header>Domain: {{detail.url}}</clr-dg-detail-header>
-      <!--<clr-dg-detail-body>
-         <clr-input-container>
-            <label>Domain</label>
-            <input type="text" name="url" [(ngModel)]="detail.url" clrInput placeholder="{{detail.url}}" />
-          </clr-input-container>
-          <clr-select-container>
-            <label>Enviroment</label>
-            <select clrSelect name="enviroment" [(ngModel)]="detail.enviroment">
-                <option *ngFor="let enviroment of _enviroments" value="{{enviroment}}">{{enviroment}}</option>
-            </select>
-        </clr-select-container>
-        <clr-checkbox-container>
-          <clr-checkbox-wrapper>
-              <input type="checkbox" [(ngModel)]="detail.privateDomain" clrCheckbox value="" name="privateDomain" />
-              <label>Private</label>
-          </clr-checkbox-wrapper>
-          </clr-checkbox-container>
-          <clr-datagrid *ngIf="detail.blacklists.length>0">
-            <clr-dg-column>Domain</clr-dg-column>
-            <clr-dg-row *ngFor="let list of detail.blacklists">
-
-                <clr-dg-cell>{{list.name}}</clr-dg-cell>
-            </clr-dg-row>
-            <clr-dg-footer>
-                <clr-dg-pagination #pagination [clrDgPageSize]="10">
-                    <clr-dg-page-size [clrPageSizeOptions]="[1,2,10,20,50,100]">Lists per page
-                    </clr-dg-page-size>
-                    {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}}
-                    Lists
-                </clr-dg-pagination>
-            </clr-dg-footer>
-        </clr-datagrid>
-          <button class="btn btn-outline" (click)="modifyDomain(detail)" type="button">Update</button>
-        </clr-dg-detail-body>-->
         <app-domain-details [input]="detail" (updated)="modify($event)" ngProjectAs="clr-dg-row-detail">
         </app-domain-details> 
       </clr-dg-detail>

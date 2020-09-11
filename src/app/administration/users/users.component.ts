@@ -7,6 +7,7 @@ import User from '../../shared/models/user'
 import { ProfileService } from '../profiles/profiles.service';
 import Profile from 'src/app/shared/models/profile';
 import { getFreshUser } from '../../shared/functions/utils'
+import { Router } from '@angular/router';
 
 @Component({
   selector: "app-companies",
@@ -23,8 +24,9 @@ export class UsersComponent extends GridableComponent<User>
     private userService: UserService,
     private profileService : ProfileService,
     alertService: AlertsService,
+    router: Router
   ) {
-    super(userService, alertService);
+    super(userService, alertService,router);
 
   }
 

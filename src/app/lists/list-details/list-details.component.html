@@ -3,7 +3,7 @@
     <div class="clr-row">
       <div class="clr-col-lg-auto">
         <clr-input-container>
-          <label>Name</label>
+          <label>Name<span style="color:red"></span></label>
           <input type="text" name="name" [(ngModel)]="list.name" clrInput />
         </clr-input-container>
       </div>
@@ -11,7 +11,7 @@
     <div class="clr-row">
         <div class="clr-col-lg-auto">
           <clr-textarea-container>
-            <label>Description</label>
+            <label>Description<span style="color:red"></span></label>
             <textarea rows="2" cols="60" clrTextarea [(ngModel)]="list.description"
               name="description"></textarea>
           </clr-textarea-container>

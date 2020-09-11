@@ -6,6 +6,7 @@ import { GridableComponent } from '../../shared/classes/class'
 import Profile from '../../shared/models/profile'
 import { ClrDatagridComparatorInterface } from '@clr/angular';
 import User from 'src/app/shared/models/user';
+import { Router } from '@angular/router';
 
 class ProfileComparator implements ClrDatagridComparatorInterface<User[]>{
   compare(a ,b){
@@ -31,9 +32,10 @@ export class ProfilesComponent extends GridableComponent<Profile>
   public profileComparator  = new ProfileComparator();
   constructor(
     profileService: ProfileService,
-    alertService: AlertsService
+    alertService: AlertsService,
+    router: Router
   ) {
-    super(profileService, alertService);
+    super(profileService, alertService,router);
   }
 
   public administrationEntities = ["Area","User","Profile","Asset","Audit","Vulnerability","CWE","Contact","Network","IP","Server","Characteristic","Domain","Certificate","List"]

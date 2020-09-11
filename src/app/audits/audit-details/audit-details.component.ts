@@ -29,11 +29,13 @@ export class AuditDetailsComponent implements OnInit, OnDestroy {
   public readonly _methodologies;
   public readonly _auditTools;
   public auxAsset: String = ""
+  hadAuditor: boolean;
+  hadAsset: any;
 
   constructor(private assetService: AssetService, private userService: UserService, private auditService: AuditService, private alertService: AlertsService) {
     this._methodologies = AppConstants.methodologies
     this._auditTools = AppConstants.getAuditTools()
-   }
+  }
   ngOnDestroy(): void {
   }
 
@@ -67,8 +69,8 @@ export class AuditDetailsComponent implements OnInit, OnDestroy {
   }
   setAsset(assetName) {
     var i = 0;
-    for(i=0;i<this.assets.length;i++){
-      if(this.assets[i].name == assetName){
+    for (i = 0; i < this.assets.length; i++) {
+      if (this.assets[i].name == assetName) {
         this.audit.asset = this.assets[i]
         this.auxAsset = this.assets[i].name
         return;
@@ -80,10 +82,10 @@ export class AuditDetailsComponent implements OnInit, OnDestroy {
   }
 
   setAuditor(auditorName) {
-    
+
     var i = 0;
-    for(i=0;i<this.users.length;i++){
-      if( auditorName == this.users[i].name){
+    for (i = 0; i < this.users.length; i++) {
+      if (auditorName == this.users[i].name) {
         this.audit.auditor = this.users[i]
         this.auxAuditor = this.users[i].name
         return
@@ -110,7 +112,7 @@ export class AuditDetailsComponent implements OnInit, OnDestroy {
       auditDate: true,
       methodology: true,
       tool: true,
-      scope : true
+      scope: true
     }
 
     const params = new HttpParams()
@@ -119,10 +121,17 @@ export class AuditDetailsComponent implements OnInit, OnDestroy {
     this.auditService.get(audit.id, params)
       .subscribe((audit) => {
         this.audit = audit;
-        if (this.audit.auditor)
+        if (this.audit.auditor){
           this.auxAuditor = this.audit.auditor.name
-        if (this.audit.asset)
+          this.hadAuditor = true
+        }
+        if (this.audit.asset){
           this.auxAsset = this.audit.asset.name
+          this.hadAsset = true
+        }
+        if (this.audit.auditDate) {
+          this.audit.auditDate = new Date(this.audit.auditDate)
+        }
       },
         error => {
           this.alertService.error(error.error.message)
@@ -130,17 +139,44 @@ export class AuditDetailsComponent implements OnInit, OnDestroy {
   };
 
 
-  
+
 
 
   update() {
     let result = validAudit(this.audit)
-    if(!result){
-      var pre = this.audit.auditDate
-      this.audit.auditDate = moment(this.audit.auditDate, "DD/MM/YYYY").toDate()
+    if (!result) {
+      if (this.audit.auditDate) {
+        this.audit.auditDate = new Date(this.audit.auditDate)
+      }
+
+      if(!this.audit.auditor){
+        if(!this.hadAuditor){
+          delete this.audit.auditor
+        }else{
+          this.audit.auditor=null
+          this.hadAuditor=false
+        }
+      }else {
+        if (!this.hadAuditor) {
+          this.hadAuditor = true
+        }
+      }
+
+      if(!this.audit.asset){
+        if(!this.hadAsset){
+          delete this.audit.asset
+        }else{
+          this.audit.asset=null
+          this.hadAsset=false
+        }
+      }else {
+        if (!this.hadAsset) {
+          this.hadAsset = true
+        }
+      }
+
       this.updated.emit(this.audit)
-      this.audit.auditDate = pre
-    }else{
+    } else {
       this.alertService.error(result)
     }
   }

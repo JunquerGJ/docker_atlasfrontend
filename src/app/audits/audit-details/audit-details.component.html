@@ -3,44 +3,48 @@
   <div class="clr-row">
     <div class="clr-col-lg-auto">
       <clr-input-container>
-        <label>Name</label>
-        <input type="text" name="name" [(ngModel)]="audit.name" clrInput />
+        <label>Name<span style="color:red">*</span></label>
+        <input type="text" name="name" [(ngModel)]="audit.name" clrInput required />
+        <clr-control-error>This field is required!</clr-control-error>
       </clr-input-container>
     </div>
     <div class="clr-col-lg-auto">
-      <clr-date-container style="z-index:9999">
-        <label>Audit date</label>
-        <input type="date" style="z-index:9999" clrDate name="auditDate" [(ngModel)]="audit.auditDate"
-          placeholder="{{ audit.auditDate | date: 'dd/MM/yy'}}">
+      <clr-date-container >
+        <label>Audit date<span style="color:red">*</span></label>
+        <input type="date" [(clrDate)]="audit.auditDate" name="auditDate" required>
+        <clr-control-error>This field is required!</clr-control-error> 
       </clr-date-container>
     </div>
   </div>
   <div class="clr-row">
     <div class="clr-col-lg-auto">
       <clr-datalist-container>
-        <label>Asset</label>
+        <label>Asset<span style="color:red">*</span></label>
         <input clrDatalistInput name="asset" [(ngModel)]="auxAsset" (change)="setAsset($event.target.value)" />
         <datalist>
           <option *ngFor="let asset of assets" [value]="asset.name"></option>
         </datalist>
+        <clr-control-error>This field is required!</clr-control-error>
       </clr-datalist-container>
     </div>
   </div>
   <div class="clr-row">
     <div class="clr-col-lg-auto">
       <clr-select-container>
-        <label>Methodology</label>
+        <label>Methodology<span style="color:red">*</span></label>
         <select clrSelect name="methodology" [(ngModel)]="audit.methodology">
           <option *ngFor="let methodology of _methodologies" value="{{methodology.value}}">{{methodology.name}}</option>
         </select>
+        <clr-control-error>This field is required!</clr-control-error>
       </clr-select-container>
     </div>
     <div class="clr-col-lg-auto">
       <clr-select-container>
-        <label>Tool</label>
+        <label>Tool<span style="color:red">*</span></label>
         <select clrSelect name="tool" [(ngModel)]="audit.tool">
           <option *ngFor="let tool of _auditTools" value="{{tool}}">{{tool}}</option>
         </select>
+        <clr-control-error>This field is required!</clr-control-error>
       </clr-select-container>
     </div>
   </div>

@@ -1,5 +1,5 @@
 export class AppConstants {
-  public static get baseURL(): string { return "https://10.213.0.133/api" }
+  public static get baseURL(): string { return "https://192.168.1.12/api" }
   public static get enviroments(): Object[] {
     return [
       "PRO",

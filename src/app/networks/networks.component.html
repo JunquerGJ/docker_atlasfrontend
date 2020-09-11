@@ -20,11 +20,11 @@
         <clr-dg-detail-header>Network: {{detail.name}}</clr-dg-detail-header>
         <clr-dg-detail-body>
           <clr-input-container>
-            <label>Name</label>
+            <label>Name<span style="color:red"></span></label>
             <input type="text" name="name" [(ngModel)]="detail.name" clrInput  />
           </clr-input-container>
           <clr-input-container>
-            <label>Description</label>
+            <label>Description<span style="color:red"></span></label>
             <input type="text" name="description" [(ngModel)]="detail.description" clrInput />
           </clr-input-container>
           <table class="table table-noborder">

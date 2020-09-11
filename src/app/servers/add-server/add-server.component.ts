@@ -27,6 +27,7 @@ export class AddServerComponent extends AddElementComponent<Server> implements O
 
   public newIP : String = null
   public newContact : String = null
+  public newAsset : String = null
   public auxIP: String = ""
   public auxAsset: String = ""
   public auxCharacteristic : String = ""
@@ -71,7 +72,7 @@ export class AddServerComponent extends AddElementComponent<Server> implements O
       }
     );
 
-    this.contactService.getSome([],{name : true})
+    this.contactService.getSome([],{name : true, email : true, tlf : true})
     .subscribe(
       (elements) => {
         this.contacts = elements;
@@ -140,6 +141,17 @@ export class AddServerComponent extends AddElementComponent<Server> implements O
     this.newElement.contacts.push(this.auxContactTo)
     this.auxContactTo = getFreshContactTo()
     this.newContact = null
+  }
+
+  addAsset(asset) {
+    this.newElement.assets.push(asset)
+    this.auxAsset = ''
+    this.newAsset = null
+  }
+
+  toggleAsset(asset) {
+    var aux = this.newElement.assets.filter(elem => elem.name != asset.name)
+    this.newElement.assets = aux
   }
 
 }

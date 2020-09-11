@@ -7,6 +7,9 @@
       <clr-dg-column [clrDgField]="'wildcard'" [clrDgSortOrder]="descSort">Wildcard</clr-dg-column>
       <clr-dg-column [clrDgField]="'issuer'" [clrDgSortOrder]="descSort">Issuer</clr-dg-column>
       <clr-dg-column  [clrDgSortBy]="dateComparator">Expiration Date</clr-dg-column>
+      <clr-dg-column [clrDgSortBy]="daysComparator">Days to expiration
+        <clr-dg-numeric-filter [clrDgNumericFilter]="daysFilter"></clr-dg-numeric-filter>
+      </clr-dg-column>
       <clr-dg-row *clrDgItems="let certificate of elements" [clrDgItem]="certificate">
         <clr-dg-cell>{{certificate.domainName}}</clr-dg-cell>
         <clr-dg-cell *ngIf="certificate.wildcard; else noWildcard"><clr-icon shape="check-circle" class="is-solid"></clr-icon></clr-dg-cell>
@@ -17,6 +20,12 @@
         </ng-template>
         <clr-dg-cell>{{certificate.issuer}}</clr-dg-cell>
         <clr-dg-cell>{{certificate.expirationDate | date }}</clr-dg-cell>
+        <clr-dg-cell *ngIf="getDays(certificate.expirationDate)>=0;else expired">{{getDays(certificate.expirationDate)}}</clr-dg-cell>
+        <ng-template #expired>
+          <clr-dg-cell>
+            <span class="label label-danger">Expired</span>
+          </clr-dg-cell>
+        </ng-template>
         <clr-dg-action-overflow>
           <button class="action-item" (click)="delete(certificate)">Delete</button>
         </clr-dg-action-overflow>

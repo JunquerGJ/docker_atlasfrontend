@@ -17,7 +17,7 @@
 </clr-input-container>
 <clr-date-container style="z-index:9999">
     <label>Expiration date<span style="color:red">*</span></label>
-    <input type="date" style="z-index:9999"  name="expirationDate" [(clrDate)]="newElement.expirationDate">
+    <input type="date" style="z-index:9999"  name="expirationDate" [(clrDate)]="newElement.expirationDate" required>
 </clr-date-container>
 <br/>
 <button (click)="create()" class="btn btn-outline">Add Certificate</button>

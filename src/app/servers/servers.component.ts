@@ -14,6 +14,7 @@ import ContactToEntity from '../shared/models/contacttoentity';
 import Characteristic from '../shared/models/characteristic';
 import { CharacteristicService } from '../characteristics/characteristics.service';
 import { ClrDatagridComparatorInterface, ClrDatagridStringFilterInterface, ClrDatagridNumericFilterInterface } from '@clr/angular';
+import { Router } from '@angular/router';
 
 interface elementType {
   id: number
@@ -179,9 +180,10 @@ export class ServersComponent extends GridableComponent<Server>
     private characteristicService: CharacteristicService,
     private contactService: ContactService,
     serverService: ServerService,
-    alertService: AlertsService
+    alertService: AlertsService,
+    router: Router
   ) {
-    super(serverService, alertService);
+    super(serverService, alertService,router);
   }
 
   ngOnInit() {

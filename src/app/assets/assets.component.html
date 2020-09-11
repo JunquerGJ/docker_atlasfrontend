@@ -2,23 +2,92 @@
   <button class="btn btn-outline" (click)="isModalVisible=true">Add {{elementName}}</button>
 
   <clr-datagrid>
-    <clr-dg-column [clrDgField]="'name'" [clrDgSortOrder]="descSort">Name</clr-dg-column>
-    <clr-dg-column [clrDgField]="'assetType'" [clrDgSortOrder]="descSort">Type</clr-dg-column>
-    <clr-dg-column [clrDgSortBy]="areaComparator">Area
+    <clr-dg-column [clrDgField]="'name'" [clrDgSortOrder]="descSort">
+      <ng-container *clrDgHideableColumn="{ hidden : false }">
+        Name
+      </ng-container>
+    </clr-dg-column>
+    <clr-dg-column [clrDgField]="'alias'" [clrDgSortOrder]="descSort">
+      <ng-container *clrDgHideableColumn="{ hidden : true }">
+        Alias
+      </ng-container>
+    </clr-dg-column>
+    <clr-dg-column [clrDgField]="'assetType'" [clrDgSortOrder]="descSort">
+      <ng-container *clrDgHideableColumn="{ hidden : false }">
+        Type
+      </ng-container>
+    </clr-dg-column>
+    <clr-dg-column [clrDgSortBy]="areaComparator">
+      <ng-container *clrDgHideableColumn="{ hidden : false }">
+        Area
+      </ng-container>
       <clr-dg-string-filter [clrDgStringFilter]="areaFilter"></clr-dg-string-filter>
     </clr-dg-column>
-    <clr-dg-column [clrDgField]="'integrity'">Integrity</clr-dg-column>
-    <clr-dg-column [clrDgField]="'confidentiality'">Confidentiality</clr-dg-column>
-    <clr-dg-column [clrDgField]="'trazability'">Trazability</clr-dg-column>
-    <clr-dg-column [clrDgField]="'authorization'">Authorization</clr-dg-column>
-    <clr-dg-column [clrDgField]="'availability'">Availability</clr-dg-column>
-    <!--<clr-dg-column [clrDgSortOrder]="descSort">Risk</clr-dg-column>-->
-    <clr-dg-column [clrDgSortBy]="vulnComparator">Vulnerabilities</clr-dg-column>
+    <clr-dg-column [clrDgField]="'status'" [clrDgSortOrder]="descSort">
+      <ng-container *clrDgHideableColumn="{ hidden : true }">
+        Status
+      </ng-container>
+    </clr-dg-column>
+    <clr-dg-column [clrDgField]="'discoveryDate'" [clrDgSortOrder]="descSort">
+      <ng-container *clrDgHideableColumn="{ hidden : true }">
+        Status Date
+      </ng-container>
+    </clr-dg-column>
+    <clr-dg-column [clrDgField]="'integrity'">
+      <ng-container *clrDgHideableColumn="{ hidden : true }">
+        Integrity
+      </ng-container>
+    </clr-dg-column>
+    <clr-dg-column [clrDgField]="'confidentiality'">
+      <ng-container *clrDgHideableColumn="{ hidden : true }">
+        Confidentiality
+      </ng-container>
+    </clr-dg-column>
+    <clr-dg-column [clrDgField]="'trazability'">
+      <ng-container *clrDgHideableColumn="{ hidden : true }">
+        Trazability
+      </ng-container>
+    </clr-dg-column>
+    <clr-dg-column [clrDgField]="'authorization'">
+      <ng-container *clrDgHideableColumn="{ hidden : true }">
+        Authorization
+      </ng-container>
+    </clr-dg-column>
+    <clr-dg-column [clrDgField]="'availability'">
+      <ng-container *clrDgHideableColumn="{ hidden : true }">
+        Availability
+      </ng-container>
+    </clr-dg-column>
+    <clr-dg-column [clrDgField]="'activityLogs'">
+      <ng-container *clrDgHideableColumn="{ hidden : true }">
+        Activity Logs
+      </ng-container>
+    </clr-dg-column>
+    <clr-dg-column [clrDgField]="'accessLogs'">
+      <ng-container *clrDgHideableColumn="{ hidden : true }">
+        Access Logs
+      </ng-container>
+    </clr-dg-column>
+
+
+
+    <clr-dg-column>
+      <ng-container *clrDgHideableColumn="{ hidden : false }">
+        Characteristics
+      </ng-container>
+      <clr-dg-string-filter [clrDgStringFilter]="characteristicFilter"></clr-dg-string-filter>
+    </clr-dg-column>
+    <clr-dg-column [clrDgSortBy]="vulnComparator">
+      <ng-container *clrDgHideableColumn="{ hidden : false }">
+        Vulnerabilities
+      </ng-container>
+    </clr-dg-column>
 
 
 
     <clr-dg-row *clrDgItems="let asset of elements" [clrDgItem]="asset">
       <clr-dg-cell>{{asset.name}}</clr-dg-cell>
+      <clr-dg-cell>{{asset.alias}}</clr-dg-cell>
       <clr-dg-cell *ngIf="asset.assetType=='WEB'">
         <clr-icon shape="network-globe"></clr-icon>
       </clr-dg-cell>
@@ -35,6 +104,8 @@
       <ng-template #undefinedArea>
         <clr-dg-cell></clr-dg-cell>
       </ng-template>
+      <clr-dg-cell>{{asset.status}}</clr-dg-cell>
+      <clr-dg-cell>{{asset.statusDate | date}}</clr-dg-cell>
       <clr-dg-cell>
         <span class="label" [style.background-color]="getBC(asset.integrity)"
           [style.color]="getFC(asset.integrity)">{{asset.integrity}}</span>
@@ -55,6 +126,48 @@
           [style.color]="getFC(asset.availability)">{{asset.availability}}</span>
       </clr-dg-cell>
 
+
+      <clr-dg-cell *ngIf="asset.activityLogs=='DONE'">
+        <clr-icon shape="network-globe"></clr-icon>
+      </clr-dg-cell>
+      <clr-dg-cell *ngIf="asset.activityLogs=='WIP'">
+        <clr-icon shape="cog" class="is-solid"></clr-icon>
+      </clr-dg-cell>
+      <clr-dg-cell *ngIf="asset.activityLogs=='REFINING'">
+        <clr-icon shape="wrench" class="is-solid"></clr-icon>
+      </clr-dg-cell>
+      <clr-dg-cell *ngIf="asset.activityLogs=='DEFINING'">
+        <clr-icon shape="pencil" class="is-solid"></clr-icon>
+      </clr-dg-cell>
+      <clr-dg-cell *ngIf="asset.activityLogs=='NO'">
+        <clr-icon shape="times"></clr-icon>
+      </clr-dg-cell>
+      <clr-dg-cell *ngIf="asset.activityLogs=='NA'">
+        NA
+      </clr-dg-cell>
+
+      <clr-dg-cell *ngIf="asset.accessLogs=='DONE'">
+        <clr-icon shape="network-globe"></clr-icon>
+      </clr-dg-cell>
+      <clr-dg-cell *ngIf="asset.accessLogs=='WIP'">
+        <clr-icon shape="cog" class="is-solid"></clr-icon>
+      </clr-dg-cell>
+      <clr-dg-cell *ngIf="asset.accessLogs=='REFINING'">
+        <clr-icon shape="wrench" class="is-solid"></clr-icon>
+      </clr-dg-cell>
+      <clr-dg-cell *ngIf="asset.accessLogs=='DEFINING'">
+        <clr-icon shape="pencil" class="is-solid"></clr-icon>
+      </clr-dg-cell>
+      <clr-dg-cell *ngIf="asset.accessLogs=='NO'">
+        <clr-icon shape="times"></clr-icon>
+      </clr-dg-cell>
+      <clr-dg-cell *ngIf="asset.accessLogs=='NA'">
+        NA
+      </clr-dg-cell>
+      <clr-dg-cell>
+        <span class="label" *ngFor="let characteristic of asset.characteristics">
+           {{characteristic.name}}</span>
+      </clr-dg-cell>
       <clr-dg-cell><span class="badge badge-2"><b>{{getThing(asset.Vulnerability,'CRITICAL')}}</b></span>
         <span class="badge badge-danger"><b>{{getThing(asset.Vulnerability,'HIGH')}}</b></span>
         <span class="badge badge-warning"><b>{{getThing(asset.Vulnerability,'MEDIUM')}}</b></span>

@@ -6,6 +6,7 @@ import { AlertsService } from '../../alerts.service';
 import { Subject } from 'rxjs';
 import { ElementService } from '../interfaces/interfaces';
 import { Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 
 class DatabaseElement {
     id : number
@@ -50,7 +51,7 @@ abstract class GridableComponent<T extends DatabaseElement > {
     public isModalVisible = false
 
 
-    constructor(private elementService : ElementService<T>,private alertService: AlertsService) {
+    constructor(private elementService : ElementService<T>,private alertService: AlertsService, private router : Router) {
         
     }
     searchElement(elementName){
@@ -66,6 +67,11 @@ abstract class GridableComponent<T extends DatabaseElement > {
             },
             error => {
               this.alertService.error(error.error.message)
+              if(error.error.message == "Wrong authentication token"){
+                console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEH")
+                console.log(error.error.message)
+                this.router.navigate(["/login"])
+              }
             }
           );
     }
@@ -88,6 +94,11 @@ abstract class GridableComponent<T extends DatabaseElement > {
                 },
                 error => {
                     this.alertService.error(error.error.message)
+                    console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEH")
+                    console.log(error.error.message)
+                    if(error.error.message == "Wrong authentication token"){
+                        this.router.navigate(["/login"])
+                      }
                   }
             )
 
@@ -100,6 +111,11 @@ abstract class GridableComponent<T extends DatabaseElement > {
                 },
                 error => {
                     this.alertService.error(error.error.message)
+                    console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEH")
+                    console.log(error.error.message)
+                    if(error.error.message == "Wrong authentication token"){
+                        this.router.navigate(["/login"])
+                      }
                 }
             )
     }
@@ -112,6 +128,11 @@ abstract class GridableComponent<T extends DatabaseElement > {
             },
         error => {
             this.alertService.error(error.error.message)
+            console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEH")
+            console.log(error.error.message)
+            if(error.error.message == "Wrong authentication token"){
+                this.router.navigate(["/login"])
+              }
         })
     }
     closeModal(){

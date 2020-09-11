@@ -25,11 +25,11 @@
         <clr-dg-detail-header>IP: {{detail.ip}}</clr-dg-detail-header>
         <clr-dg-detail-body>
           <clr-input-container>
-            <label>IP</label>
+            <label>IP<span style="color:red"></span></label>
             <input type="text" name="name" [(ngModel)]="detail.ip" clrInput placeholder="{{detail.ip}}" />
           </clr-input-container>
           <clr-datalist-container>
-            <label>Network</label>
+            <label>Network<span style="color:red"></span></label>
             <input clrDatalistInput name="network" [value]="detail.network.name" (change)="updateNetwork(detail,$event.target.value)" />
             <datalist>
               <option *ngFor="let network of networks" [value]="network.name"></option>

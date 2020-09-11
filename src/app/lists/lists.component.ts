@@ -7,6 +7,7 @@ import Domain from '../shared/models/domain';
 import { getFreshList, getFreshDomain,  } from '../shared/functions/utils'
 import { ClrDatagridComparatorInterface, ClrDatagridStringFilterInterface, ClrDatagridNumericFilterInterface } from '@clr/angular';
 import { DomainService } from '../domains/domains.service';
+import { Router } from '@angular/router';
 
 interface elementType {
   id: number
@@ -83,9 +84,10 @@ export class ListsComponent extends GridableComponent<List>
   constructor(
     private domainService: DomainService,
     listService : ListService,
-    alertService: AlertsService
+    alertService: AlertsService,
+    router: Router
   ) {
-    super(listService, alertService);
+    super(listService, alertService,router);
   }
 
   ngOnInit() {

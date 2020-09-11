@@ -47,7 +47,84 @@
       </ng-template>
     </clr-tab>
     <clr-tab *ngIf="!fromAsset">
-      <button clrTabLink>Software</button>
+      <button clrTabLink>Assets</button>
+      <ng-template [(clrIfActive)]="softwareActive">
+        <clr-tab-content>
+          <div class="clr-row">
+            <div class="clr-col-lg-auto">
+              <clr-radio-container clrInline>
+                <label>New Asset?</label>
+                <clr-radio-wrapper>
+                  <input type="radio" clrRadio required value="Y" [(ngModel)]="newAsset" />
+                  <label>Yes</label>
+                </clr-radio-wrapper>
+                <clr-radio-wrapper>
+                  <input type="radio" clrRadio required value="N" [(ngModel)]="newAsset" />
+                  <label>No</label>
+                </clr-radio-wrapper>
+              </clr-radio-container>
+              <app-add-asset *ngIf="newAsset=='Y'" [fromServer]="true" (created)="addAsset($event)"></app-add-asset>
+              <clr-datalist-container *ngIf="newAsset=='N'">
+                <label>Assets</label>
+                <input clrDatalistInput name="asset" [(ngModel)]="auxAsset" (change)="setAsset($event.target.value)" />
+                <datalist>
+                  <option *ngFor="let asset of assets" [value]="asset.name"></option>
+                </datalist>
+              </clr-datalist-container>
+  
+              <clr-datagrid *ngIf="newElement.assets.length>0">
+                <clr-dg-column>Name</clr-dg-column>
+                <clr-dg-column>Type</clr-dg-column>
+                <clr-dg-row *ngFor="let asset of newElement.assets">
+                  <clr-dg-action-overflow>
+                    <button (click)="toggleAsset(asset)" class="action-item">Remove</button>
+                  </clr-dg-action-overflow>
+                  <clr-dg-cell>{{asset.name}}</clr-dg-cell>
+                  <clr-dg-cell *ngIf="asset.assetType=='WEB'">
+                    <clr-icon shape="network-globe"></clr-icon>
+                  </clr-dg-cell>
+                  <clr-dg-cell *ngIf="asset.assetType=='API'">
+                    <clr-icon shape="usb"></clr-icon>
+                  </clr-dg-cell>
+                  <clr-dg-cell *ngIf="asset.assetType=='APP'">
+                    <clr-icon shape="mobile"></clr-icon>
+                  </clr-dg-cell>
+                  <clr-dg-cell *ngIf="asset.assetType=='IOT'">
+                    <clr-icon shape="router"></clr-icon>
+                  </clr-dg-cell>
+                  <ng-template #noIP>
+                    <clr-dg-cell>
+                    </clr-dg-cell>
+                  </ng-template>
+                </clr-dg-row>
+                <clr-dg-footer>
+                  <clr-dg-pagination #pagination [clrDgPageSize]="10">
+                    <clr-dg-page-size [clrPageSizeOptions]="[1,2,10,20,50,100]">Assets per page
+                    </clr-dg-page-size>
+                    {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}}
+                    Assets
+                  </clr-dg-pagination>
+                </clr-dg-footer>
+              </clr-datagrid>
+            </div>
+          </div>
+          <button class="btn btn-primary" (click)="create();">Add Asset</button>
+        </clr-tab-content>
+      </ng-template>
+    </clr-tab>
+
+
+
+
+
+
+
+
+
+
+    
+   <!-- <clr-tab *ngIf="!fromAsset">
+      <button clrTabLink>Assets</button>
       <ng-template [(clrIfActive)]="softwareActive">
         <clr-tab-content>
           <form  class="clr-form clr-form-compact">
@@ -73,7 +150,7 @@
           <button class="btn btn-primary" (click)="create();">Add Server</button>
         </clr-tab-content>
       </ng-template>
-    </clr-tab>
+    </clr-tab>-->
     <clr-tab>
       <button clrTabLink>Characteristics</button>
       <ng-template [(clrIfActive)]="characteristicsActive">
@@ -152,8 +229,10 @@
           (click)="addContact();">Add contact</button>
           <clr-datagrid *ngIf="newElement.contacts.length>0">
             <clr-dg-column>New Contact?</clr-dg-column>
-            <clr-dg-column>Name</clr-dg-column>
             <clr-dg-column>Role</clr-dg-column>
+            <clr-dg-column>Name</clr-dg-column>
+            <clr-dg-column>Email</clr-dg-column>
+          <clr-dg-column>Tlf</clr-dg-column>
             <clr-dg-row *ngFor="let contact of newElement.contacts">
               <clr-dg-action-overflow>
                 <button (click)="toggleContact(contact)" class="action-item">Remove</button>
@@ -166,8 +245,10 @@
                   <clr-icon shape="times"></clr-icon>
                 </clr-dg-cell>
               </ng-template>
-              <clr-dg-cell>{{contact.contact.name}}</clr-dg-cell>
               <clr-dg-cell>{{contact.functionality}}</clr-dg-cell>
+              <clr-dg-cell>{{contact.contact.name}}</clr-dg-cell>
+              <clr-dg-cell>{{contact.contact.email}}</clr-dg-cell>
+              <clr-dg-cell>{{contact.contact.tlf}}</clr-dg-cell>
             </clr-dg-row>
             <clr-dg-footer>
               <clr-dg-pagination #pagination [clrDgPageSize]="10">
@@ -178,7 +259,7 @@
               </clr-dg-pagination>
             </clr-dg-footer>
           </clr-datagrid>
-          <button class="btn btn-primary" (click)="create();">Add Asset</button>
+          <button class="btn btn-primary" (click)="create();">Add Server</button>
         </clr-tab-content>
       </ng-template>
     </clr-tab>

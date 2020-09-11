@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import Asset from 'src/app/shared/models/asset';
 import { getFreshAsset, getFreshContactTo, getFreshDomain, validAsset } from 'src/app/shared/functions/utils';
 import { AreaService } from 'src/app/areas/areas.service';
@@ -26,6 +26,8 @@ export class AddAssetComponent extends AddElementComponent<Asset> implements OnI
 
   getFreshElement = getFreshAsset
   validateElement = validAsset
+
+@Input() fromServer : boolean = false
 
   public newArea: String = null
   public auxArea: String = ""
@@ -78,14 +80,14 @@ export class AddAssetComponent extends AddElementComponent<Asset> implements OnI
         }
       )
 
-    this.domainService.getSome([], { url: true })
+    this.domainService.getSome([], { url: true, privateDomain : true })
       .subscribe(
         (elements) => {
           this.domains = elements
         }
       )
 
-    this.serverService.getSome([], { hostname: true })
+    this.serverService.getSome([], { hostname: true, ip : true })
       .subscribe(
         (elements) => {
           this.servers = elements
@@ -97,7 +99,7 @@ export class AddAssetComponent extends AddElementComponent<Asset> implements OnI
           this.characteristics = elements
         }
       )
-    this.contactService.getSome([], { name: true })
+    this.contactService.getSome([], { name: true, email: true, tlf : true })
       .subscribe(
         (elements) => {
           this.contacts = elements

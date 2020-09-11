@@ -56,6 +56,7 @@ export class AssetDetailsComponent implements OnInit {
   public readonly _assetVisibilityTypes;
   public readonly _grcValues;
   public readonly _logValues;
+  hadArea: boolean = false;
 
 
   constructor(private assetService: AssetService, private serverService: ServerService, private characteristicService: CharacteristicService, private contactService: ContactService, private domainService: DomainService, private areaService: AreaService, private alertService: AlertsService) {
@@ -148,8 +149,12 @@ export class AssetDetailsComponent implements OnInit {
     this.assetService.get(asset.id, params)
       .subscribe((asset) => {
         this.asset = asset
+        if(this.asset.statusDate){
+          this.asset.statusDate = new Date(this.asset.statusDate)
+        }
         if (this.asset.area) {
           this.auxArea = this.asset.area.name
+          this.hadArea = true
         }
       },
         error => {
@@ -165,7 +170,8 @@ export class AssetDetailsComponent implements OnInit {
         return
       }
     }
-    this.asset.area = null
+    console.log("null area")
+    this.asset.area = undefined
   }
 
 
@@ -246,17 +252,27 @@ export class AssetDetailsComponent implements OnInit {
     if (this.asset.statusDate) {
       this.asset.statusDate = moment(this.asset.statusDate, "DD/MM/YYYY").toDate()
     }
-    console.log("AFTERS", this.asset.statusDate)
   }
   update() {
     if (this.asset.statusDate) {
-      var pre = this.asset.statusDate
-      this.asset.statusDate = moment(this.asset.statusDate, "DD/MM/YYYY").toDate()
+      this.asset.statusDate = new Date(this.asset.statusDate)
     }
+    if(!this.asset.area){
+      if(!this.hadArea){
+        delete this.asset.area
+      }else{
+        this.asset.area=null
+        this.hadArea=false
+      }
+    }else {
+      if (!this.hadArea) {
+        this.hadArea = true
+      }
+    }
+
+
     this.updated.emit(this.asset)
-    if (this.asset.statusDate) {
-      this.asset.statusDate = pre
-    }
+
   }
 
 }

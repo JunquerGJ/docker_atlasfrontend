@@ -4,6 +4,7 @@ import { FormBuilder } from "@angular/forms";
 import { GridableComponent } from '../shared/classes/class'
 import Contact from '../shared/models/contact'
 import { AlertsService } from "../alerts.service";
+import { Router } from '@angular/router';
 
 @Component({
   selector: "app-contacts",
@@ -17,9 +18,10 @@ export class ContactsComponent extends GridableComponent<Contact>
   }
   constructor(
     contactService: ContactService,
-    alertService: AlertsService
+    alertService: AlertsService,
+    router: Router
   ) {
-    super(contactService, alertService);
+    super(contactService, alertService,router);
   }
 
   ngOnInit() {

@@ -12,6 +12,7 @@ import { AppConstants } from '../shared/constants/constants';
 import { AssetService } from '../assets/assets.service';
 import { UserService } from '../administration/users/users.service';
 import { applyMixins } from '@clr/core/common';
+import { Router } from '@angular/router';
 @Component({
   selector: "app-companies",
   templateUrl: "./audits.component.html",
@@ -25,9 +26,10 @@ export class AuditsComponent extends GridableComponent<Audit>
     auditService: AuditService,
     alertService: AlertsService,
     private assetService : AssetService,
-    private userService : UserService
+    private userService : UserService,
+    router: Router
   ) {
-    super(auditService, alertService);
+    super(auditService, alertService, router);
     this._methodologies = AppConstants.methodologies
     this._auditTools = AppConstants.getAuditTools()
   }
@@ -103,8 +105,8 @@ export class AuditsComponent extends GridableComponent<Audit>
 
   
   addAudit(audit){
-    this.newElement = audit;
     this.transformDate()
+    this.newElement = audit;
     this.add()
   }
 }

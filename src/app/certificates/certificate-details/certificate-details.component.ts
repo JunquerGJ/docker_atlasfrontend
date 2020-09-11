@@ -18,15 +18,16 @@ export class CertificateDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.certificate = this.input
+    this.certificate.expirationDate = new Date(this.certificate.expirationDate)
   }
 
   update(){
     var result = validCertificate(this.certificate)
     if(!result){
-      var pre = this.certificate.expirationDate
-      this.certificate.expirationDate = moment(this.certificate.expirationDate, "DD/MM/YYYY").toDate()
+      if(this.certificate.expirationDate){
+        this.certificate.expirationDate = new Date(this.certificate.expirationDate)
+      }
       this.updated.emit(this.certificate)
-      this.certificate.expirationDate = pre
     }else{
       this.alertService.error(result)
     }
