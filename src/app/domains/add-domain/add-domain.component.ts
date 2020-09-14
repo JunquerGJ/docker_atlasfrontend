@@ -61,7 +61,7 @@ export class AddDomainComponent extends AddElementComponent<Domain> implements O
           this.assets = elements
         }
       )
-      this.listService.getSome([],{ name : true})
+      this.listService.getSome([],{ name : true , description : true, denyList:true})
       .subscribe(
         (elements) => {
           this.lists = elements
