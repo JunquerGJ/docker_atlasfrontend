@@ -1,19 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { VulnerabilityService } from "./vulnerabilities.service";
-import { FormBuilder } from "@angular/forms";
 import { AlertsService } from "src/app/alerts.service";
 import { GridableComponent } from '../shared/classes/class'
 import { getFreshVulnerability, getFreshEvidence } from '../shared/functions/utils'
 import Vulnerability from '../shared/models/vulnerability'
-import { AppConstants } from '../shared/constants/constants';
-import User from '../shared/models/user';
-import { UserService } from '../administration/users/users.service';
-import { ContactService } from '../contacts/contacts.service';
-import Contact from '../shared/models/contact';
-import Audit from '../shared/models/audit';
-import Asset from '../shared/models/asset';
-import { AuditService } from '../audits/audits.service';
-import { AssetService } from '../assets/assets.service';
 import Evidence from '../shared/models/evidence';
 import { ClrDatagridComparatorInterface, ClrDatagridNumericFilterInterface } from '@clr/angular';
 import { Router } from '@angular/router';
