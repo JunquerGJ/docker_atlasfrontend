@@ -4,6 +4,7 @@ import Server from './server';
 import Domain from './domain';
 import ContactToEntity from './contacttoentity';
 import Characteristic from './characteristic';
+import Vulnerability from './vulnerability';
 
 export default interface Asset extends DatabaseElement {
     name : String,
@@ -27,6 +28,7 @@ export default interface Asset extends DatabaseElement {
     area? : Area,
     characteristics? : Characteristic[]
     Domain? : Domain[],
+    Vulnerability? : Vulnerability[]
     contacts? : ContactToEntity[]
     servers? : Server[]
 

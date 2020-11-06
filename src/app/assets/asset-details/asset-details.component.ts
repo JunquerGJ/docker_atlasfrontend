@@ -17,12 +17,73 @@ import Area from 'src/app/shared/models/area';
 import * as moment from 'moment'
 import { getFreshContactTo } from 'src/app/shared/functions/utils';
 import { AppConstants } from 'src/app/shared/constants/constants';
+import Vulnerability from 'src/app/shared/models/vulnerability';
+import { ClrDatagridNumericFilterInterface, ClrDatagridComparatorInterface } from '@clr/angular';
+
+
+function getDays(discoveryDate, resolutionDate) {
+  var a = new Date(discoveryDate).getTime();
+  if (resolutionDate) {
+    var b = new Date(resolutionDate).getTime();
+  } else {
+    var b = new Date().getTime();
+  }
+
+  return Math.round((b - a) / (1000 * 60 * 60 * 24));
+}
+
+
+
+class DaysComparator implements ClrDatagridComparatorInterface<Vulnerability>{
+  compare(a, b) {
+    var daysA = getDays(a.discoveryDate,a.resolutionDate)
+    var daysB = getDays(b.discoveryDate,b.resolutionDate)
+
+    if (daysA == daysB) {
+      return 0
+    } else {
+      if (daysA < daysB) {
+        return -1
+      } else return 1
+    }
+  }
+}
+
+class DaysFilter implements ClrDatagridNumericFilterInterface<Vulnerability>{
+  accepts(item, low: number, high: number): boolean {
+    var days = getDays(item.discoveryDate,item.resolutionDate)
+    if(low || low == 0){
+      if(high || high == 0){
+        return (days<=high && days>=low) 
+      }else{
+        return days>=low
+      }
+    }else{
+      if(high || high == 0)
+        return days<=high
+    }
+    return true
+  }
+  
+}
+
+
+
+
+
+
+
+
 @Component({
   selector: 'app-asset-details',
   templateUrl: './asset-details.component.html',
   styleUrls: ['./asset-details.component.scss']
 })
 export class AssetDetailsComponent implements OnInit {
+
+
+  public daysComparator : DaysComparator = new DaysComparator()
+  public daysFilter = new DaysFilter()
 
   @Input() input: Asset;
   @Output() updated = new EventEmitter<Asset>()
@@ -40,6 +101,7 @@ export class AssetDetailsComponent implements OnInit {
   public softwareActive: Boolean
   public contactsActive: Boolean
   public characteristicsActive: Boolean
+  public vulnsActive: Boolean
 
   public addServer: Boolean
 
@@ -67,6 +129,45 @@ export class AssetDetailsComponent implements OnInit {
     this._grcValues = AppConstants.grcValues
     this._logValues = AppConstants.logValues
   }
+
+  getBC(risk) {
+    switch (risk) {
+      case "CRITICAL":
+        return "#8300ff"
+      case "HIGH":
+        return "red"
+      case "MEDIUM":
+        return "yellow"
+      case "LOW":
+        return "green"
+    }
+  }
+
+  getFC(risk) {
+    switch (risk) {
+      case "CRITICAL":
+        return "white"
+      case "HIGH":
+        return "white"
+      case "MEDIUM":
+        return "black"
+      case "LOW":
+        return "white"
+
+    }
+  }
+
+  getDays(discoveryDate, resolutionDate) {
+    var a = new Date(discoveryDate).getTime();
+    if (resolutionDate) {
+      var b = new Date(resolutionDate).getTime();
+    } else {
+      var b = new Date().getTime();
+    }
+
+    return Math.round((b - a) / (1000 * 60 * 60 * 24));
+  }
+
 
   ngOnInit(): void {
     this.asset = this.input;
@@ -139,8 +240,7 @@ export class AssetDetailsComponent implements OnInit {
       trazability: true,
       accessLogs: true,
       activityLogs: true,
-
-
+      Vulnerability : true
     }
     const params = new HttpParams()
       .set('params', JSON.stringify(aux))
