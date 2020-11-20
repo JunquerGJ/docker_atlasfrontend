@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
   isActive: boolean;
   isPVisible : boolean = false
   active: string;
+  expirationDate: Date
 
   constructor(private userService : UserService,private alertService : AlertsService) {
     this.isActive = true;
@@ -23,9 +24,13 @@ export class AppComponent implements OnInit {
     if (this.isActive === true) {
       this.active = 'active';
     }
+    
   }
 
   isLoggedIn() {
+    if(sessionStorage.getItem('token')){
+      this.expirationDate = new Date(JSON.parse(atob(sessionStorage.getItem('token').split(".")[1])).exp*1000)
+    }
     return sessionStorage.getItem('token');
   }
 
@@ -34,7 +39,6 @@ export class AppComponent implements OnInit {
   }
 
   changePassword({value}: { value }){
-    console.log("OJOOJO",value)
     this.userService.changePassword(value)
       .subscribe((res) => {
         this.alertService.success("Password changed")

@@ -16,6 +16,9 @@
     </a>
   </div>
   <div class="header-nav" *ngIf="isLoggedIn()">
+    <a class="nav-link nav-text" routerLinkActive="active">{{ expirationDate | date:'shortTime' }}</a>
+  </div>
+  <div class="header-nav" *ngIf="isLoggedIn()">
     <a class="nav-link nav-text" routerLink="/login" (click)="logout()" routerLinkActive="active">Logout</a>
   </div>
 </header>
