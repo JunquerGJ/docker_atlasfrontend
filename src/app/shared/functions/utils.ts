@@ -256,6 +256,9 @@ function validAudit(audit: Audit) {
   if (!audit.auditDate) {
     parameters.push(" Audit Date")
   }
+  if (!audit.tool){
+    parameters.push(" Tool")
+  }
   switch (parameters.length) {
     case 0:
       return result;
