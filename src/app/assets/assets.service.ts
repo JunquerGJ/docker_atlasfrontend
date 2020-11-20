@@ -55,6 +55,7 @@ export class AssetService implements ElementService<Asset>{
     var id = modAsset.id;
     var aux = JSON.parse(JSON.stringify(modAsset))
     delete aux.id;
+    delete aux.Vulnerability;
     return this.http.patch<Asset>(`${this._baseUrl}/assets/${id}`, aux,
       {
         headers: {
