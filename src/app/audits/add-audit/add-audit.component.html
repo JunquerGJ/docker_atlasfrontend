@@ -25,6 +25,15 @@
       <clr-control-error>This field is required!</clr-control-error>
     </clr-datalist-container>
   </div>
+  <div class="clr-col-lg-auto">
+    <clr-datalist-container>
+      <label>Domain</label>
+      <input clrDatalistInput name="domain" [(ngModel)]="auxDomain" (change)="setDomain($event.target.value)"/>
+      <datalist>
+        <option *ngFor="let domain of domains" [value]="domain.url"></option>
+      </datalist>
+    </clr-datalist-container>
+  </div>
 </div>
 <div class="clr-row">
   <div class="clr-col-lg-auto">

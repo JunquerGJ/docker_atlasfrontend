@@ -4,6 +4,7 @@
   <clr-datagrid>
     <clr-dg-column [clrDgField]="'name'" [clrDgSortOrder]="descSort">Name</clr-dg-column>
     <clr-dg-column [clrDgField]="'asset.name'" [clrDgSortOrder]="descSort">Asset</clr-dg-column>
+    <clr-dg-column [clrDgField]="'domain.url'" [clrDgSortOrder]="descSort">Domain</clr-dg-column>
     <clr-dg-column [clrDgField]="'auditDate'" [clrDgSortOrder]="descSort">Date</clr-dg-column>
     <clr-dg-column [clrDgField]="'methodology'" [clrDgSortOrder]="descSort">Methodology</clr-dg-column>
     <clr-dg-column [clrDgField]="'tool'" [clrDgSortOrder]="descSort">Tool</clr-dg-column>
@@ -14,6 +15,10 @@
     <clr-dg-row *clrDgItems="let audit of elements" [clrDgItem]="audit">
       <clr-dg-cell>{{audit.name}}</clr-dg-cell>
       <clr-dg-cell>{{audit.asset.name}}</clr-dg-cell>
+      <clr-dg-cell *ngIf="audit.domain; else undefinedDomain">{{audit.domain.url}}</clr-dg-cell>
+      <ng-template #undefinedDomain>
+        <clr-dg-cell></clr-dg-cell>
+      </ng-template>
       <clr-dg-cell>{{audit.auditDate | date }}</clr-dg-cell>
       <clr-dg-cell>{{audit.methodology}}</clr-dg-cell>
       <clr-dg-cell>{{audit.tool}}</clr-dg-cell>

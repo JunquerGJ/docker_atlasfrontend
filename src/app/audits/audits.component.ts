@@ -61,7 +61,7 @@ export class AuditsComponent extends GridableComponent<Audit>
   public assets : Asset[] = []
 
   ngOnInit() {
-    this.defaultFields = { id : true, name : true , asset : true, auditDate : true, methodology : true, tool : true,auditor : true,Vulnerability : true}
+    this.defaultFields = { id : true, name : true , asset : true, auditDate : true, methodology : true, tool : true,auditor : true, domain: true ,Vulnerability : true}
     this.elementName = "Audit";
     this.elementNamePlural = "Audits";
     this.newElement = this.getFreshElement()

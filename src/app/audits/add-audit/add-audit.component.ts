@@ -10,6 +10,8 @@ import { AppConstants } from 'src/app/shared/constants/constants';
 import { AlertsService } from 'src/app/alerts.service';
 import { ElementSchemaRegistry } from '@angular/compiler';
 import { AddElementComponent } from 'src/app/shared/classes/class';
+import { DomainService } from 'src/app/domains/domains.service';
+import Domain from 'src/app/shared/models/domain';
 
 @Component({
   selector: 'app-add-audit',
@@ -22,16 +24,18 @@ export class AddAuditComponent extends AddElementComponent<Audit> implements OnI
   validateElement = validAudit
 
   public assets: Asset[] = []
+  public domains: Domain[] = []
   public users: User[] = []
   public auxAuditor: String
   public auxAsset: String
+  public auxDomain: String
 
   public readonly _methodologies;
   public readonly _auditTools;
 
   @Output() created = new EventEmitter<Audit>()
 
-  constructor(private assetService : AssetService, private userService : UserService, alertService : AlertsService) { 
+  constructor(private assetService : AssetService, private domainService : DomainService ,private userService : UserService, alertService : AlertsService) { 
     super(alertService)
     this._methodologies = AppConstants.methodologies
     this._auditTools = AppConstants.getAuditTools()
@@ -65,6 +69,17 @@ export class AddAuditComponent extends AddElementComponent<Audit> implements OnI
           }
         }
       )
+
+      this.domainService.getSome([], { url: true })
+      .subscribe(
+        (elements) => {
+          var i = 0;
+          for (i = 0; i < elements.length; i++) {
+            var aux = JSON.parse(JSON.stringify(elements[i]))
+            this.domains.push(aux)
+          }
+        }
+      )
   }
 
 
@@ -79,6 +94,17 @@ export class AddAuditComponent extends AddElementComponent<Audit> implements OnI
       }
     }
     this.auxAsset = ''
+  }
+
+  setDomain(domainUrl) {
+    var i = 0;
+    for(i<0;i<this.domains.length;i++){
+      if(this.domains[i].url == domainUrl){
+        this.newElement.domain = this.domains[i]
+        return
+      }
+    }
+    this.auxDomain = ''
   }
 
   setAuditor(auditorName) {
