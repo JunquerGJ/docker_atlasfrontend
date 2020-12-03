@@ -1,5 +1,5 @@
 export class AppConstants {
-  public static get baseURL(): string { return "https://192.168.1.12/api" }
+  public static get baseURL(): string { return "https://192.168.1.93/api" }
   public static get enviroments(): Object[] {
     return [
       "PRO",
@@ -240,6 +240,7 @@ public static get sources(): Object[]{
   }
   public static get vulnerabilityStatus(): Object[] {
     return [
+      { name: "ANALYSIS", value: "ANALYSIS" },
       { name: "OPEN", value: "OPEN" },
       { name: "CLOSED", value: "SOLVED" },
       { name: "FALSE POSITIVE", value: "FALSE_POSITIVE" },
