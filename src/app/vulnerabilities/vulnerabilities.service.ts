@@ -45,6 +45,12 @@ export class VulnerabilityService implements ElementService<Vulnerability>{
         }});
   }
   add(newVulnerability : Vulnerability): Observable<Vulnerability> {
+    if(newVulnerability.audit){
+      delete newVulnerability.audit.asset
+    }
+    delete newVulnerability.asset.confidentiality
+    delete newVulnerability.asset.availability
+    delete newVulnerability.asset.integrity
     return this.http.post<Vulnerability>(`${this._baseUrl}/vulnerabilities`, newVulnerability,
       {
         headers: {
