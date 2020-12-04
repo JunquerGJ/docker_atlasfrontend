@@ -8,6 +8,7 @@
     <clr-dg-column [clrDgField]="'risk'" [clrDgSortOrder]="descSort">Risk</clr-dg-column>
     <clr-dg-column [clrDgField]="'status'" [clrDgSortOrder]="descSort">Status</clr-dg-column>
     <clr-dg-column [clrDgField]="'asset.name'" [clrDgSortOrder]="descSort">Asset</clr-dg-column>
+    <clr-dg-column [clrDgField]="'auditor.name'" [clrDgSortOrder]="descSort">Auditor</clr-dg-column>
     <clr-dg-column [clrDgField]="'discoveryDate'" [clrDgSortOrder]="descSort">Found on</clr-dg-column>
     <clr-dg-column [clrDgField]="'mitigationDate'" [clrDgSortOrder]="descSort">Mitigated on</clr-dg-column>
     <clr-dg-column [clrDgField]="'resolutionDate'" [clrDgSortOrder]="descSort">Closed on</clr-dg-column>
@@ -22,6 +23,10 @@
       </clr-dg-cell>
       <clr-dg-cell><b>{{vulnerability.status}}</b></clr-dg-cell>
       <clr-dg-cell>{{vulnerability.asset.name}}</clr-dg-cell>
+      <clr-dg-cell *ngIf="vulnerability.auditor; else undefinedAuditor">{{vulnerability.auditor.name}}</clr-dg-cell>
+      <ng-template #undefinedAuditor>
+        <clr-dg-cell></clr-dg-cell>
+      </ng-template>
       <clr-dg-cell>{{vulnerability.discoveryDate | date}}</clr-dg-cell>
       <clr-dg-cell>{{vulnerability.mitigationDate | date}}</clr-dg-cell>
       <clr-dg-cell>{{vulnerability.resolutionDate | date}}</clr-dg-cell>
