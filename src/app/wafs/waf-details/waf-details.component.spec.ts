@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddVulnerabilityComponent } from './add-vulnerability.component';
+import { WafDetailsComponent } from './waf-details.component';
 
-describe('AddVulnerabilityComponent', () => {
-  let component: AddVulnerabilityComponent;
-  let fixture: ComponentFixture<AddVulnerabilityComponent>;
+describe('WafDetailsComponent', () => {
+  let component: WafDetailsComponent;
+  let fixture: ComponentFixture<WafDetailsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddVulnerabilityComponent ]
+      declarations: [ WafDetailsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddVulnerabilityComponent);
+    fixture = TestBed.createComponent(WafDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

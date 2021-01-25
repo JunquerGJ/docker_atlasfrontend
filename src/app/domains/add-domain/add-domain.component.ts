@@ -6,8 +6,8 @@ import { CertificateService } from 'src/app/certificates/certificates.service';
 import Certificate from 'src/app/shared/models/certificate';
 import Asset from 'src/app/shared/models/asset';
 import { AssetService } from 'src/app/assets/assets.service';
-import List from 'src/app/shared/models/list';
-import { ListService } from 'src/app/lists/list.service';
+import WAF from 'src/app/shared/models/waf';
+import { WafService } from 'src/app/wafs/waf.service';
 import { AlertsService } from 'src/app/alerts.service';
 import { AddElementComponent } from 'src/app/shared/classes/class';
 
@@ -27,18 +27,18 @@ export class AddDomainComponent extends AddElementComponent<Domain> implements O
   public readonly _clients;
   public certificates : Certificate[]
   public assets : Asset[]
-  public lists : List[]
+  public wafs : WAF[]
 
-  public newList : String = null 
+  public newWaf : String = null 
 
 
-  public auxList: String = ""
+  public auxWaf: String = ""
   public auxAsset: String = ""
   public auxCertificate: String = ""
 
   @Input() fromAsset : boolean = false
 
-  constructor(private listService : ListService,private certificateService : CertificateService, private assetService : AssetService,alertService : AlertsService) { 
+  constructor(private wafService : WafService,private certificateService : CertificateService, private assetService : AssetService,alertService : AlertsService) { 
     super(alertService)
     this._enviroments = AppConstants.enviroments
     this._clients = AppConstants.clients
@@ -61,10 +61,10 @@ export class AddDomainComponent extends AddElementComponent<Domain> implements O
           this.assets = elements
         }
       )
-      this.listService.getSome([],{ name : true , description : true, denyList:true})
+      this.wafService.getSome([],{ name : true , description : true, denyList:true})
       .subscribe(
         (elements) => {
-          this.lists = elements
+          this.wafs = elements
         }
       )
   }
@@ -75,16 +75,16 @@ export class AddDomainComponent extends AddElementComponent<Domain> implements O
   }
 
   
-  addList(list) {
-    this.newElement.lists.push(list)
-    this.auxList = ''
-    this.newList = null
+  addWaf(waf) {
+    this.newElement.wafs.push(waf)
+    this.auxWaf = ''
+    this.newWaf = null
   }
 
 
-  toggleList(list) {
-    var aux = this.newElement.lists.filter(elem => elem.name != list.name)
-    this.newElement.lists = aux
+  toggleWaf(waf) {
+    var aux = this.newElement.wafs.filter(elem => elem.name != waf.name)
+    this.newElement.wafs = aux
   }
 
   setCertificate(name) {
@@ -109,14 +109,14 @@ export class AddDomainComponent extends AddElementComponent<Domain> implements O
     this.auxAsset = ''
   }
 
-  setList(name) {
+  setWaf(name) {
     var i = 0;
-    for(i<0;i<this.lists.length;i++){
-      if(this.lists[i].name == name){
-        this.newElement.lists.push(this.lists[i])
+    for(i<0;i<this.wafs.length;i++){
+      if(this.wafs[i].name == name){
+        this.newElement.wafs.push(this.wafs[i])
       }
     }
-    this.auxList = ''
-    this.newList = null
+    this.auxWaf = ''
+    this.newWaf = null
   }
 }

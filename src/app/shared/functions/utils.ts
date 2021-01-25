@@ -4,7 +4,7 @@ import Area from '../models/area';
 import User from '../models/user';
 import Profile from '../models/profile';
 import Asset from '../models/asset';
-import List from '../models/list';
+import WAF from '../models/waf';
 import ContactToEntity from '../models/contacttoentity';
 import Domain from '../models/domain';
 import Audit from '../models/audit';
@@ -17,9 +17,10 @@ import Network from '../models/network';
 import Vulnerability from '../models/vulnerability';
 import Evidence from '../models/evidence';
 import { IPService } from 'src/app/ips/ips.service';
+import IDS from '../models/ids';
 
 function getFreshServer(): Server {
-  return { id: 0, hostname: "", ip: undefined, assets: [], contacts: [], characteristics: [] }
+  return { id: 0, hostname: "", ip: undefined, assets: [], contacts: [], characteristics: [] , idss : []}
 }
 
 function getFreshContact(): Contact {
@@ -46,12 +47,16 @@ function getFreshAsset(): Asset {
   return { id: 0, name: "", risk: 0, assetType: "", area: undefined, Domain: [], contacts: [], characteristics: [], servers: [] }
 }
 
-function getFreshList(): List {
+function getFreshWAF(): WAF {
   return { id: 0, name: "", denyList: false, description: "", domains: [] }
 }
 
+function getFreshIDS(): IDS {
+  return { id: 0, name: "", denyList: false, description: "", servers: [] }
+}
+
 function getFreshDomain(): Domain {
-  return { id: 0, url: "", enviroment: "", privateDomain: false, lists: [], client: "", errorCode: "" }
+  return { id: 0, url: "", enviroment: "", privateDomain: false, wafs: [], client: "", errorCode: "", comments : "" }
 }
 
 function getFreshCharacteristic(): Characteristic {
@@ -83,7 +88,7 @@ function getFreshEvidence(): Evidence {
 }
 
 function getFreshVulnerability(): Vulnerability {
-  return { id: 0, name: "", discoveryDate: undefined, description: "", executedTest: "", recommendation: "", risk: "", status: "", audit: undefined, asset: undefined, auditor: undefined, cwe: undefined, ticket: "", source: "", responsable: undefined }
+  return { id: 0, vulnType: "", name: "", discoveryDate: undefined, description: "", executedTest: "", recommendation: "", risk: "", status: "", audit: undefined, asset: undefined, auditor: undefined, cwe: undefined, ticket: "", source: "", responsable: undefined,cvssExploitability: "E:X",cvssRemediation_level:"RL:X",cvssReportconfidence:"RC:X",cvssEnviromentalUI : "MUI:X", cvssEnviromentalAC : "MAC:X", cvssEnviromentalAR : "AR:X",  cvssEnviromentalAI : "MA:X", cvssEnviromentalAV: "MAV:X", cvssEnviromentalCI : "MC:X", cvssEnviromentalCR :"CR:X", cvssEnviromentalII : "MI:X",cvssEnviromentalIR : "IR:X", cvssEnviromentalPR : "MPR:X", cvssEnviromentalS : "MS:X" }
 }
 
 function getVulnsRisk(vulnerabilities: Vulnerability[]) {
@@ -334,13 +339,32 @@ function validIP(ip: IP) {
   }
 }
 
-function validList(list: List) {
+function validWaf(waf: WAF) {
   let result = "";
   let parameters = []
-  if (!list.name) {
+  if (!waf.name) {
     parameters.push(" Name")
   }
-  if (!list.description) {
+  if (!waf.description) {
+    parameters.push(" Description")
+  }
+  switch (parameters.length) {
+    case 0:
+      return result;
+    case 1:
+      return "Missing parameter: " + parameters[0]
+    default:
+      return "Missing parameters: " + parameters.join(", ")
+  }
+}
+
+function validIDS(ids: IDS) {
+  let result = "";
+  let parameters = []
+  if (!ids.name) {
+    parameters.push(" Name")
+  }
+  if (!ids.description) {
     parameters.push(" Description")
   }
   switch (parameters.length) {
@@ -360,9 +384,6 @@ function validVulnerability(vulnerability: Vulnerability) {
     parameters.push("Name")
   }
 
-  if (!vulnerability.asset) {
-    parameters.push("Asset")
-  }
 
   if (!vulnerability.discoveryDate) {
     parameters.push("Discovery date")
@@ -370,6 +391,10 @@ function validVulnerability(vulnerability: Vulnerability) {
 
   if (!vulnerability.description) {
     parameters.push("Description")
+  }
+
+  if (!vulnerability.vulnType) {
+    parameters.push("Type")
   }
 
   if (!vulnerability.executedTest) {
@@ -462,7 +487,8 @@ export {
   getFreshNetwork,
   getFreshVulnerability,
   getVulnsRisk,
-  getFreshList,
+  getFreshWAF,
+  getFreshIDS,
   getFreshEvidence,
   validProfile,
   validUser,
@@ -473,7 +499,8 @@ export {
   validCertificate,
   validContact,
   validIP,
-  validList,
+  validWaf,
+  validIDS,
   validDomain,
   validNetwork,
   validServer,

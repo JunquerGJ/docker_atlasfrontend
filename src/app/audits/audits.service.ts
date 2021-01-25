@@ -44,6 +44,17 @@ export class AuditService implements ElementService<Audit>{
         }});
   }
   add(newAudit : Audit): Observable<Audit> {
+    if(newAudit.domain){
+      delete newAudit.domain.asset
+      delete newAudit.domain.certificate
+      delete newAudit.domain.client
+      delete newAudit.domain.enviroment
+      delete newAudit.domain.errorCode
+      delete newAudit.domain.id
+      delete newAudit.domain.wafs
+      delete newAudit.domain.privateDomain
+    }
+    delete newAudit.asset.Domain
     return this.http.post<Audit>(`${this._baseUrl}/audits`, newAudit,
       {
         headers: {

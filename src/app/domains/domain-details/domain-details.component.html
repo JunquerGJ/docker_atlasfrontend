@@ -50,27 +50,27 @@
             </ng-template>
         </clr-tab>
         <clr-tab>
-            <button clrTabLink>Lists</button>
+            <button clrTabLink>WAFSs</button>
             <ng-template [(clrIfActive)]="listActive">
                 <clr-tab-content>
                     <div class="clr-row">
                         <div class="clr-col-lg-auto">
-                            <clr-datagrid *ngIf="domain.lists.length>0">
+                            <clr-datagrid *ngIf="domain.wafs.length>0">
                                 <clr-dg-column>Domain</clr-dg-column>
-                                <clr-dg-row *ngFor="let list of domain.lists">
+                                <clr-dg-row *ngFor="let waf of domain.wafs">
                                     <clr-dg-action-overflow>
-                                        <button (click)="toggleList(list.name)" class="action-item">Remove from
-                                            list</button>
+                                        <button (click)="toggleWaf(waf.name)" class="action-item">Remove from
+                                            waf</button>
                                     </clr-dg-action-overflow>
-                                    <clr-dg-cell>{{list.name}}</clr-dg-cell>
+                                    <clr-dg-cell>{{waf.name}}</clr-dg-cell>
                                 </clr-dg-row>
                                 <clr-dg-footer>
                                     <clr-dg-pagination #pagination [clrDgPageSize]="10">
-                                        <clr-dg-page-size [clrPageSizeOptions]="[1,2,10,20,50,100]">Lists per page
+                                        <clr-dg-page-size [clrPageSizeOptions]="[1,2,10,20,50,100]">Wafs per page
                                         </clr-dg-page-size>
                                         {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of
                                         {{pagination.totalItems}}
-                                        Lists
+                                        WAFS
                                     </clr-dg-pagination>
                                 </clr-dg-footer>
                             </clr-datagrid>

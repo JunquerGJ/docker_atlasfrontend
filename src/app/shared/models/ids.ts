@@ -1,9 +1,9 @@
 import { DatabaseElement } from "../interfaces/interfaces";
-import Domain from './domain';
+import Server from './server';
 
-export default interface List extends DatabaseElement{
+export default interface IDS extends DatabaseElement{
     name : String
     description : String
     denyList : Boolean
-    domains : Domain[]
+    servers : Server[]
 }

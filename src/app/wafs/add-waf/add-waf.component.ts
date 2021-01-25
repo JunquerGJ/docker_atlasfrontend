@@ -1,21 +1,21 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter, Input } from '@angular/core';
-import List from 'src/app/shared/models/list';
-import { getFreshList, validList } from 'src/app/shared/functions/utils';
+import WAF from 'src/app/shared/models/waf';
+import { getFreshWAF, validWaf } from 'src/app/shared/functions/utils';
 import Domain from 'src/app/shared/models/domain';
 import { DomainService } from 'src/app/domains/domains.service';
 import { AlertsService } from 'src/app/alerts.service';
 import { AddElementComponent } from 'src/app/shared/classes/class';
 
 @Component({
-  selector: 'app-add-list',
-  templateUrl: './add-list.component.html',
-  styleUrls: ['./add-list.component.scss']
+  selector: 'app-add-waf',
+  templateUrl: './add-waf.component.html',
+  styleUrls: ['./add-waf.component.scss']
 })
-export class AddListComponent extends AddElementComponent<List> implements OnInit, OnDestroy {
+export class AddWafComponent extends AddElementComponent<WAF> implements OnInit, OnDestroy {
 
 
-  getFreshElement = getFreshList
-  validateElement = validList
+  getFreshElement = getFreshWAF
+  validateElement = validWaf
   public domains : Domain[]
 
   @Input() fromDomain : boolean = false
@@ -31,7 +31,7 @@ public auxDomain: String = ""
   }
 
   ngOnInit(): void {
-    this.newElement = getFreshList()
+    this.newElement = getFreshWAF()
     this.domainService.getSome([], { url : true})
       .subscribe(
         (elements) => {

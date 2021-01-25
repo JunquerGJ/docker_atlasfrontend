@@ -27,7 +27,7 @@ export class AddAssetComponent extends AddElementComponent<Asset> implements OnI
   getFreshElement = getFreshAsset
   validateElement = validAsset
 
-@Input() fromServer : boolean = false
+  @Input() fromServer : boolean
 
   public newArea: String = null
   public auxArea: String = ""
@@ -73,6 +73,8 @@ export class AddAssetComponent extends AddElementComponent<Asset> implements OnI
   ngOnInit(): void {
     this.newElement = getFreshAsset()
     this.auxContactTo = getFreshContactTo();
+    console.log("eh")
+    console.log(this.fromServer)
     this.areaService.getSome([], { name: true })
       .subscribe(
         (elements) => {

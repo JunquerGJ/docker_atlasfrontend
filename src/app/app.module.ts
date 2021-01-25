@@ -41,9 +41,7 @@ import { AddVulnerabilityComponent } from './vulnerabilities/add-vulnerability/a
 import { AddAreaComponent } from './areas/add-area/add-area.component';
 import { VulnerabilityDetailsComponent } from './vulnerabilities/vulnerability-details/vulnerability-details.component';
 import { AuditDetailsComponent } from './audits/audit-details/audit-details.component';
-import { ListsComponent } from './lists/lists.component';
-import { AddListComponent } from './lists/add-list/add-list.component';
-import { ListDetailsComponent } from './lists/list-details/list-details.component';
+import { WAFComponent } from './wafs/wafs.component';
 import { DomainDetailsComponent } from './domains/domain-details/domain-details.component';
 import { AddProfileComponent } from './administration/profiles/add-profile/add-profile.component';
 import { AddUserComponent } from './administration/users/add-user/add-user.component';
@@ -78,6 +76,12 @@ import { MethodologyDetailComponent } from './methodologies/methodology-detail/m
 import { NotFoundComponent } from './not-found/not-found.component';*/
 
 import es from '@angular/common/locales/es';
+import { AuthGuard } from './auth/auth.guard';
+import { IDSComponent } from './ids/ids.component';
+import { AddWafComponent } from './wafs/add-waf/add-waf.component';
+import { WafDetailsComponent } from './wafs/waf-details/waf-details.component';
+import { AddIDSComponent } from './ids/add-ids/add-ids.component';
+import { IDSDetailsComponent } from './ids/ids-details/ids-details.component';
 registerLocaleData(es)
 
 @NgModule({
@@ -116,9 +120,7 @@ registerLocaleData(es)
     AddAreaComponent,
     VulnerabilityDetailsComponent,
     AuditDetailsComponent,
-    ListsComponent,
-    AddListComponent,
-    ListDetailsComponent,
+    WAFComponent,
     DomainDetailsComponent,
     AddProfileComponent,
     AddUserComponent,
@@ -128,6 +130,13 @@ registerLocaleData(es)
     ContactDetailsComponent,
     IpDetailsComponent,
     NetworkDetailsComponent,
+    IDSComponent,
+    WAFComponent,
+    AddWafComponent,
+    WafDetailsComponent,
+    IDSComponent,
+    AddIDSComponent,
+    IDSDetailsComponent,
     /*
     DashboardComponent,
     CompaniesComponent,
@@ -165,7 +174,7 @@ registerLocaleData(es)
   ],
   providers: [{
     provide : LOCALE_ID, useValue : "es-*"
-  }],
+  },AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {

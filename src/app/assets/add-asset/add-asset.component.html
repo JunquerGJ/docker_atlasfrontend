@@ -387,7 +387,7 @@
       </clr-tab-content>
     </ng-template>
   </clr-tab>
-  <clr-tab *nfIf="!fromServer">
+  <clr-tab *ngIf="!fromServer">
     <button clrTabLink>Servers</button>
     <ng-template [(clrIfActive)]="serversActive">
       <clr-tab-content>

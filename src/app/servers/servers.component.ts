@@ -187,7 +187,7 @@ export class ServersComponent extends GridableComponent<Server>
   }
 
   ngOnInit() {
-    this.defaultFields = {id : true,hostname : true,assets : true, ip : true}
+    this.defaultFields = {id : true,hostname : true,assets : true, ip : true, idss : true}
     this.elementName = "Server";
     this.elementNamePlural = "Servers";
     this.newElement = this.getFreshElement()

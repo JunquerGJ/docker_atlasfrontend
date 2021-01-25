@@ -120,7 +120,7 @@ export class VulnerabilitiesComponent extends GridableComponent<Vulnerability>
   }
 
   ngOnInit() {
-    this.defaultFields = { id: true, status: true, auditor: true ,asset: true, name: true, mitigationDate: true, discoveryDate: true, resolutionDate: true, risk: true }
+    this.defaultFields = { id: true, status: true, auditor: true ,asset: true, server : true, name: true, mitigationDate: true, discoveryDate: true, resolutionDate: true, risk: true, vulnType : true }
     this.elementName = "Vulnerability";
     this.elementNamePlural = "Vulnerabilities";
     this.newElement = this.getFreshElement()

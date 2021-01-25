@@ -1,0 +1,49 @@
+<div class="wrap">
+    <button class="btn btn-outline" (click)="isModalVisible=true">Add {{elementName}}</button>
+    <clr-datagrid>
+      <clr-dg-column [clrDgField]="'name'" [clrDgSortOrder]="descSort">Name</clr-dg-column>
+      <clr-dg-column [clrDgField]="'denyList'" [clrDgSortOrder]="descSort">Deny List</clr-dg-column>
+      <clr-dg-column [clrDgField]="'description'" [clrDgSortOrder]="descSort">Description</clr-dg-column>
+      <clr-dg-column [clrDgSortBy]="serverComparator">Entries
+        <clr-dg-numeric-filter [clrDgNumericFilter]="serverFilter"></clr-dg-numeric-filter>
+      </clr-dg-column>
+      <clr-dg-row *clrDgItems="let ids of elements" [clrDgItem]="ids">
+        <clr-dg-cell>{{ids.name}}</clr-dg-cell>
+        <clr-dg-cell *ngIf="ids.denyList; else noDeny"><clr-icon shape="check-circle" class="is-solid"></clr-icon></clr-dg-cell>
+          <ng-template #noDeny>
+            <clr-dg-cell>
+              <clr-icon shape="times"></clr-icon>
+            </clr-dg-cell>
+          </ng-template>
+        <clr-dg-cell>{{ids.description}}</clr-dg-cell>
+        <clr-dg-cell>{{ids.servers.length}}</clr-dg-cell>
+        <clr-dg-action-overflow>
+          <button class="action-item" (click)="delete(ids)">Delete</button>
+        </clr-dg-action-overflow>
+      </clr-dg-row>
+      <clr-dg-detail *clrIfDetail="let detail">
+        <clr-dg-detail-header>IDS: {{detail.name}}</clr-dg-detail-header>
+        <clr-dg-detail-body>
+          <app-ids-details [input]="detail" (updated)="modify($event)" ngProjectAs="clr-dg-row-detail">
+          </app-ids-details>
+        </clr-dg-detail-body>
+      </clr-dg-detail>-->
+      <clr-dg-footer>
+        <clr-dg-pagination #pagination [clrDgPageSize]="10">
+          <clr-dg-page-size [clrPageSizeOptions]="[1,2,10,20,50,100]">{{elementNamePlural}} per page</clr-dg-page-size>
+          {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} {{elementNamePlural}}
+        </clr-dg-pagination>
+      </clr-dg-footer>
+    </clr-datagrid>
+  </div>
+  
+  
+  
+  
+  
+  <clr-modal *ngIf="isModalVisible" [(clrModalOpen)]="isModalVisible" [clrModalClosable]="true" [clrModalSize]="'xl'">
+    <h3 class="modal-title">New {{elementName}}</h3>
+    <div class="modal-body">
+      <app-add-ids (created)="addIDS($event)"></app-add-ids>
+    </div>
+  </clr-modal>

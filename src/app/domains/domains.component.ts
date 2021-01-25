@@ -5,7 +5,7 @@ import { GridableComponent } from '../shared/classes/class'
 import Domain from '../shared/models/domain'
 import { AppConstants } from '../shared/constants/constants';
 import { getFreshDomain, getFreshCertificate } from '../shared/functions/utils'
-import { ClrDatagridStringFilterInterface, ClrDatagridComparatorInterface } from '@clr/angular';
+import { ClrDatagridStringFilterInterface, ClrDatagridComparatorInterface, ClrDatagridNumericFilterInterface } from '@clr/angular';
 import { Router } from '@angular/router';
 
 
@@ -26,6 +26,9 @@ class AssetComparator implements ClrDatagridComparatorInterface<Domain>{
     }
   }
 }
+
+
+
 class SSLComparator implements ClrDatagridComparatorInterface<Domain>{
   compare(a: Domain, b: Domain): number {
     if(a.certificate){
@@ -53,8 +56,45 @@ class SSLFilter implements ClrDatagridStringFilterInterface<Domain>{
   }
 }
   
+function getDays(expirationDate) {
+  var a = new Date(expirationDate).getTime();
+  var b = new Date().getTime();
 
+  return Math.round((a - b) / (1000 * 60 * 60 * 24));
+}
 
+class DaysComparator implements ClrDatagridComparatorInterface<Domain>{
+  compare(a, b) {
+    var daysA = getDays(a.certificate.expirationDate)
+    var daysB = getDays(b.certificate.expirationDate)
+
+    if (daysA == daysB) {
+      return 0
+    } else {
+      if (daysA < daysB) {
+        return -1
+      } else return 1
+    }
+  }
+}
+
+class DaysFilter implements ClrDatagridNumericFilterInterface<Domain>{
+  accepts(item, low: number, high: number): boolean {
+    var days = getDays(item.certificate.expirationDate)
+    if(low || low == 0){
+      if(high || high == 0){
+        return (days<=high && days>=low) 
+      }else{
+        return days>=low
+      }
+    }else{
+      if(high || high == 0)
+        return days<=high
+    }
+    return true
+  }
+  
+}
 
 @Component({
   selector: "app-companies",
@@ -77,6 +117,9 @@ implements OnInit {
 
   public readonly _enviroments;
 
+  public daysComparator : DaysComparator = new DaysComparator()
+  public daysFilter = new DaysFilter()
+
   constructor(
     domainService: DomainService,
     alertService: AlertsService,
@@ -88,7 +131,7 @@ implements OnInit {
 
   ngOnInit() {
     this.elementName = "Domain";
-    this.defaultFields = { id : true, enviroment : true, url : true ,asset : true, lists: true, certificate : true, privateDomain : true, client : true ,errorCode : true}
+    this.defaultFields = { id : true, enviroment : true, url : true ,asset : { select : { name : true,servers : { select : { hostname: true,ip : true}}} }, wafs: true, certificate : true, privateDomain : true, client : true ,errorCode : true, comments : true}
     this.elementNamePlural = "Domains";
     this.newElement = this.getFreshElement()
     this.getSome([],this.defaultFields);  
@@ -97,6 +140,13 @@ implements OnInit {
   addDomain(domain){
     this.newElement = domain;
     this.add()
+  }
+
+  getDays(expirationDate) {
+    var a = new Date(expirationDate).getTime();
+    var b = new Date().getTime();
+  
+    return Math.round((a - b) / (1000 * 60 * 60 * 24));
   }
 
   public modifyDomain(domain){

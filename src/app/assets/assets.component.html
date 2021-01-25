@@ -197,6 +197,6 @@
 <clr-modal *ngIf="isModalVisible" [(clrModalOpen)]="isModalVisible" [clrModalClosable]="true" [clrModalSize]="'xl'">
   <h3 class="modal-title">New {{elementName}}</h3>
   <div class="modal-body">
-    <app-add-asset (created)="addAsset($event)"></app-add-asset>
+    <app-add-asset [fromServer]="false" (created)="addAsset($event)"></app-add-asset>
   </div>
 </clr-modal>

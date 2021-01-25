@@ -23,22 +23,22 @@
 
 
 <clr-radio-container clrInline>
-  <label>New List?</label>
+  <label>New WAF?</label>
   <clr-radio-wrapper>
-    <input type="radio" clrRadio required value="Y" [(ngModel)]="newList" />
+    <input type="radio" clrRadio required value="Y" [(ngModel)]="newWaf" />
     <label>Yes</label>
   </clr-radio-wrapper>
   <clr-radio-wrapper>
-    <input type="radio" clrRadio required value="N" [(ngModel)]="newList" />
+    <input type="radio" clrRadio required value="N" [(ngModel)]="newWaf" />
     <label>No</label>
   </clr-radio-wrapper>
 </clr-radio-container>
-<app-add-list *ngIf="newList=='Y'" [fromDomain]="true" (created)="addList($event)"></app-add-list>
-<clr-datalist-container *ngIf="newList=='N'">
-  <label>List</label>
-  <input clrDatalistInput name="list" [(ngModel)]="auxList" (change)="setList($event.target.value)" />
+<app-add-waf *ngIf="newWaf=='Y'" [fromDomain]="true" (created)="addWaf($event)"></app-add-waf>
+<clr-datalist-container *ngIf="newWaf=='N'">
+  <label>WAF</label>
+  <input clrDatalistInput name="waf" [(ngModel)]="auxWaf" (change)="setWaf($event.target.value)" />
   <datalist>
-    <option *ngFor="let list of lists" [value]="list.name"></option>
+    <option *ngFor="let waf of wafs" [value]="waf.name"></option>
   </datalist>
 </clr-datalist-container>
 
@@ -55,28 +55,28 @@
   </datalist>
 </clr-datalist-container>-->
 
-<clr-datagrid *ngIf="newElement.lists.length>0">
-  <clr-dg-column>New List?</clr-dg-column>
+<clr-datagrid *ngIf="newElement.wafs.length>0">
+  <clr-dg-column>New WAF?</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
-  <clr-dg-row *ngFor="let list of newElement.lists">
+  <clr-dg-row *ngFor="let waf of newElement.wafs">
       <clr-dg-action-overflow>
-          <button (click)="toggleList(list)"
+          <button (click)="toggleWaf(waf)"
               class="action-item">Remove</button>
       </clr-dg-action-overflow>
-      <clr-dg-cell *ngIf="list.description; else old"><clr-icon shape="check-circle" class="is-solid"></clr-icon></clr-dg-cell>
+      <clr-dg-cell *ngIf="waf.description; else old"><clr-icon shape="check-circle" class="is-solid"></clr-icon></clr-dg-cell>
         <ng-template #old>
           <clr-dg-cell>
             <clr-icon shape="times"></clr-icon>
           </clr-dg-cell>
         </ng-template>
-      <clr-dg-cell>{{list.name}}</clr-dg-cell>
+      <clr-dg-cell>{{waf.name}}</clr-dg-cell>
   </clr-dg-row>
   <clr-dg-footer>
       <clr-dg-pagination #pagination [clrDgPageSize]="10">
-          <clr-dg-page-size [clrPageSizeOptions]="[1,2,10,20,50,100]">Lists per page
+          <clr-dg-page-size [clrPageSizeOptions]="[1,2,10,20,50,100]">WAFS per page
           </clr-dg-page-size>
           {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}}
-          Lists
+          Wafs
       </clr-dg-pagination>
   </clr-dg-footer>
 </clr-datagrid>
@@ -137,4 +137,9 @@
     </div>
   </div>
 </div>
+  <clr-textarea-container>
+      <label>Comments</label>
+      <textarea clrTextarea [(ngModel)]="newElement.comments" name="comments"></textarea>
+    </clr-textarea-container>
+  
 <button (click)="create();" class="btn btn-outline">Add Domain</button>

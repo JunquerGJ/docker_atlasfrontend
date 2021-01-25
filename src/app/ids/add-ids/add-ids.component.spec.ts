@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BlacklistsComponent } from './lists.component';
+import { AddIdsComponent } from './add-ids.component';
 
-describe('BlacklistsComponent', () => {
-  let component: BlacklistsComponent;
-  let fixture: ComponentFixture<BlacklistsComponent>;
+describe('AddIdsComponent', () => {
+  let component: AddIdsComponent;
+  let fixture: ComponentFixture<AddIdsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BlacklistsComponent ]
+      declarations: [ AddIdsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BlacklistsComponent);
+    fixture = TestBed.createComponent(AddIdsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

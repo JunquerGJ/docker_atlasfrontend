@@ -68,8 +68,6 @@ abstract class GridableComponent<T extends DatabaseElement > {
             error => {
               this.alertService.error(error.error.message)
               if(error.error.message == "Wrong authentication token"){
-                console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEH")
-                console.log(error.error.message)
                 this.router.navigate(["/login"])
               }
             }
@@ -94,8 +92,6 @@ abstract class GridableComponent<T extends DatabaseElement > {
                 },
                 error => {
                     this.alertService.error(error.error.message)
-                    console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEH")
-                    console.log(error.error.message)
                     if(error.error.message == "Wrong authentication token"){
                         this.router.navigate(["/login"])
                       }
@@ -111,8 +107,6 @@ abstract class GridableComponent<T extends DatabaseElement > {
                 },
                 error => {
                     this.alertService.error(error.error.message)
-                    console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEH")
-                    console.log(error.error.message)
                     if(error.error.message == "Wrong authentication token"){
                         this.router.navigate(["/login"])
                       }
@@ -128,8 +122,6 @@ abstract class GridableComponent<T extends DatabaseElement > {
             },
         error => {
             this.alertService.error(error.error.message)
-            console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEH")
-            console.log(error.error.message)
             if(error.error.message == "Wrong authentication token"){
                 this.router.navigate(["/login"])
               }

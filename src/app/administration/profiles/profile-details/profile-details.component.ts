@@ -15,7 +15,7 @@ export class ProfileDetailsComponent implements OnInit {
   @Input() input : Profile;
   profile : Profile;
   @Output() updated = new EventEmitter<Profile>();
-  public administrationEntities = ["Area","User","Profile","Asset","Audit","Vulnerability","CWE","Contact","Network","IP","Server","Characteristic","Domain", "Certificate","List"]
+  public administrationEntities = ["Area","User","Profile","Asset","Audit","Vulnerability","CWE","Contact","Network","IP","Server","Characteristic","Domain", "Certificate","Waf","Ids"]
   public permissionList =["CREATE","READ","UPDATE","DELETE"]
 
   constructor(private profileService : ProfileService,private alertService : AlertsService) { }

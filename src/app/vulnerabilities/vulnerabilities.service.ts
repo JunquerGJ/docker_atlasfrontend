@@ -47,10 +47,36 @@ export class VulnerabilityService implements ElementService<Vulnerability>{
   add(newVulnerability : Vulnerability): Observable<Vulnerability> {
     if(newVulnerability.audit){
       delete newVulnerability.audit.asset
+      delete newVulnerability.audit.auditor
+      delete newVulnerability.audit.domain
     }
-    delete newVulnerability.asset.confidentiality
-    delete newVulnerability.asset.availability
-    delete newVulnerability.asset.integrity
+    if(newVulnerability.domain){
+      delete newVulnerability.domain.asset
+      delete newVulnerability.domain.certificate
+      delete newVulnerability.domain.client
+      delete newVulnerability.domain.enviroment
+      delete newVulnerability.domain.errorCode
+      delete newVulnerability.domain.id
+      delete newVulnerability.domain.certificateId
+      delete newVulnerability.domain.assetId
+      delete newVulnerability.domain.wafs
+      delete newVulnerability.domain.privateDomain
+    }
+
+    if(newVulnerability.asset){
+      delete newVulnerability.asset.confidentiality
+      delete newVulnerability.asset.availability
+      delete newVulnerability.asset.integrity
+      delete newVulnerability.asset.Domain
+      delete newVulnerability.asset.characteristics
+    }
+
+
+    if(newVulnerability.server){
+      delete newVulnerability.server.idss
+      delete newVulnerability.server.assets
+      delete newVulnerability.server.characteristics
+    }
     return this.http.post<Vulnerability>(`${this._baseUrl}/vulnerabilities`, newVulnerability,
       {
         headers: {

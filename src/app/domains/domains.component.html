@@ -4,7 +4,7 @@
     <clr-dg-column [clrDgField]="'client'" [clrDgSortOrder]="descSort">Client</clr-dg-column>
     <clr-dg-column [clrDgField]="'url'" [clrDgSortOrder]="descSort">Domain</clr-dg-column>
     <clr-dg-column [clrDgField]="'privateDomain'" [clrDgSortOrder]="descSort">Private</clr-dg-column>
-    <clr-dg-column [clrDgField]="'waf'" [clrDgSortOrder]="descSort">Lists</clr-dg-column>
+    <clr-dg-column [clrDgField]="'waf'" [clrDgSortOrder]="descSort">WAFS</clr-dg-column>
     <clr-dg-column [clrDgField]="'enviroment'" [clrDgSortOrder]="descSort">Enviroment</clr-dg-column>
     <clr-dg-column [clrDgSortBy]="sslComparator">SSL
       <clr-dg-string-filter [clrDgStringFilter]="sslFilter"></clr-dg-string-filter>
@@ -21,11 +21,26 @@
     </clr-dg-column>
     <clr-dg-column>
       <ng-container *clrDgHideableColumn="{ hidden : true}">
-        Expiration date
+        Days to expiration
       </ng-container>
     </clr-dg-column>
     <clr-dg-column [clrDgSortBy]="assetComparator">Asset
       <clr-dg-string-filter [clrDgStringFilter]="assetFilter"></clr-dg-string-filter>
+    </clr-dg-column>
+    <clr-dg-column [clrDgSortOrder]="descSort">
+      <ng-container *clrDgHideableColumn="{ hidden : true}">
+        Server
+      </ng-container>
+    </clr-dg-column>
+    <clr-dg-column [clrDgSortOrder]="descSort">
+      <ng-container *clrDgHideableColumn="{ hidden : true}">
+        IP
+      </ng-container>
+    </clr-dg-column>
+    <clr-dg-column [clrDgField]="'comments'" [clrDgSortOrder]="descSort">
+      <ng-container *clrDgHideableColumn="{ hidden : true}">
+        Comments
+      </ng-container>
     </clr-dg-column>
     <clr-dg-row *clrDgItems="let domain of elements" [clrDgItem]="domain">
       <clr-dg-cell>{{domain.client}}</clr-dg-cell>
@@ -39,8 +54,8 @@
         </clr-dg-cell>
       </ng-template>
       <clr-dg-cell>
-        <span *ngFor="let list of domain.lists">
-          - {{list.name}}<br /></span>
+        <span *ngFor="let waf of domain.wafs">
+          - {{waf.name}}<br /></span>
       </clr-dg-cell>
       <clr-dg-cell>{{domain.enviroment}}</clr-dg-cell>
       <clr-dg-cell *ngIf="domain.certificate; else noCertificate">
@@ -59,34 +74,64 @@
         <clr-dg-cell></clr-dg-cell>
       </ng-template>
       <clr-dg-cell *ngIf="domain.certificate; else undefinedCertificate">{{domain.certificate.issuer}}</clr-dg-cell>
-      <clr-dg-cell *ngIf="domain.certificate; else undefinedCertificate">{{domain.certificate.expirationDate | date}}</clr-dg-cell>
+      <clr-dg-cell *ngIf="domain.certificate; else undefinedCertificate">
+        <span *ngIf="getDays(domain.certificate.expirationDate)>=0;else expired">
+          {{getDays(domain.certificate.expirationDate)}}</span>
+      </clr-dg-cell>
+      <ng-template #expired>
+          <span class="label label-danger">Expired</span>
+      </ng-template>
+
 
       <clr-dg-cell *ngIf="domain.asset; else noAsset">
         {{domain.asset.name}}
       </clr-dg-cell>
       <ng-template #noAsset>
         <clr-dg-cell>
-
         </clr-dg-cell>
       </ng-template>
-      
+
+
+
+      <clr-dg-cell *ngIf="domain.asset && domain.asset.servers; else noServer">
+        <span *ngFor="let server of domain.asset.servers">
+          - {{server.hostname}}<br /></span>
+      </clr-dg-cell>
+      <ng-template #noServer>
+        <clr-dg-cell>
+        </clr-dg-cell>
+      </ng-template>
+
+      <clr-dg-cell *ngIf="domain.asset && domain.asset.servers; else noServer">
+        <span *ngFor="let server of domain.asset.servers">
+          <span *ngIf="server.ip;else noIP">
+            {{server.ip.ip}}
+          </span>
+        </span>
+      </clr-dg-cell>
+
+      <ng-template #noIP>
+        <clr-dg-cell>
+        </clr-dg-cell>
+      </ng-template>
+      <clr-dg-cell>{{domain.comments}}</clr-dg-cell>
       <clr-dg-action-overflow>
         <button class="action-item" (click)="delete(domain)">Delete</button>
       </clr-dg-action-overflow>
     </clr-dg-row>
     <clr-dg-detail *clrIfDetail="let detail">
       <clr-dg-detail-header>Domain: {{detail.url}}</clr-dg-detail-header>
-        <app-domain-details [input]="detail" (updated)="modify($event)" ngProjectAs="clr-dg-row-detail">
-        </app-domain-details> 
-      </clr-dg-detail>
-        <clr-dg-footer>
-          <clr-dg-pagination #pagination [clrDgPageSize]="10">
-            <clr-dg-page-size [clrPageSizeOptions]="[1,2,10,20,50,100]">{{elementNamePlural}} per page
-            </clr-dg-page-size>
-            {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}}
-            {{elementNamePlural}}
-          </clr-dg-pagination>
-        </clr-dg-footer>
+      <app-domain-details [input]="detail" (updated)="modify($event)" ngProjectAs="clr-dg-row-detail">
+      </app-domain-details>
+    </clr-dg-detail>
+    <clr-dg-footer>
+      <clr-dg-pagination #pagination [clrDgPageSize]="10">
+        <clr-dg-page-size [clrPageSizeOptions]="[1,2,10,20,50,100]">{{elementNamePlural}} per page
+        </clr-dg-page-size>
+        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}}
+        {{elementNamePlural}}
+      </clr-dg-pagination>
+    </clr-dg-footer>
   </clr-datagrid>
 </div>
 

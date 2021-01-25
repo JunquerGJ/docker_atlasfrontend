@@ -1,27 +1,27 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import List from 'src/app/shared/models/list';
 import Domain from 'src/app/shared/models/domain';
 import { DomainService } from 'src/app/domains/domains.service';
 import { AssetService } from 'src/app/assets/assets.service';
 import { AlertsService } from 'src/app/alerts.service';
+import WAF from 'src/app/shared/models/waf';
 
 @Component({
-  selector: 'app-list-details',
-  templateUrl: './list-details.component.html',
-  styleUrls: ['./list-details.component.scss']
+  selector: 'app-waf-details',
+  templateUrl: './waf-details.component.html',
+  styleUrls: ['./waf-details.component.scss']
 })
-export class ListDetailsComponent implements OnInit {
+export class WafDetailsComponent implements OnInit {
 
   constructor(private domainService : DomainService, private assetService : AssetService, private alertService : AlertsService) { }
-  @Input() input : List
-  @Output() updated = new EventEmitter<List>()
-  list : List
+  @Input() input : WAF
+  @Output() updated = new EventEmitter<WAF>()
+  waf : WAF
 
   public domains : Domain[]
   public auxDomain: String = ""
 
   ngOnInit(): void {
-    this.list = this.input;
+    this.waf = this.input;
 
     this.domainService.getSome([], {})
       .subscribe(
@@ -34,7 +34,7 @@ export class ListDetailsComponent implements OnInit {
   setDomain(url) {
     this.domains.forEach((domain) => {
       if (domain.url == url) {
-        this.list.domains.push(domain)
+        this.waf.domains.push(domain)
       }
     })
 
@@ -42,12 +42,12 @@ export class ListDetailsComponent implements OnInit {
   }
 
   toggleDomain(url) {
-    var aux = this.list.domains.filter(elem => elem.url != url)
-    this.list.domains = aux
+    var aux = this.waf.domains.filter(elem => elem.url != url)
+    this.waf.domains = aux
   }
 
   update() {
-    this.updated.emit(this.list)
+    this.updated.emit(this.waf)
   }
 
 }

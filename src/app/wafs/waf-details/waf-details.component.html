@@ -4,7 +4,7 @@
       <div class="clr-col-lg-auto">
         <clr-input-container>
           <label>Name<span style="color:red"></span></label>
-          <input type="text" name="name" [(ngModel)]="list.name" clrInput />
+          <input type="text" name="name" [(ngModel)]="waf.name" clrInput />
         </clr-input-container>
       </div>
     </div>
@@ -12,7 +12,7 @@
         <div class="clr-col-lg-auto">
           <clr-textarea-container>
             <label>Description<span style="color:red"></span></label>
-            <textarea rows="2" cols="60" clrTextarea [(ngModel)]="list.description"
+            <textarea rows="2" cols="60" clrTextarea [(ngModel)]="waf.description"
               name="description"></textarea>
           </clr-textarea-container>
         </div>
@@ -21,7 +21,7 @@
         <div class="clr-col-lg-auto">
           <clr-checkbox-container>
             <clr-checkbox-wrapper>
-                <input type="checkbox" [(ngModel)]="list.denyList" clrCheckbox value="" name="denyList" />
+                <input type="checkbox" [(ngModel)]="waf.denyList" clrCheckbox value="" name="denyWaf" />
                 <label>Deny</label>
             </clr-checkbox-wrapper>
             </clr-checkbox-container>
@@ -41,9 +41,9 @@
     </div>
     <div class="clr-row">
       <div class="clr-col-lg-auto">
-        <clr-datagrid *ngIf="list.domains.length>0">
+        <clr-datagrid *ngIf="waf.domains.length>0">
           <clr-dg-column>Domain</clr-dg-column>
-          <clr-dg-row *ngFor="let domain of list.domains">
+          <clr-dg-row *ngFor="let domain of waf.domains">
               <clr-dg-action-overflow>
                   <button (click)="toggleDomain(domain.url)"
                       class="action-item">Remove from list</button>
@@ -61,5 +61,5 @@
       </clr-datagrid>
       </div>
     </div>
-    <button (click)="update()" class="btn btn-outline">Update List</button>
+    <button (click)="update()" class="btn btn-outline">Update WAF</button>
   </div>

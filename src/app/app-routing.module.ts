@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { VulnerabilitiesComponent } from './vulnerabilities/vulnerabilities.component';
 import { AssetsComponent } from './assets/assets.component';
@@ -16,14 +16,18 @@ import { AssetManagementComponent } from './asset-management/asset-management.co
 import { CertificatesComponent } from './certificates/certificates.component';
 import { DomainsComponent } from './domains/domains.component';
 import { DashboardComponent} from './dashboard/dashboard.component'
-import { ListsComponent } from './lists/lists.component';
+import { WAFComponent } from './wafs/wafs.component';
+import { AuthGuard } from './auth/auth.guard';
+import { IDSComponent } from './ids/ids.component';
+
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'dashboard', component: DashboardComponent},
+  { path: 'dashboard', component: DashboardComponent,canActivate: [AuthGuard]},
   { path: 'login', component: LoginComponent },
-  { path: 'vulnerabilities', component: VulnerabilitiesComponent },
-  { path: 'assets', component: AssetsComponent },
+  { path: 'vulnerabilities', component: VulnerabilitiesComponent, canActivate:[AuthGuard]},
+  { path: 'assets', component: AssetsComponent,canActivate: [AuthGuard] },
   { path: 'audits', component: AuditsComponent },
   {
     path: 'inventory', component: AssetManagementComponent,
@@ -34,7 +38,8 @@ const routes: Routes = [
       { path: 'servers', component: ServersComponent },
       { path: 'assets', component: AssetsComponent },
       { path: 'ips', component: IpsComponent },
-      { path: 'lists', component : ListsComponent},
+      { path: 'wafs', component : WAFComponent},
+      { path: 'ids', component : IDSComponent},
       { path: 'networks', component: NetworksComponent },
       { path: 'contacts', component: ContactsComponent },
       { path: 'audits', component: AuditsComponent },

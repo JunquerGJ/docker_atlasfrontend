@@ -46,12 +46,24 @@ export class AddAuditComponent extends AddElementComponent<Audit> implements OnI
   ngOnInit(): void {
     this.newElement = this.getFreshElement()
 
-    this.assetService.getSome([], { name: true })
+    this.assetService.getSome([], { name: true, Domain : true })
       .subscribe(
         (elements) => {
           var i = 0;
           for (i = 0; i < elements.length; i++) {
             var aux = JSON.parse(JSON.stringify(elements[i]))
+            var j = 0;
+            for(j=0;j<aux.Domain.length;j++){
+                delete aux.Domain[j].client
+                delete aux.Domain[j].id
+                delete aux.Domain[j].assetId
+                delete aux.Domain[j].wafs
+                delete aux.Domain[j].privateDomain
+                delete aux.Domain[j].errorCode
+                delete aux.Domain[j].enviroment
+                delete aux.Domain[j].certificate
+                delete aux.Domain[j].certificateId
+            }
             this.assets.push(aux)
           }
         }
@@ -70,7 +82,7 @@ export class AddAuditComponent extends AddElementComponent<Audit> implements OnI
         }
       )
 
-      this.domainService.getSome([], { url: true })
+      /*this.domainService.getSome([], { url: true })
       .subscribe(
         (elements) => {
           var i = 0;
@@ -79,7 +91,7 @@ export class AddAuditComponent extends AddElementComponent<Audit> implements OnI
             this.domains.push(aux)
           }
         }
-      )
+      )*/
   }
 
 
@@ -90,6 +102,7 @@ export class AddAuditComponent extends AddElementComponent<Audit> implements OnI
     for(i<0;i<this.assets.length;i++){
       if(this.assets[i].name == assetName){
         this.newElement.asset = this.assets[i]
+        this.domains = this.assets[i].Domain
         return
       }
     }

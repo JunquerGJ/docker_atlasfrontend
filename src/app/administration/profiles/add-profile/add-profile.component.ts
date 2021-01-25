@@ -19,7 +19,7 @@ export class AddProfileComponent extends AddElementComponent<Profile> implements
    }
   ngOnDestroy(): void {}
   
-  public administrationEntities = ["Area","User","Profile","Asset","Audit","Vulnerability","CWE","Contact","Network","IP","Server","Characteristic","Domain","Certificate","List"]
+  public administrationEntities = ["Area","User","Profile","Asset","Audit","Vulnerability","CWE","Contact","Network","IP","Server","Characteristic","Domain","Certificate","Waf","Ids"]
   public permissionList =["CREATE","READ","UPDATE","DELETE"]
 
 

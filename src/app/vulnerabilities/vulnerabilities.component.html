@@ -4,25 +4,75 @@
 
   <clr-datagrid>
     <clr-dg-column [clrDgField]="'name'" [clrDgSortOrder]="descSort">Name</clr-dg-column>
-    <clr-dg-column [clrDgField]="'id'" [clrDgSortOrder]="descSort">Id</clr-dg-column>
+    <clr-dg-column [clrDgField]="'vulnType'" [clrDgSortOrder]="descSort">
+      <ng-container *clrDgHideableColumn="{ hidden : true }">
+        Type
+      </ng-container>
+    </clr-dg-column>
+    <clr-dg-column [clrDgField]="'id'" [clrDgSortOrder]="descSort">
+      <ng-container *clrDgHideableColumn="{ hidden : true }">
+        Id
+      </ng-container>
+    </clr-dg-column>
     <clr-dg-column [clrDgField]="'risk'" [clrDgSortOrder]="descSort">Risk</clr-dg-column>
     <clr-dg-column [clrDgField]="'status'" [clrDgSortOrder]="descSort">Status</clr-dg-column>
-    <clr-dg-column [clrDgField]="'asset.name'" [clrDgSortOrder]="descSort">Asset</clr-dg-column>
-    <clr-dg-column [clrDgField]="'auditor.name'" [clrDgSortOrder]="descSort">Auditor</clr-dg-column>
-    <clr-dg-column [clrDgField]="'discoveryDate'" [clrDgSortOrder]="descSort">Found on</clr-dg-column>
-    <clr-dg-column [clrDgField]="'mitigationDate'" [clrDgSortOrder]="descSort">Mitigated on</clr-dg-column>
-    <clr-dg-column [clrDgField]="'resolutionDate'" [clrDgSortOrder]="descSort">Closed on</clr-dg-column>
+    <clr-dg-column [clrDgField]="'asset.name'" [clrDgSortOrder]="descSort">
+      <ng-container *clrDgHideableColumn="{ hidden : false }">
+        Asset
+      </ng-container>
+    </clr-dg-column>
+    <clr-dg-column [clrDgField]="'server.hostname'" [clrDgSortOrder]="descSort">
+      <ng-container *clrDgHideableColumn="{ hidden : false }">
+        Server
+      </ng-container>
+    </clr-dg-column>
+    <clr-dg-column [clrDgField]="'auditor.name'" [clrDgSortOrder]="descSort">
+      <ng-container *clrDgHideableColumn="{ hidden : true }">
+        Auditor
+      </ng-container>
+    </clr-dg-column>
+    <clr-dg-column [clrDgField]="'discoveryDate'" [clrDgSortOrder]="descSort">Ç
+      <ng-container *clrDgHideableColumn="{ hidden : true }">
+      Found on
+      </ng-container>
+    </clr-dg-column>
+    <clr-dg-column [clrDgField]="'mitigationDate'" [clrDgSortOrder]="descSort">
+      <ng-container *clrDgHideableColumn="{ hidden : true }">
+        Mitigated on
+        </ng-container>
+    </clr-dg-column>
+    <clr-dg-column [clrDgField]="'resolutionDate'" [clrDgSortOrder]="descSort">
+      <ng-container *clrDgHideableColumn="{ hidden : true }">
+      Closed on
+      </ng-container>
+    </clr-dg-column>
     <clr-dg-column [clrDgSortBy]="daysComparator">Days to resolution
       <clr-dg-numeric-filter [clrDgNumericFilter]="daysFilter"></clr-dg-numeric-filter>
     </clr-dg-column>
     <clr-dg-row *clrDgItems="let vulnerability of elements" [clrDgItem]="vulnerability">
       <clr-dg-cell>{{vulnerability.name}}</clr-dg-cell>
+      <clr-dg-cell>{{vulnerability.vulnType}}</clr-dg-cell>
       <clr-dg-cell>{{vulnerability.id}}</clr-dg-cell>
       <clr-dg-cell><span class="label" [style.background-color]="getBC(vulnerability.risk)"
           [style.color]="getFC(vulnerability.risk)"><b>{{vulnerability.risk}}</b></span>
       </clr-dg-cell>
       <clr-dg-cell><b>{{vulnerability.status}}</b></clr-dg-cell>
-      <clr-dg-cell>{{vulnerability.asset.name}}</clr-dg-cell>
+      <clr-dg-cell *ngIf="vulnerability.asset; else noAsset">
+        {{vulnerability.asset.name}}
+      </clr-dg-cell>
+      <ng-template #noAsset>
+        <clr-dg-cell>
+
+        </clr-dg-cell>
+      </ng-template>
+      <clr-dg-cell *ngIf="vulnerability.server; else noServer">
+        {{vulnerability.server.hostname}}
+      </clr-dg-cell>
+      <ng-template #noServer>
+        <clr-dg-cell>
+          
+        </clr-dg-cell>
+      </ng-template>
       <clr-dg-cell *ngIf="vulnerability.auditor; else undefinedAuditor">{{vulnerability.auditor.name}}</clr-dg-cell>
       <ng-template #undefinedAuditor>
         <clr-dg-cell></clr-dg-cell>

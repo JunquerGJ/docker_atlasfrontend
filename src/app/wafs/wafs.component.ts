@@ -1,10 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { ListService } from "./list.service";
+import { WafService } from "./waf.service";
 import { AlertsService } from "src/app/alerts.service";
 import { GridableComponent } from '../shared/classes/class'
-import List from '../shared/models/list'
+import WAF from '../shared/models/waf'
 import Domain from '../shared/models/domain';
-import { getFreshList, getFreshDomain,  } from '../shared/functions/utils'
+import { getFreshWAF, getFreshDomain,  } from '../shared/functions/utils'
 import { ClrDatagridComparatorInterface, ClrDatagridStringFilterInterface, ClrDatagridNumericFilterInterface } from '@clr/angular';
 import { DomainService } from '../domains/domains.service';
 import { Router } from '@angular/router';
@@ -16,7 +16,7 @@ interface elementType {
 
 
 
-class DomainComparator implements ClrDatagridComparatorInterface<List>{
+class DomainComparator implements ClrDatagridComparatorInterface<WAF>{
   compare(a, b){
     if(a.domains.length==b.domains.length){
           return 0
@@ -28,7 +28,7 @@ class DomainComparator implements ClrDatagridComparatorInterface<List>{
     }
 }
 
-class DomainFilter implements ClrDatagridNumericFilterInterface<List>{
+class DomainFilter implements ClrDatagridNumericFilterInterface<WAF>{
   accepts(item, low: number, high: number): boolean {
     if(low || low == 0){
       if(high || high == 0){
@@ -44,15 +44,14 @@ class DomainFilter implements ClrDatagridNumericFilterInterface<List>{
   }
   
 }
-
 @Component({
-  selector: "app-companies",
-  templateUrl: "./lists.component.html",
-  styleUrls: ["./lists.component.scss"]
+  selector: 'app-wafs',
+  templateUrl: './wafs.component.html',
+  styleUrls: ['./wafs.component.scss']
 })
-export class ListsComponent extends GridableComponent<List>
+export class WAFComponent extends GridableComponent<WAF>
   implements OnInit {
-  getFreshElement = getFreshList
+  getFreshElement = getFreshWAF
 
 
 
@@ -83,17 +82,17 @@ export class ListsComponent extends GridableComponent<List>
 
   constructor(
     private domainService: DomainService,
-    listService : ListService,
+    wafService : WafService,
     alertService: AlertsService,
     router: Router
   ) {
-    super(listService, alertService,router);
+    super(wafService, alertService,router);
   }
 
   ngOnInit() {
     this.defaultFields = {id : true,name : true, description: true,denyList : true,domains : true}
-    this.elementName = "List";
-    this.elementNamePlural = "Lists";
+    this.elementName = "WAF";
+    this.elementNamePlural = "WAFs";
     this.newElement = this.getFreshElement()
     this.getSome([],this.defaultFields);
     this.domainService.getSome([],{ url : true})
@@ -104,8 +103,8 @@ export class ListsComponent extends GridableComponent<List>
       );
   }
 
-  addList(list){
-    this.newElement = list
+  addWaf(waf){
+    this.newElement = waf
     this.add()
   }
 }

@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import Domain from 'src/app/shared/models/domain';
-import { ListService } from 'src/app/lists/list.service';
+import { WafService } from 'src/app/wafs/waf.service';
 import { AlertsService } from 'src/app/alerts.service';
-import List from 'src/app/shared/models/list';
+import WAF from 'src/app/shared/models/waf';
 import { AppConstants } from 'src/app/shared/constants/constants';
 import { CertificateService } from 'src/app/certificates/certificates.service';
 import Certificate from 'src/app/shared/models/certificate';
@@ -20,12 +20,12 @@ export class DomainDetailsComponent implements OnInit {
   public listActive : boolean
   public certificateActive : boolean
   public auxCertificate: String = "";
-  public auxList: String = ""
+  public auxWaf: String = ""
 
   hadCertificate : boolean;
   
   
-  constructor(private listService : ListService, private certificateService : CertificateService,  private alertService : AlertsService) {
+  constructor(private wafService : WafService, private certificateService : CertificateService,  private alertService : AlertsService) {
     this._enviroments = AppConstants.enviroments
     this._clients = AppConstants.clients
    }
@@ -33,7 +33,7 @@ export class DomainDetailsComponent implements OnInit {
   @Output() updated = new EventEmitter<Domain>()
   domain : Domain
 
-  public lists : List[]
+  public wafs : WAF[]
   public certificates : Certificate[]
 
   ngOnInit(): void {
@@ -42,10 +42,10 @@ export class DomainDetailsComponent implements OnInit {
       this.hadCertificate = true
     }
 
-    this.listService.getSome([], {})
+    this.wafService.getSome([], {})
       .subscribe(
         (elements) => {
-          this.lists = elements;
+          this.wafs = elements;
         }
       );
       this.certificateService.getSome([], {domainName : true})
@@ -56,13 +56,13 @@ export class DomainDetailsComponent implements OnInit {
       );
   }
 
-  setList(name) {
-    this.lists.forEach((list) => {
-      if (list.name == name) {
-        this.domain.lists.push(list)
+  setWaf(name) {
+    this.wafs.forEach((waf) => {
+      if (waf.name == name) {
+        this.domain.wafs.push(waf)
       }
     })
-    this.auxList = ""
+    this.auxWaf = ""
   }
 
   setCertificate(domainName) {
@@ -83,9 +83,9 @@ export class DomainDetailsComponent implements OnInit {
   removeCertificate(){
     this.domain.certificate = null
   }
-  toggleList(name) {
-    var aux = this.domain.lists.filter(elem => elem.name != name)
-    this.domain.lists = aux
+  toggleWaf(name) {
+    var aux = this.domain.wafs.filter(elem => elem.name != name)
+    this.domain.wafs = aux
   }
 
   update() {

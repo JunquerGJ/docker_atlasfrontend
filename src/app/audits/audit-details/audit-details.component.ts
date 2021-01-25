@@ -10,6 +10,8 @@ import { AuditService } from '../audits.service';
 import { AlertsService } from 'src/app/alerts.service';
 import { AppConstants } from 'src/app/shared/constants/constants';
 import { validAudit } from 'src/app/shared/functions/utils';
+import Domain from 'src/app/shared/models/domain';
+import { DomainService } from 'src/app/domains/domains.service';
 
 @Component({
   selector: 'app-audit-details',
@@ -25,14 +27,16 @@ export class AuditDetailsComponent implements OnInit, OnDestroy {
 
   public assets: Asset[] = []
   public users: User[] = []
+  public domains: Domain[] = []
   public auxAuditor: String = ""
+  public auxDomain: String = ""
   public readonly _methodologies;
   public readonly _auditTools;
   public auxAsset: String = ""
   hadAuditor: boolean;
   hadAsset: any;
 
-  constructor(private assetService: AssetService, private userService: UserService, private auditService: AuditService, private alertService: AlertsService) {
+  constructor(private assetService: AssetService, private domainService: DomainService, private userService: UserService, private auditService: AuditService, private alertService: AlertsService) {
     this._methodologies = AppConstants.methodologies
     this._auditTools = AppConstants.getAuditTools()
   }
@@ -50,6 +54,18 @@ export class AuditDetailsComponent implements OnInit, OnDestroy {
           for (i = 0; i < elements.length; i++) {
             var aux = JSON.parse(JSON.stringify(elements[i]))
             this.assets.push(aux)
+          }
+        }
+      )
+
+
+      this.domainService.getSome([], { url: true })
+      .subscribe(
+        (elements) => {
+          var i = 0;
+          for (i = 0; i < elements.length; i++) {
+            var aux = JSON.parse(JSON.stringify(elements[i]))
+            this.domains.push(aux)
           }
         }
       )
@@ -78,6 +94,20 @@ export class AuditDetailsComponent implements OnInit, OnDestroy {
     }
     this.audit.asset = null
     this.auxAsset = null
+
+  }
+
+  setDomain(domainName) {
+    var i = 0;
+    for (i = 0; i < this.domains.length; i++) {
+      if (this.domains[i].url == domainName) {
+        this.audit.domain = this.domains[i]
+        this.auxDomain = this.domains[i].url
+        return;
+      }
+    }
+    this.audit.domain = null
+    this.auxDomain = null
 
   }
 
